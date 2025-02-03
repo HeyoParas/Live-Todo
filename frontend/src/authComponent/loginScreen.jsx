@@ -3,32 +3,35 @@ import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { message } from "antd";
-// import Link from "react-router-dom";
+import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate for navigation
 
-const loginScreen = () => {
+const LoginScreen = () => {
+  const navigate = useNavigate(); // ✅ Initialize useNavigate
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
   const onSubmit = async (data) => {
-    console.log("login Data:", data);
+    console.log("Login Data:", data);
     try {
-      console.log("login", data);
-  
-      const response = await axios.post('http://localhost:7000/login', data);
-  
+      console.log("Logging in with:", data);
+
+      const response = await axios.post("http://localhost:7000/login", data);
+
       console.log("Response from backend:", response.data);
-  
+
       if (response.data.success) {
-        Navigate("/dashboard");
+        message.success("Login successful! Redirecting...");
+        navigate("/dashboard"); // ✅ Navigate to dashboard
       } else {
-        message.error("Invaild credentials");
+        message.error("Invalid credentials, please try again.");
       }
     } catch (error) {
-      message.error("Error during login", error);
+      console.error("Login error:", error);
+      message.error("An error occurred. Please try again.");
     }
-
   };
 
   return (
@@ -43,14 +46,15 @@ const loginScreen = () => {
 
           <div className="w-[60%] rounded-lg m-10">
             <h1 className="text-xl font-semibold text-gray-800 mb-4">
-              Welcome back! Please signup to your account.
+              Welcome back! Please log in to your account.
             </h1>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               {/* Email Input */}
               <div className="mb-4">
                 <label
                   className="block text-gray-600 font-medium mb-2"
-                  htmlFor="email">
+                  htmlFor="email"
+                >
                   Email Address
                 </label>
                 <input
@@ -63,7 +67,8 @@ const loginScreen = () => {
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
-                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      value:
+                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                       message: "Invalid email address",
                     },
                   })}
@@ -79,7 +84,8 @@ const loginScreen = () => {
               <div className="mb-4">
                 <label
                   className="block text-gray-600 font-medium mb-2"
-                  htmlFor="password">
+                  htmlFor="password"
+                >
                   Password
                 </label>
                 <input
@@ -108,13 +114,16 @@ const loginScreen = () => {
               <div className="flex justify-between">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
+                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
                   Login
                 </button>
                 <button
                   type="button"
-                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                  signup
+                  onClick={() => navigate("/signup")} // ✅ Navigate to signup page
+                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
+                >
+                  Signup
                 </button>
               </div>
             </form>
@@ -122,33 +131,20 @@ const loginScreen = () => {
         </div>
 
         {/* Right Section */}
-        <div className=" w-full  flex flex-col bg-slate-100 ">
+        <div className="w-full flex flex-col bg-slate-100">
           <div className="flex gap-x-10 justify-center mt-10">
-            <div className="mt-5">
-              <a href="#" className="text-2xl">
-                Home
-              </a>
-            </div>
-            <div className="mt-5">
-              <a href="#" className="text-2xl">
-                About us
-              </a>
-            </div>
-            <div className="mt-5">
-              <a href="#" className="text-2xl">
-                Contact us
-              </a>
-            </div>
-            <div className="mt-5">
-              <a href="#" className="text-2xl">
-                Blog
-              </a>
-            </div>
+            {["Home", "About us", "Contact us", "Blog"].map((link, index) => (
+              <div key={index} className="mt-5">
+                <a href="#" className="text-2xl">
+                  {link}
+                </a>
+              </div>
+            ))}
           </div>
-          <div className="mt-10">
-            <div>
-              <img src={cycle} alt="cycle" />
-            </div>
+
+          {/* Image */}
+          <div className="mt-10 flex justify-center">
+            <img src={cycle} alt="cycle" className="s-screen" />
           </div>
         </div>
       </div>
@@ -156,4 +152,4 @@ const loginScreen = () => {
   );
 };
 
-export default loginScreen;
+export default LoginScreen;
