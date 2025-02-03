@@ -2,16 +2,17 @@ const { comparePassword, bcryptPassword } = require("./bcrypt");
 const { makeToken } = require("./token");
 const userModel = require("../models/userSchema");
 const otpModel = require("../models/otpSchema");
+const assignedTasks = require("../models/assignedTaskSchema");
 const { sendEmail } = require("./MailAuth");
 const validator = require("validator");
-
-
+const mongoose = require("mongoose");
 const verifyEmail = async (req, res) => {
+  console.log("/verify",req.body);
   const { email } = req.body;
   const existingUser = await userModel.findOne({ email: email });
   if (existingUser) {
     console.log("User already exists!");
-    return res.status(400).json({ message: "User already exists" });
+    return res.json({ message: "User already exists" ,success:false});
   }
   const otp = await sendEmail(email);
   try {
@@ -20,7 +21,7 @@ const verifyEmail = async (req, res) => {
       otp: otp,
     });
     await otpStored.save();
-    res.status(200).json({ message: "Otp Sent", success: true });
+    res.json({ message: "Otp Sent", success: true });
   } catch (error) {
     console.log("Error saving Otp: ", error);
     res.status(500).json({ message: "Otp Sent Failed", success: false });
@@ -31,10 +32,20 @@ const loginUser = async (req, res) => {
   console.log("inside /login");
   if (validator.isEmail(req.body.email)) {
     try {
-      var user = await userModel
+      let user = await userModel
         .findOne({ email: req.body.email })
-        .populate([{ path: "mytasks",match:{ isDisable: false } }, { path: "assignedTasks",match:{isDisable:false} }]);
-      // console.log(user);
+        .populate([{ path: "mytasks", match: { isDisable: false } }]); // Only populate `mytasks` for now.
+
+      // Check if assignTasks model is available
+      if (mongoose.modelNames().includes('assignTasks')) {
+        user = await userModel
+          .findOne({ email: req.body.email })
+          .populate([
+            { path: "mytasks", match: { isDisable: false } },
+            { path: "assignedTasks", match: { isDisable: false } } // Populate assignTasks if available
+          ]);
+      }
+
       if (user) {
         let check = await comparePassword(req.body.password, user.password); //compare bcrypt pswrd to plain pssword
         if (check) {
@@ -50,10 +61,10 @@ const loginUser = async (req, res) => {
             success: true,
           });
         } else {
-          res.status(401).json({ message: "Invalid password", success: false });
+          res.json({ message: "Invalid password", success: false });
         }
       } else {
-        res.status(401).json({ message: "User not found", success: false });
+        res.json({ message: "User not found", success: false });
       }
     } catch (err) {
       console.log(err);
@@ -70,17 +81,18 @@ const logoutUser = (req, res) => {
 
 const signupUser = async (req, res) => {
   console.log("/signup");
-  const { otp, username, email } = req.body;
+  console.log(req.body);
+  const { otpNumber, username, email } = req.body;
   //  Sorts documents by createdAt in descending order (latest first).
   const otpData = await otpModel
     .findOne({ email })
     .sort({ createdAt: -1 });
-
+  console.log("OtpData",otpData);
     if (!otpData) {
-      return res.status(400).json({ success: false, message: "OTP not found in the Database!" });
+      return res.json({ success: false, message: "OTP not found in the Database!" });
     }    
 
-  if (otpData.email == email && otpData.otp == otp) {
+  if (otpData.email == email && otpData.otp == otpNumber) {
     try {
       const password = await bcryptPassword(req.body.password);
       const newUser = new userModel({
@@ -97,11 +109,11 @@ const signupUser = async (req, res) => {
         .json({ message: "User created successfully", success: true });
     } catch (err) {
       console.log(err);
-      res.status(500).json({ message: "Error creating user",success:false });
+      res.json({ message: "Error creating user",success:false });
     }
   }
   else{
-    res.status(400).json({success:false,message:"Otp didnt match!!!"});
+    res.json({success:false,message:"Otp didnt match!!!"});
   }
 };
 

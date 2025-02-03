@@ -57,7 +57,7 @@ const addTask = async (req, res) => {
     // res.status(201).json(savedTask);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Failed to add task" });
+    res.json({ error: "Failed to add task" });
   }
 };
 
@@ -92,7 +92,7 @@ const updateTask = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Failed to add task",success:false});
+    res.json({ error: "Failed to add task",success:false});
   }
 };
 
