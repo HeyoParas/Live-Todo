@@ -9,7 +9,9 @@ function App() {
 
   return (
     <>
+    <div className='h-full w -full m-[4%] shadow-lg'> 
     <MainScreen/>
+    </div>
     </>
   )
 }

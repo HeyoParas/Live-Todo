@@ -13,7 +13,7 @@ const login = () => {
              {/* Form */}
              <form>
                 {/* Email section */}
-                
+
                 {/* Password section */}
              </form>
         </div>
