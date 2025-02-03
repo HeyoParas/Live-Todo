@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 const taskModel = require("../models/taskSchema");
 const userModel = require("../models/userSchema");
 const {getUser} = require("./token");
@@ -58,146 +57,7 @@ const addTask = async (req, res) => {
     // res.status(201).json(savedTask);
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Failed to add task" });
-  }
-};
-
-
-// update existing task
-const updateTask = async (req, res) => {
-  const {
-    taskId,
-    tasktitle,
-    taskDescription,
-    section,
-    currentProgress,
-    priority,
-    comments,
-  } = req.body;
-  try {
-    const newTask = await taskModel.findByIdAndUpdate(
-      taskId,
-      {
-        tasktitle,
-        taskDescription,
-        section,
-        currentProgress,
-        priority,
-        comments,
-      },
-      { new: true }
-    );
-    if (newTask) {
-      res
-        .status(200)
-        .json({message: "Task updated successfully",success:true});
-    }
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Failed to add task",success:false});
-  }
-};
-
-
-// disable the task 
-const disableTask = async (req, res) => {
-  const { taskId } = req.body;
-  // console.log(req.body);
-  try {
-    const newTask = await taskModel.findByIdAndUpdate(taskId,{
-      isDisable:true
-    });
-    res.status(200).json({ message: "Task deleted successfully" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Failed to delete task" });
-  }
-};
-
-// add a new section to existing sections 
-const addNewSection =async()=>{
-  const user = getUser(req.cookies.mycookie);
-  const {section}=req.body;
-  try{
-    const newSection = await userModel.findByIdAndUpdate({_id:user.id},{
-      $addToSet:{sections:section}
-    },{new:false})
-    if(!newSection.sections.includes(section)){
-      res.status(200).json({message:`${section} added successfully!!`});
-    }
-    else{
-      res.status(200).json({message:`${section} already exists!!`});
-    }
-  }catch(err){
-    console.log("Error adding new section: ",err);
-    res.status(500).json({ error: "Failed to add section" });
-  }
-
-}
-module.exports={
-    addTask,addNewSection,updateTask,disableTask
-    // getTasks
-=======
-const taskModel = require("../models/taskSchema");
-const userModel = require("../models/userSchema");
-const {getUser} = require("./token");
-
-// const getTasks = async (req, res) => {
-//   console.log("inside /gettasks");
-//   const user = getUser(req.cookies.mycookie);
-//   try {
-//     const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
-//     console.log("Tasks from DB ", tasks);
-//     // Send tasks to the frontend
-//     res.status(200).json({ mytasks:userdata.mytasks,assignedTasks:userdata.assignedTasks});
-//   } catch (err) {
-//     console.error("Error fetching tasks:", err);
-//     res
-//       .status(500)
-//       .json({ error: "Internal server error. Please try again later." });
-//   }
-// };
-// Add new task 
-
-const addTask = async (req, res) => {
-  const user = getUser(req.cookies.mycookie);
-  const userId = user.id;
-  const {
-    tasktitle,
-    taskDescription,
-    section,
-    currentProgress,
-    priority,
-    comments,
-  } = req.body;
-  try {
-    const newTask = new taskModel({
-      tasktitle,
-      taskDescription,
-      section,
-      currentProgress,
-      priority,
-      comments,
-      userId
-    });
-    const savedTask = await newTask.save();
-    if (savedTask) {
-      try {
-        await userModel.findByIdAndUpdate(
-          { _id: user.id },
-          {
-            $push: { mytasks: savedTask._id },
-          }
-        );
-        res.status(201).json(savedTask);
-      } catch (err) {
-        console.log("Error in id pushing in sectionModel", err);
-      }
-    }
-    // res.status(201).json(savedTask);
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Failed to add task" });
+    res.json({ error: "Failed to add task" });
   }
 };
 
@@ -232,7 +92,7 @@ const updateTask = async (req, res) => {
     }
   } catch (err) {
     console.log(err);
-    res.status(500).json({ error: "Failed to add task",success:false});
+    res.json({ error: "Failed to add task",success:false});
   }
 };
 
@@ -275,5 +135,4 @@ const addNewSection =async()=>{
 module.exports={
     addTask,addNewSection,updateTask,disableTask
     // getTasks
->>>>>>> 905a393c54e3e76e6e3e8bc3db8c2645aa1ad8a7
 }
