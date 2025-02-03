@@ -40,6 +40,7 @@ const signupScreen = () => {
   return (
     <div className="min-h-screen min-w-full flex items-center justify-center overflow-hidden p-4">
       <div className="flex w-full h-full shadow-lg m-[5%]">
+         {/* Left Section */}
         <div className=" w-full">
           <div className=" m-3 p-5 ">
             <h3 className="m-3 font-bold text-xl mb-[10%]">Digital</h3>
@@ -147,26 +148,27 @@ const signupScreen = () => {
           </div>
         </div>
 
+         {/* Right Section */}        
         <div className=" w-full  flex flex-col bg-slate-100 ">
           <div className="flex gap-x-10 justify-center mt-10">
             <div className="mt-5">
               <a href="#" className="text-2xl">
-                home
+                Home
               </a>
             </div>
             <div className="mt-5">
               <a href="#" className="text-2xl">
-                home
+                About us
               </a>
             </div>
             <div className="mt-5">
               <a href="#" className="text-2xl">
-                home
+                Contact us
               </a>
             </div>
             <div className="mt-5">
               <a href="#" className="text-2xl">
-                home
+                Blog
               </a>
             </div>
           </div>

@@ -34,7 +34,7 @@ const loginScreen = () => {
 
   return (
     <div className="min-h-screen min-w-full flex items-center justify-center overflow-hidden p-4">
-      <div className="flex w-full h-full shadow-lg m-[5%] items-center justify-center">
+      <div className="flex w-full h-full shadow-lg m-[5%]">
         {/* Left Section */}
         <div className="w-full">
           <div className="m-3 p-5">
@@ -123,30 +123,34 @@ const loginScreen = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-full flex flex-col bg-slate-100">
-          {/* Navigation Links */}
+        <div className=" w-full  flex flex-col bg-slate-100 ">
           <div className="flex gap-x-10 justify-center mt-10">
-            {["Home", "About", "Services", "Contact"].map((link, index) => (
-              <div key={index} className="mt-5">
-                <a href="#" className="text-2xl">
-                  {link}
-                </a>
-              </div>
-            ))}
+            <div className="mt-5">
+              <a href="#" className="text-2xl">
+                Home
+              </a>
+            </div>
+            <div className="mt-5">
+              <a href="#" className="text-2xl">
+                About us
+              </a>
+            </div>
+            <div className="mt-5">
+              <a href="#" className="text-2xl">
+                Contact us
+              </a>
+            </div>
+            <div className="mt-5">
+              <a href="#" className="text-2xl">
+                Blog
+              </a>
+            </div>
           </div>
-
-          {/* Image */}
-
-          <div className="mt-10 flex justify-center">
-            <img
-              src={cycle}
-              alt="cycle"
-              className="s-screen"
-            />
+          <div className="mt-10">
+            <div>
+              <img src={cycle} alt="cycle" />
+            </div>
           </div>
-          {/* <div className="mt-10">
-            <img src={cycle} alt="cycle" />
-          </div> */}
         </div>
       </div>
     </div>
