@@ -1,17 +1,80 @@
-import React, { useState } from 'react';
+import { message } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import SignupScreen from './signupScreen'
+import axios from 'axios'
 
 const OtpScreen = () => {
   const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const onSubmit = (data) => {
+  useEffect(() => {
+    let interval;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
+
+  const onSubmit = async (data) => {
     console.log(data);
-    // Handle OTP verification here
+  
+
+    try {
+      console.log(data);
+  
+      const sessionData = JSON.parse(sessionStorage.getItem('signupData'));
+  
+      const otpNumber = parseInt(Object.values(data).join(""), 10);
+      const combinedData = { ...sessionData, otpNumber };
+  
+      console.log("Combined Data:", combinedData);
+  
+      const response = await axios.post('http://localhost:7000/signup', combinedData);
+
+      if (response.data.success) {
+        Navigate("/login");
+      } else {
+        message.error("Invalid Otp");
+      }
+  
+    } catch (error) {
+      console.error("Error during the request:", error);
+      message.error("An error occurred. Please try again later.");
+    }
+  };
+
+  const handleResend = async () => {
+    try {
+      setTimer(30); 
+  
+      const sessionData = JSON.parse(sessionStorage.getItem('signupData'));
+  
+      if (!sessionData) {
+        message.error("Signup First");
+
+        return <SignupScreen/>
+      }
+  
+      console.log("Resending email:", sessionData.email);
+      const response = await axios.post('http://localhost:7000/verifyEmail', sessionData.email);
+  
+      if (response.data.success) {
+        message.success("OTP Resent to your Email");
+      } else {
+        message.error("Failed to resend OTP. Please try again.");
+      }
+  
+    } catch (error) {
+      console.error("Error while resending OTP:", error);
+      message.error("An error occurred. Please try again later.");
+    }
   };
 
   return (
-    <div className="h-full flex items-center justify-center bg-gray-50 p-40">
+    <div className="h-screen flex items-center justify-center bg-gray-50 p-40">
       <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
           Enter Verification Code
@@ -30,7 +93,7 @@ const OtpScreen = () => {
                 {...register(`digit${index}`, {
                   required: 'Required',
                   pattern: {
-                    value: /^[0-9]$/,
+                    value: /^[0-9]$/, 
                     message: 'Must be a number'
                   }
                 })}
@@ -59,8 +122,8 @@ const OtpScreen = () => {
           <p className="text-gray-600">
             Didn't receive code?{' '}
             <button 
-              className="text-blue-500 hover:text-blue-600 font-medium"
-              onClick={() => setTimer(30)}
+              className={`text-blue-500 hover:text-blue-600 font-medium ${timer > 0 ? 'cursor-not-allowed opacity-50' : ''}`}
+              onClick={handleResend}
               disabled={timer > 0}
             >
               {timer > 0 ? `Resend in ${timer}s` : 'Resend'}

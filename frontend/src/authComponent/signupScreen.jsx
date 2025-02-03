@@ -2,17 +2,41 @@ import React from "react";
 import cycle from "../assets/cycle.svg";
 import Login from "./loginScreen";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
+import axios from 'axios'; 
+import {message} from "antd";
 
 const signupScreen = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
-  const onSubmit = (data) => {
-    console.log("signup", data);
-  };
+  const Navigate = useNavigate();
 
+    const {
+      register,
+      handleSubmit,
+      formState: { errors },
+    } = useForm();
+
+    const onSubmit = async (data) => {
+      // sessionStorage.setItem('signupData', JSON.stringify(data));
+      try {
+        console.log("signup", data);
+    
+        const response = await axios.post('http://localhost:7000/verifyEmail', data);
+    
+        console.log("Response from backend:", response.data);
+    
+        if (response.data.success) {
+          sessionStorage.setItem('signupData', JSON.stringify(data));
+    
+          Navigate("/verifyOtp");
+        } else {
+          message.error("Failed to send verification email.");
+        }
+    
+      } catch (error) {
+        message.error("Error during signup:", error);
+      }
+    };
+  
   return (
     <div className="min-h-screen min-w-full flex items-center justify-center overflow-hidden p-4">
       <div className="flex w-full h-full shadow-lg m-[5%]">
@@ -157,4 +181,4 @@ const signupScreen = () => {
   );
 };
 
-export default mainScreen;
+export default signupScreen;
