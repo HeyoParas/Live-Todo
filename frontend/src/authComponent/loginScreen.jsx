@@ -3,7 +3,7 @@ import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 // import Link from "react-router-dom";
 
-const LoginScreen = () => {
+const logiScreen = () => {
   const {
     register,
     handleSubmit,
@@ -15,15 +15,16 @@ const LoginScreen = () => {
   };
 
   return (
-      <div className="flex">
+    <div className="min-h-screen min-w-full flex items-center justify-center overflow-hidden p-4">
+      <div className="flex w-full h-full shadow-lg m-[5%] items-center justify-center">
         {/* Left Section */}
         <div className="w-full">
-          <div className="m-5 p-5">
-            <h3 className="m-5 font-bold text-xl mb-[10%]">Digital</h3>
-            <h1 className="m-5 font-bold text-4xl">Todo - Get It Done</h1>
+          <div className="m-3 p-5">
+            <h3 className="m-3 font-bold text-xl mb-[10%]">Digital</h3>
+            <h1 className="m-3 font-bold text-4xl">Todo - Get It Done</h1>
           </div>
 
-          <div className="w-[60%] rounded-lg m-15">
+          <div className="w-[60%] rounded-lg m-10">
             <h1 className="text-xl font-semibold text-gray-800 mb-4">
               Welcome back! Please signup to your account.
             </h1>
@@ -105,7 +106,7 @@ const LoginScreen = () => {
         </div>
 
         {/* Right Section */}
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col bg-slate-100">
           {/* Navigation Links */}
           <div className="flex gap-x-10 justify-center mt-10">
             {["Home", "About", "Services", "Contact"].map((link, index) => (
@@ -131,7 +132,8 @@ const LoginScreen = () => {
           </div> */}
         </div>
       </div>
+    </div>
   );
 };
 
-export default LoginScreen;
+export default MainScreen;
