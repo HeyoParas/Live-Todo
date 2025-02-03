@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import React from 'react'
 import MainScreen from './authComponent/mainScreen'
-import Login from './authComponent/login'
+
 import './App.css'
 
 function App() {
@@ -9,8 +9,8 @@ function App() {
 
   return (
     <>
-    <div className='h-full w -full m-[4%] shadow-lg'> 
-    <MainScreen/>
+    <div className='h-full w-full m-[4%] shadow-lg'> 
+    <MainScreen />
     </div>
     </>
   )
