@@ -4,13 +4,14 @@ import LoginScreen from './authComponent/loginScreen'
 import SignupScreen from './authComponent/signupScreen'
 import Dashboard from './Dashboard/dashboard';
 import VerifyOtpScreen from './authComponent/verifyOtpScreen'
+import verifyToken from './utils/verifyToken';
 import './App.css'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); 
 
   useEffect(() => {
-    // const verifyLogin = async () => {
+    // const verifyToken = async () => {
     //   const loggedIn = await checkIfLogin();
     //   console.log(loggedIn);
     //   setIsAuthenticated(loggedIn);
