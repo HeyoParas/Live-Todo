@@ -58,6 +58,7 @@ const Dashboard = () => {
           <div className="w-full lg:w-1/3 h-full m-2">
             <Done mode={mode} data={data} />
           </div> */}
+          <div>All tasks</div>
         </div>
       </div>
     </div>
