@@ -3,7 +3,7 @@ import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 // import Link from "react-router-dom";
 
-const MainScreen = () => {
+const LoginScreen = () => {
   const {
     register,
     handleSubmit,
@@ -15,16 +15,15 @@ const MainScreen = () => {
   };
 
   return (
-    <>
       <div className="flex">
         {/* Left Section */}
         <div className="w-full">
-          <div className="m-3 p-5">
-            <h3 className="m-3 font-bold text-xl mb-[10%]">Digital</h3>
-            <h1 className="m-3 font-bold text-4xl">Todo - Get It Done</h1>
+          <div className="m-5 p-5">
+            <h3 className="m-5 font-bold text-xl mb-[10%]">Digital</h3>
+            <h1 className="m-5 font-bold text-4xl">Todo - Get It Done</h1>
           </div>
 
-          <div className="w-[60%] rounded-lg m-10">
+          <div className="w-[60%] rounded-lg m-15">
             <h1 className="text-xl font-semibold text-gray-800 mb-4">
               Welcome back! Please signup to your account.
             </h1>
@@ -110,8 +109,7 @@ const MainScreen = () => {
           </div>
         </div>
       </div>
-    </>
   );
 };
 
-export default MainScreen;
+export default LoginScreen;
