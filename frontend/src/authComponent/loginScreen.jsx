@@ -1,6 +1,8 @@
 import React from "react";
 import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
+import axios from "axios";
+import { message } from "antd";
 // import Link from "react-router-dom";
 
 const LoginScreen = () => {
@@ -10,8 +12,24 @@ const LoginScreen = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    console.log("Signup Data:", data);
+  const onSubmit = async (data) => {
+    console.log("login Data:", data);
+    try {
+      console.log("login", data);
+  
+      const response = await axios.post('http://localhost:7000/login', data);
+  
+      console.log("Response from backend:", response.data);
+  
+      if (response.data.success) {  
+        Navigate("/dashboard");
+      } else {
+        message.error("Invaild credentials");
+      }
+    } catch (error) {
+      message.error("Error during login", error);
+    }
+
   };
 
   return (
@@ -96,7 +114,6 @@ const LoginScreen = () => {
                 <button
                   type="button"
                   className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300">
-                  {/* <Link to="/signup">SignUp</Link> */}
                   signup
                 </button>
               </div>
