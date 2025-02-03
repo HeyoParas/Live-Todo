@@ -1,16 +1,15 @@
 import { useState } from 'react'
 import React from 'react'
-import MainScreen from './authComponent/mainScreen'
-import Login from './authComponent/login'
+import LoginScreen from './authComponent/loginScreen'
+import SignupScreen from './authComponent/signupScreen'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
 
   return (
     <>
     <div className='h-full w -full m-[4%] shadow-lg'> 
-    <MainScreen/>
+    <LoginScreen/>
     </div>
     </>
   )
