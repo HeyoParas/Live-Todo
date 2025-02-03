@@ -19,7 +19,7 @@ const mainScreen = () => {
         <div className="  w-full">
           <div className=" m-3 p-5 ">
             <h3 className="m-3 font-bold text-xl mb-[10%]">Digital</h3>
-            <h1 className="m-3 font-bold text-4xl ">Todo Management </h1>
+            <h1 className="m-3 font-bold text-4xl ">Todo - Get It Done </h1>
           </div>
 
           <div className="w-[60%] rounded-lg m-10">
