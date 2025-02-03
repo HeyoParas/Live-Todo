@@ -21,7 +21,7 @@ const loginScreen = () => {
   
       console.log("Response from backend:", response.data);
   
-      if (response.data.success) {  
+      if (response.data.success) {
         Navigate("/dashboard");
       } else {
         message.error("Invaild credentials");
