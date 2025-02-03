@@ -11,7 +11,6 @@ const loginScreen = () => {
     handleSubmit,
     formState: { errors },
   } = useForm();
-
   const onSubmit = async (data) => {
     console.log("login Data:", data);
     try {
