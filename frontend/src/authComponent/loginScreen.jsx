@@ -31,14 +31,17 @@ const MainScreen = () => {
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               {/* Email Input */}
               <div className="mb-4">
-                <label className="block text-gray-600 font-medium mb-2" htmlFor="email">
+                <label
+                  className="block text-gray-600 font-medium mb-2"
+                  htmlFor="email">
                   Email Address
                 </label>
                 <input
                   type="email"
                   id="email"
-                  className={`w-[90%] border ${errors.email ? "border-red-500" : "border-gray-300"
-                    } rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                  className={`w-[90%] border ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
                   placeholder="hakeem@digital.com"
                   {...register("email", {
                     required: "Email is required",
@@ -48,19 +51,26 @@ const MainScreen = () => {
                     },
                   })}
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               {/* Password Input */}
               <div className="mb-4">
-                <label className="block text-gray-600 font-medium mb-2" htmlFor="password">
+                <label
+                  className="block text-gray-600 font-medium mb-2"
+                  htmlFor="password">
                   Password
                 </label>
                 <input
                   type="password"
                   id="password"
-                  className={`w-[90%] border ${errors.password ? "border-red-500" : "border-gray-300"
-                    } rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                  className={`w-[90%] border ${
+                    errors.password ? "border-red-500" : "border-gray-300"
+                  } rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
                   placeholder="Enter your password"
                   {...register("password", {
                     required: "Password is required",
@@ -70,21 +80,23 @@ const MainScreen = () => {
                     },
                   })}
                 />
-                {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
 
               {/* Buttons */}
               <div className="flex justify-between">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
+                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                   Login
                 </button>
                 <button
                   type="button"
-                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
+                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300">
                   {/* <Link to="/signup">SignUp</Link> */}
                   signup
                 </button>
@@ -99,15 +111,25 @@ const MainScreen = () => {
           <div className="flex gap-x-10 justify-center mt-10">
             {["Home", "About", "Services", "Contact"].map((link, index) => (
               <div key={index} className="mt-5">
-                <a href="#" className="text-2xl">{link}</a>
+                <a href="#" className="text-2xl">
+                  {link}
+                </a>
               </div>
             ))}
           </div>
 
           {/* Image */}
-          <div className="mt-10">
-            <img src={cycle} alt="cycle" />
+
+          <div className="mt-10 flex justify-center">
+            <img
+              src={cycle}
+              alt="cycle"
+              className="s-screen"
+            />
           </div>
+          {/* <div className="mt-10">
+            <img src={cycle} alt="cycle" />
+          </div> */}
         </div>
       </div>
     </>
