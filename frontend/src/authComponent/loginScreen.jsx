@@ -5,7 +5,7 @@ import axios from "axios";
 import { message } from "antd";
 // import Link from "react-router-dom";
 
-const logiScreen = () => {
+const loginScreen = () => {
   const {
     register,
     handleSubmit,
@@ -153,4 +153,4 @@ const logiScreen = () => {
   );
 };
 
-export default MainScreen;
+export default loginScreen;
