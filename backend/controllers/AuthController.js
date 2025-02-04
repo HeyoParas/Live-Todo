@@ -126,7 +126,7 @@ const signupUser = async (req, res) => {
   }
 };
 
-const getUserData = async(req,res) => {
+const getUserData = async (req,res) => {
   console.log("----inside getUserData function");
     const user = await getUser(req.cookies.mycookie);
     try {
