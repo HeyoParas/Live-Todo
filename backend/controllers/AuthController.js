@@ -81,6 +81,7 @@ const loginUser = async (req, res) => {
   } else {
     res.json({ message: "User not found", success: false });
   }
+  
 };
 
 const logoutUser = (req, res) => {
