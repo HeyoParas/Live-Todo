@@ -3,9 +3,9 @@ import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { message } from "antd";
-import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate for navigation
+import { useLocation, useNavigate } from "react-router-dom";    // ✅ Import useNavigate for navigation
 
-const LoginScreen = () => {
+const LoginScreen = ({setIsAuthenticated}) => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // ✅ Initialize useNavigate
 
@@ -24,7 +24,10 @@ const LoginScreen = () => {
 
       if (response.data.success) {
         message.success("Login successful! Redirecting...");
+        
         navigate("/dashboard"); // ✅ Navigate to dashboard
+        setIsAuthenticated(true)
+
       } else {
         message.error("Invalid credentials, please try again.");
       }

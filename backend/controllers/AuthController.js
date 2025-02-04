@@ -72,7 +72,7 @@ const loginUser = async (req, res) => {
       console.log(err);
     }
   } else {
-    res.status(400).json({ message: "User not found", success: false });
+    res.json({ message: "User not found", success: false });
   }
 };
 
@@ -103,6 +103,7 @@ const signupUser = async (req, res) => {
         password,
       });
       await newUser.save();
+      console.log("user",newUser);
       var obj = { email: newUser.email, id: newUser._id };
       const token = makeToken(obj);
       res.cookie("mycookie", token);
