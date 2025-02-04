@@ -23,9 +23,10 @@ const SignupScreen = () => {
       console.log("Response from backend:", response.data);
 
       if (response.data.success) {
-        sessionStorage.setItem("signupData", JSON.stringify(data));
+        // sessionStorage.setItem("signupData", JSON.stringify(data));
         message.success("Verification email sent! Redirecting...");
-        navigate("/verifyOtp"); // ✅ Corrected navigation
+        // navigate("/verifyOtp"); // ✅ Corrected navigation
+        navigate("/verifyOtp", { state: { signupData: data } });
       } else {
         message.error("Failed to send verification email.");
       }
