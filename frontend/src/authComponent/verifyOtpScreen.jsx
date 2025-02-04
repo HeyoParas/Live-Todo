@@ -1,11 +1,12 @@
 import { message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import SignupScreen from './signupScreen'
 import axios from 'axios'
 
 const OtpScreen = () => {
+  const Navigate = useNavigate();
   const location = useLocation();
   const signupData = location.state?.signupData;
 
@@ -39,11 +40,13 @@ const OtpScreen = () => {
       const response = await axios.post('http://localhost:7000/signup', combinedData);
 
       if (response.data.success) {
-        console.log(response.data.message);
+        // console.log(response.data.message);
+        message.success(response.data.message);
         Navigate("/login");
       } else {
-        console.log(response.data.message);
-        message.error("Invalid Otp");
+        // console.log(response.data.message);
+        message.error(response.data.message);
+        // message.error("Invalid Otp");
       }
   
     } catch (error) {
@@ -69,9 +72,11 @@ const OtpScreen = () => {
       const response = await axios.post('http://localhost:7000/verifyEmail', sessionData.email);
   
       if (response.data.success) {
-        message.success("OTP Resent to your Email");
+        message.success(response.data.message);
+        // message.success("OTP Resent to your Email");
       } else {
-        message.error("Failed to resend OTP. Please try again.");
+        message.error(response.data.message);
+        // message.error("Failed to resend OTP. Please try again.");
       }
   
     } catch (error) {
