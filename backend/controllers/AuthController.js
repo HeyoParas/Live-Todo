@@ -16,12 +16,14 @@ const verifyEmail = async (req, res) => {
     return res.json({ message: "User already exists" ,success:false});
   }
   const otp = await sendEmail(email);
+  console.log(otp);
   try {
     const otpStored = new otpModel({
       email: email,
       otp: otp,
     });
     await otpStored.save();
+    console.log(otpStored);
     res.json({ message: "Otp Sent", success: true });
   } catch (error) {
     console.log("Error saving Otp: ", error);
