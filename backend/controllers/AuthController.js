@@ -70,7 +70,7 @@ const loginUser = async (req, res) => {
       console.log(err);
     }
   } else {
-    res.status(400).json({ message: "User not found", success: false });
+    res.json({ message: "User not found", success: false });
   }
 };
 
