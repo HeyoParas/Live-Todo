@@ -38,13 +38,12 @@ const User = new mongoose.Schema({
       ref: "assignTasks",
     },
   ],
-  sections: [
+  sections:
     {
       type: [String],
       unique: true,
       default: ["todo", "inProgress", "completed"],
     },
-  ],
 });
 
 // Commonly used for validations , checking documents before saving
