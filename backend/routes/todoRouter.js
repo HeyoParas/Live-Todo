@@ -9,7 +9,7 @@ const reportController = require("../controllers/reportController");
 
 router.get('/getUserData',authController.getUserData)
 router.get('/auth/checkToken',authMiddleware.checkLoginStatus);
-router.post("/verifyEmail",authController.verifyEmail);
+router.post("/ve    rifyEmail",authController.verifyEmail);
 router.post("/signup",authController.signupUser);
 router.post('/login',authMiddleware.isLogin,authController.loginUser);
 router.post("/addTask",authMiddleware.verifyUser,taskController.addTask);
