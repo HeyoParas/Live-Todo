@@ -25,8 +25,8 @@ const LoginScreen = ({setIsAuthenticated}) => {
       if (response.data.success) {
         message.success("Login successful! Redirecting...");
         
+        setIsAuthenticated(true);
         navigate("/dashboard"); // ✅ Navigate to dashboard
-        setIsAuthenticated(true)
 
       } else {
         message.error("Invalid credentials, please try again.");
