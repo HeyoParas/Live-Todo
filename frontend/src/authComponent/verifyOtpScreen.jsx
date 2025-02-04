@@ -12,8 +12,6 @@ const OtpScreen = () => {
   const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  console.log("Received Signup Data:", signupData);
-
   useEffect(() => {
     let interval;
     if (timer > 0) {
@@ -25,7 +23,7 @@ const OtpScreen = () => {
   }, [timer]);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
 
     try {
       console.log(data);
@@ -41,8 +39,10 @@ const OtpScreen = () => {
       const response = await axios.post('http://localhost:7000/signup', combinedData);
 
       if (response.data.success) {
+        console.log(response.data.message);
         Navigate("/login");
       } else {
+        console.log(response.data.message);
         message.error("Invalid Otp");
       }
   
