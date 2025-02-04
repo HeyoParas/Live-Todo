@@ -130,7 +130,9 @@ const addNewSection =async(req,res)=>{
     res.status(500).json({ error: "Failed to add section" });
   }
 }
-
+const getDataforAssignTasks =async (req,res)=>{
+  
+}
 module.exports={
     addTask,addNewSection,updateTask,disableTask
     // getTasks
