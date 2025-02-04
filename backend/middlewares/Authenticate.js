@@ -7,7 +7,8 @@ const verifyUser =(req,res,next)=>{
         res.send({message:"Please Login first!!",loginStatus:false});
 }
 const checkLoginStatus = async (req,res)=>{
-    const userlogin = getUser(req.cookies.mycookie);
+    const userlogin =  await getUser(req.cookies.mycookie);
+    console.log(userlogin) ;
     if(userlogin){
         res.json({success:true})
     }
