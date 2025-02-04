@@ -1,9 +1,9 @@
-import { message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
 import SignupScreen from './signupScreen'
 import axios from 'axios'
+import { message } from 'antd';
 
 const OtpScreen = () => {
   const Navigate = useNavigate();
@@ -12,8 +12,6 @@ const OtpScreen = () => {
 
   const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors } } = useForm();
-
-  // console.log("Received Signup Data:", signupData);
 
   useEffect(() => {
     let interval;
@@ -26,27 +24,19 @@ const OtpScreen = () => {
   }, [timer]);
 
   const onSubmit = async (data) => {
-    // console.log(data);
-
     try {
-      const sessionData = signupData;
       const otpNumber = parseInt(Object.values(data).join(""), 10);
-      const combinedData = { ...sessionData, otpNumber };
-
-      console.log("Combined Data:", combinedData);
+      const combinedData = { ...signupData, otpNumber };
+      // console.log("Combined Data:", combinedData);
 
       const response = await axios.post('http://localhost:7000/signup', combinedData);
       console.log("Response:", response.data)
       if (response.data.success) {
-        // console.log(response.data.message);
         message.success(response.data.message);
         Navigate("/login");
       } else {
-        // console.log(response.data.message);
         message.error(response.data.message);
-        // message.error("Invalid Otp");
       }
-
     } catch (error) {
       console.error("Error during the request:", error);
       message.error("An error occurred. Please try again later.");
@@ -57,22 +47,18 @@ const OtpScreen = () => {
     try {
       setTimer(30);
 
-      const sessionData = signupData;
-
-      if (!sessionData) {
+      if (!signupData) {
         message.error("Signup First");
         return <SignupScreen />;
       }
 
-      console.log("Resending email:", sessionData.email);
-      const response = await axios.post('http://localhost:7000/verifyEmail', sessionData);
+      console.log("Resending email:", signupData.email);
+      const response = await axios.post('http://localhost:7000/verifyEmail', signupData);
 
       if (response.data.success) {
         message.success(response.data.message);
-        // message.success("OTP Resent to your Email");
       } else {
         message.error(response.data.message);
-        // message.error("Failed to resend OTP. Please try again.");
       }
 
     } catch (error) {

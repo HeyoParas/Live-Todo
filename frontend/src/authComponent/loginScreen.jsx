@@ -3,34 +3,32 @@ import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { message } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";    // ✅ Import useNavigate for navigation
+import { useLocation, useNavigate } from "react-router-dom";
 
 const LoginScreen = ({setIsAuthenticated}) => {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // ✅ Initialize useNavigate
+  const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onSubmit = async (data) => {
-    console.log("Login Data:", data);
-    try {
-      console.log("Logging in with:", data);
-      const response = await axios.post("http://localhost:7000/login", data,{withCredentials:true});
 
+  const onSubmit = async (data) => {
+    try {
+      const response = await axios.post("http://localhost:7000/login", data,{withCredentials:true});
       console.log("Response from backend:", response.data);
 
       if (response.data.success) {
         message.success("Login successful! Redirecting...");
-        
+        message.success(response.data.message);
         setIsAuthenticated(true);
-        navigate("/dashboard"); // ✅ Navigate to dashboard
-
+        navigate("/dashboard"); 
       } else {
-        message.error("Invalid credentials, please try again.");
+        message.error(response.data.message);
       }
+      
     } catch (error) {
       console.error("Login error:", error);
       message.error("An error occurred. Please try again.");
