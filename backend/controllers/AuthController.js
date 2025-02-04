@@ -6,6 +6,7 @@ const assignedTasks = require("../models/assignedTaskSchema");
 const { sendEmail } = require("./MailAuth");
 const validator = require("validator");
 const mongoose = require("mongoose");
+
 const verifyEmail = async (req, res) => {
   console.log("/verify",req.body);
   const { email } = req.body;
@@ -56,7 +57,12 @@ const loginUser = async (req, res) => {
             id: user._id,
           };
           const token = makeToken(obj); //create token
-          res.cookie("mycookie", token); //store in cookie
+          console.log("token",token);
+          res.cookie("mycookie", token, {
+            httpOnly: true,  // Secure from JavaScript access
+            secure: true,   // Set to true in production (HTTPS required)
+            sameSite: "None", // Required for cross-origin cookies
+          }); //store in cookie
           res.status(200).json({
             message: "Login successful",
             userDetails: user,
@@ -120,9 +126,25 @@ const signupUser = async (req, res) => {
   }
 };
 
+const getUserData = async(req,res) => {
+  console.log("----inside getUserData function");
+    const user = getUser(req.cookies.mycookie);
+    try {
+      const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
+      console.log("Tasks from DB ", tasks);
+      res.status(200).json({userdata});
+    } catch (err) {
+      console.error("Error fetching tasks:", err);
+      res
+        .status(500)
+        .json({ error: "Internal server error. Please try again later." });
+    }
+}
+
 module.exports = {
   loginUser,
   logoutUser,
   signupUser,
   verifyEmail,
+  getUserData
 };
