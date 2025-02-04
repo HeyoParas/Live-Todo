@@ -29,7 +29,7 @@ function App() {
   }, []);
 
   if (isAuthenticated === null) {
-    return <h1>Loading...</h1>; // Ya koi Loader component laga sakte ho
+    return <></>; // Ya koi Loader component laga sakte ho
   }
 
   const router = createBrowserRouter([

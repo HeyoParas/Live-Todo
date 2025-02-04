@@ -130,8 +130,18 @@ const addNewSection =async(req,res)=>{
     res.status(500).json({ error: "Failed to add section" });
   }
 }
+const getDataforAssignTasks =async (req,res)=>{
+  const user = await getUser(req.cookies.mycookie);
+  try{
+    const otherUsers= await userModel.find({ _id: { $ne: user.id } });
+    const tasksCanBeAssigned = await taskModel.find({userId:user.id});
+    res.json({users:otherUsers,tasks:tasksCanBeAssigned})
+  }catch(err){
+    console.log("Error fetching data for assign Tasks: ",err);
+  }
+}
 
 module.exports={
-    addTask,addNewSection,updateTask,disableTask
+    addTask,addNewSection,updateTask,disableTask,getDataforAssignTasks
     // getTasks
 }
