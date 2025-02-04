@@ -17,6 +17,7 @@ router.post("/updateTask",authMiddleware.verifyUser,taskController.updateTask);
 router.post("/deleteTask",authMiddleware.verifyUser,taskController.disableTask)
 router.post("/addSection",authMiddleware.verifyUser,taskController.addNewSection);
 
+
 router.get("/report",authMiddleware.verifyUser,reportController.generateReport);
 
 module.exports =router
