@@ -4,10 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
 import SignupScreen from './signupScreen'
 import axios from 'axios'
-import { useLocation } from "react-router-dom";
-import SignupScreen from './signupScreen';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const OtpScreen = () => {
   const Navigate = useNavigate();
@@ -69,7 +65,7 @@ const OtpScreen = () => {
       }
 
       console.log("Resending email:", sessionData.email);
-      const response = await axios.post('http://localhost:7000/verifyEmail', sessionData.email);
+      const response = await axios.post('http://localhost:7000/verifyEmail', sessionData);
 
       if (response.data.success) {
         message.success(response.data.message);

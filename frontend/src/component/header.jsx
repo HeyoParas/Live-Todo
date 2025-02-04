@@ -13,7 +13,7 @@ const Header = ({mode}) => {
         color: mode? "#000000" : "#ffffff", 
         
       }}>
-        <div className='ml-5 text-xl lg:text-2xl'>Welcome Back, unknown</div>
+        <div className='ml-5 text-xl lg:text-2xl'>Welcome Back, Unknown</div>
         <div className='flex items-center mt-2 lg:mt-0 mr-8 p-4 space-x-4'
         style={{
           filter: mode ? "none" : "invert(1) brightness(0.8)",
