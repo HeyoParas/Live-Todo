@@ -1,6 +1,6 @@
 const {getUser} = require("../controllers/token");
-const verifyUser =(req,res,next)=>{
-    const userlogin = getUser(req.cookies.mycookie);
+const verifyUser =async (req,res,next)=>{
+    const userlogin = await getUser(req.cookies.mycookie);
     if(userlogin)
         next();
     else
@@ -10,6 +10,7 @@ const checkLoginStatus = async (req,res)=>{
     const userlogin =  await getUser(req.cookies.mycookie);
     console.log(userlogin) ;
     if(userlogin){
+        console.log("true");
         res.json({success:true})
     }
     else{

@@ -1,5 +1,5 @@
 const { comparePassword, bcryptPassword } = require("./bcrypt");
-const { makeToken } = require("./token");
+const { makeToken,getUser } = require("./token");
 const userModel = require("../models/userSchema");
 const otpModel = require("../models/otpSchema");
 const assignedTasks = require("../models/assignedTaskSchema");
@@ -128,7 +128,7 @@ const signupUser = async (req, res) => {
 
 const getUserData = async(req,res) => {
   console.log("----inside getUserData function");
-    const user = getUser(req.cookies.mycookie);
+    const user = await getUser(req.cookies.mycookie);
     try {
       const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
       console.log("Tasks from DB ", tasks);
