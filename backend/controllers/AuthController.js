@@ -6,6 +6,7 @@ const assignedTasks = require("../models/assignedTaskSchema");
 const { sendEmail } = require("./MailAuth");
 const validator = require("validator");
 const mongoose = require("mongoose");
+const taskModel = require("../models/taskSchema");
 
 const verifyEmail = async (req, res) => {
   console.log("/verify",req.body);
@@ -132,9 +133,9 @@ const getUserData = async (req,res) => {
     console.log(user);
     try {
       const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
+      const AllTasks = await taskModel.find();
       // console.log("Tasks from DB ", tasks);
-      console.log(userdata)
-      res.status(200).json({userdata});
+      res.status(200).json({userdata,AllTasks});
     } catch (err) {
       console.error("Error fetching tasks:", err);
       res
