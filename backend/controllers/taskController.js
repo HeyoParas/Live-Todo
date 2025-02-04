@@ -113,6 +113,7 @@ const disableTask = async (req, res) => {
 
 // add a new section to existing sections 
 const addNewSection =async()=>{
+  console.log("in add section")
   const user = getUser(req.cookies.mycookie);
   const {section}=req.body;
   try{
