@@ -131,7 +131,7 @@ const getUserData = async(req,res) => {
     const user = await getUser(req.cookies.mycookie);
     try {
       const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
-      console.log("Tasks from DB ", tasks);
+      // console.log("Tasks from DB ", tasks);
       res.status(200).json({userdata});
     } catch (err) {
       console.error("Error fetching tasks:", err);
