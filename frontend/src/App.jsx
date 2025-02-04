@@ -17,7 +17,7 @@ function App() {
         const response = await axios.get("http://localhost:7000/auth/checkToken", {
           withCredentials: true, // ✅ Correct for Axios
         });
-        console.log("Authentication response:", response.data);
+        console.log("Authentication response:", response.data.success);
         setIsAuthenticated(response.data.success); // ✅ Update state with auth status
       } catch (error) {
         console.error("Error checking authentication:", error);
@@ -28,6 +28,10 @@ function App() {
     verifyAuth();
   }, []);
 
+  if (isAuthenticated === null) {
+    return <h1>Loading...</h1>; // Ya koi Loader component laga sakte ho
+  }
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -35,7 +39,7 @@ function App() {
     },
     {
       path : "/verifyOtp",
-      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen setIsAuthenticated={setIsAuthenticated} />,
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <VerifyOtpScreen />,
     },
     {
       path: "/login",

@@ -128,7 +128,7 @@ const signupUser = async (req, res) => {
 
 const getUserData = async(req,res) => {
   console.log("----inside getUserData function");
-    const user = getUser(req.cookies.mycookie);
+    const user = await getUser(req.cookies.mycookie);
     try {
       const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
       console.log("Tasks from DB ", tasks);
