@@ -24,13 +24,14 @@ const Dashboard = () => {
   // const loginData = location.state?.loginData;
   // console.log("loginData = ",loginData);
   useEffect(() => {
-    console.log("isnide dashboard")
+    console.log("inside dashboard")
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:7000/getUserData", {
-          withCredentials: true, // ✅ Correct for Axios
+          withCredentials: true,
         }); 
-        setData(response.data);     // ✅ Store API response
+        console.log("response aaya backend se:",response)
+        setData(response.data);   
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to load tasks! Please try again.");

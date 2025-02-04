@@ -5,7 +5,6 @@ import more from '../assets/more.svg'
 import { useState } from 'react'
 import TemplateDialogue from '../antd/templateDialogue'
 const Navbar = ({mode}) => {
-
   
   return (
     <div className='flex justify-between items-center bg-white text-black text-lg'
