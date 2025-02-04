@@ -38,7 +38,7 @@ const User = new mongoose.Schema({
       ref: "assignTasks",
     },
   ],
-  sections: 
+  sections:
     {
       type: [String],
       unique: true,

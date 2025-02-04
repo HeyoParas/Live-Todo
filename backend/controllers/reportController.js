@@ -1,15 +1,20 @@
 const taskModel = require("../models/taskSchema");
-const userModel = require("../models/userSchema");
-
-//For extracting current date.
+const assignModel = require("../models/assignSchema");
+const { getUser } = require("./token");
 const moment = require("moment");
 
 const generateReport = async (req, res) => {
-  console.log("Report being generated, please wait...");
-
   try {
-    const currentDate = moment();
-    const users = await userModel.find().populate("mytasks");
+    let extractedEmail = (await getUser(req.cookies.mycookie)).email;
+    console.log(`Report for ${extractedEmail} being generated, please wait...`);
+
+    // Find the user
+    const user = await userModel.findOne({ email: extractedEmail });
+    if (!user) return res.status(404).json({ error: "User not found" });
+
+    // Fetch all tasks associated with the user
+    const tasks = await taskModel.find({ userId: user._id });
+    const assignedTasks = await assignModel.find({ assignerId: user._id }).populate("tasks");
 
     let report = {
       completed: 0,
@@ -18,44 +23,55 @@ const generateReport = async (req, res) => {
       dueTasks: 0,
       categoryCount: {},
       mostCompletedCategory: "",
+      assignedTotal: 0,
+      assignedCompleted: 0,
     };
 
-    users.forEach((user) => {
-      user.mytasks.forEach((task) => {
-        const progress = task.progress.currProgress;
+    // Count tasks based on status and category
+    let categoryCompletion = {};
+    tasks.forEach((task) => {
+      // Track each section separately
+      if (task.section in report.categoryCount) {
+        report.categoryCount[task.section]++;
+      } else {
+        report.categoryCount[task.section] = 1;
+      }
 
-        if (progress === 10) {
-          report.completed += 1;
-        } else if (progress === 0) {
-          report.notStarted += 1;
-        } else if (progress >= 1 && progress <= 9) {
-          report.inProgress += 1;
-        }
+      // Track progress-based counts
+      if (task.section === "completed") report.completed++;
+      if (task.section === "todo") report.notStarted++;
+      if (task.section === "inProgress") report.inProgress++;
 
-        if (moment(task.dueDate).isBefore(currentDate)) {
-          report.dueTasks += 1;
-        }
+      // Check for overdue tasks only if progress is 10 (completed)
+      if (task.progress.currProgress === 10 && new Date(task.dueDate) < new Date(task.progress.updatedAt)) {
+        report.dueTasks++;
+      }
 
-        const category = task.section;
-        if (!report.categoryCount[category]) {
-          report.categoryCount[category] = 0;
-        }
-        report.categoryCount[category] += 1;
+      // Track completion per category
+      if (!(task.section in categoryCompletion)) {
+        categoryCompletion[task.section] = 0;
+      }
+      if (task.section === "completed") {
+        categoryCompletion[task.section]++;
+      }
+    });
 
-        if (
-          progress === 10 &&
-          (!report.mostCompletedCategory ||
-            report.categoryCount[category] > report.categoryCount[report.mostCompletedCategory])
-        ) {
-          report.mostCompletedCategory = category;
-        }
+    // Count assigned tasks
+    assignedTasks.forEach((assignedTask) => {
+      report.assignedTotal += assignedTask.tasks.length;
+      assignedTask.tasks.forEach((task) => {
+        if (task.section === "completed") report.assignedCompleted++;
       });
     });
 
-    return res.status(200).json(report);
+    // Determine most completed category
+    report.mostCompletedCategory = Object.keys(categoryCompletion).reduce((a, b) =>
+      categoryCompletion[a] > categoryCompletion[b] ? a : b, "");
+
+    res.json(report);
   } catch (error) {
-    console.log("Error generating report:", error);
-    return res.status(500).json({ message: "Error generating the report" });
+    console.error("Error generating report:", error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
 
