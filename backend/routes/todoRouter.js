@@ -7,7 +7,7 @@ const taskController = require("../controllers/taskController");
 const authMiddleware = require("../middlewares/Authenticate");
 const reportController = require("../controllers/reportController");
 
-
+router.get('/getUserData',authController.getUserData)
 router.get('/auth/checkToken',authMiddleware.checkLoginStatus);
 router.post("/verifyEmail",authController.verifyEmail);
 router.post("/signup",authController.signupUser);
