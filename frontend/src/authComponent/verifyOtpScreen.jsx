@@ -1,12 +1,18 @@
 import { message } from 'antd';
 import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useLocation } from "react-router-dom";
 import SignupScreen from './signupScreen'
 import axios from 'axios'
 
 const OtpScreen = () => {
+  const location = useLocation();
+  const signupData = location.state?.signupData;
+
   const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors } } = useForm();
+
+  console.log("Received Signup Data:", signupData);
 
   useEffect(() => {
     let interval;
@@ -20,12 +26,12 @@ const OtpScreen = () => {
 
   const onSubmit = async (data) => {
     console.log(data);
-  
 
     try {
       console.log(data);
   
-      const sessionData = JSON.parse(sessionStorage.getItem('signupData'));
+      // const sessionData = JSON.parse(sessionStorage.getItem('signupData'));
+      const sessionData = signupData;
   
       const otpNumber = parseInt(Object.values(data).join(""), 10);
       const combinedData = { ...sessionData, otpNumber };
@@ -50,7 +56,8 @@ const OtpScreen = () => {
     try {
       setTimer(30); 
   
-      const sessionData = JSON.parse(sessionStorage.getItem('signupData'));
+      // const sessionData = JSON.parse(sessionStorage.getItem('signupData'));
+      const sessionData = signupData;
   
       if (!sessionData) {
         message.error("Signup First");
