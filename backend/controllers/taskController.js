@@ -28,7 +28,6 @@ const addTask = async (req, res) => {
     section,
     currentProgress,
     priority,
-    comments,
   } = req.body;
   try {
     const newTask = new taskModel({
@@ -37,7 +36,6 @@ const addTask = async (req, res) => {
       section,
       progress:{currProgress:currentProgress},
       priority,
-      comments,
       userId
     });
     const savedTask = await newTask.save();
@@ -70,7 +68,6 @@ const updateTask = async (req, res) => {
     section,
     currentProgress,
     priority,
-    comments,
   } = req.body;
   try {
     const newTask = await taskModel.findByIdAndUpdate(
@@ -81,7 +78,6 @@ const updateTask = async (req, res) => {
         section,
         currentProgress,
         priority,
-        comments,
       },
       { new: true }
     );
