@@ -36,7 +36,7 @@ const OtpScreen = () => {
       console.log("Combined Data:", combinedData);
 
       const response = await axios.post('http://localhost:7000/signup', combinedData);
-
+      console.log("Response:", response.data)
       if (response.data.success) {
         // console.log(response.data.message);
         message.success(response.data.message);
@@ -65,7 +65,7 @@ const OtpScreen = () => {
       }
 
       console.log("Resending email:", sessionData.email);
-      const response = await axios.post('http://localhost:7000/verifyEmail', sessionData.email);
+      const response = await axios.post('http://localhost:7000/verifyEmail', sessionData);
 
       if (response.data.success) {
         message.success(response.data.message);

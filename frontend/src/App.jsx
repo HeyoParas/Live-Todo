@@ -6,40 +6,48 @@ import Dashboard from './Dashboard/dashboard';
 import VerifyOtpScreen from './authComponent/verifyOtpScreen'
 import verifyToken from './utils/verifyToken';
 import './App.css'
+import axios from 'axios'
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(null); 
 
   useEffect(() => {
-    // const verifyToken = async () => {
-    //   const loggedIn = await checkIfLogin();
-    //   console.log(loggedIn);
-    //   setIsAuthenticated(loggedIn);
-    // };
-    
-    // verifyLogin(); // Check authentication status on load
+    const verifyAuth = async () => {
+      try {
+        const response = await axios.get("http://localhost:7000/auth/checkToken", {
+          withCredentials: true, // ✅ Correct for Axios
+        });
+        console.log("Authentication response:", response.data);
+        setIsAuthenticated(response.data.success); // ✅ Update state with auth status
+      } catch (error) {
+        console.error("Error checking authentication:", error);
+        setIsAuthenticated(false);
+      }
+    };
+  
+    verifyAuth();
   }, []);
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <LoginScreen/>, 
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen setIsAuthenticated={setIsAuthenticated}/>,
     },
     {
       path : "/verifyOtp",
-      element: <VerifyOtpScreen/>
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen setIsAuthenticated={setIsAuthenticated} />,
     },
     {
       path: "/login",
-      element:<LoginScreen/>,
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen setIsAuthenticated={setIsAuthenticated}/>,
     },
     {
       path: "/signup",
-      element:<SignupScreen/>, 
+      element:isAuthenticated ? <Navigate to="/dashboard" /> : <SignupScreen />,
     },
     {
       path: "/dashboard",
-      element: <Dashboard/>,  
+      element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
     },
     {
       path: "*",
