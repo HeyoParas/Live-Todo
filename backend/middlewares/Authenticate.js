@@ -15,6 +15,12 @@ const checkLoginStatus = async (req,res)=>{
         res.json({success:false})
     }
 }
+const isLogin=(req,res,next)=>{
+    const userlogin = getUser(req.cookies.mycookie);
+    if(!userlogin){
+        next();
+    }
+}
 module.exports={
-    verifyUser,checkLoginStatus
+    verifyUser,checkLoginStatus,isLogin
 }
