@@ -13,7 +13,7 @@ const OtpScreen = () => {
   const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors } } = useForm();
 
-  console.log("Received Signup Data:", signupData);
+  // console.log("Received Signup Data:", signupData);
 
   useEffect(() => {
     let interval;

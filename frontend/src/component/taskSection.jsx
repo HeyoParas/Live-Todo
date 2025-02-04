@@ -6,27 +6,18 @@ import TodoContent from './TodoContent';
 import TodoDialogue from "../antd/todoDialogue";
 import '../index.css';
 
-const taskSection = ({ mode, data ,setData , sectionName}) => {
-  //console.log("Data received:", data);
+const taskSection = ({ mode, data ,setData , sectionName }) => {
+  // console.log(sectionName);
 
   const todos = data?.todo || [];
-  const handleDragEnd = (result) => {
-    if (!result.destination) return;
-    
-    const newItems = [...data];
-    const [movedItem] = newItems.splice(result.source.index, 1);
-    newItems.splice(result.destination.index, 0, movedItem);
-    
-    setData(newItems);
-  };
-
+  
   //console.log("Extracted todos:", todos);
 
   return (
     <div className='flex flex-col h-full border-2 border-dashed border-black-300 rounded-lg'>
       <div className='flex flex-col sm:flex-row justify-between items-center text-sm top-0 p-3 rounded-lg m-2 [@media(max-width:1300px)]:flex-col'>
         <div className='text-slate-500 font-bold text-[1.2rem] '>
-          {sectionName?sectionName:"TODO"} ({todos.length})
+          {sectionName} ({todos.length})
         </div>
         <div className='flex items-center mt-2 sm:mt-0'>
           <img 
@@ -37,7 +28,7 @@ const taskSection = ({ mode, data ,setData , sectionName}) => {
               filter: mode ? "none" : "invert(1) brightness(0.8)",
             }} 
           />
-          <TodoDialogue mode={mode} type={"todo"} />
+          <TodoDialogue mode={mode} type={sectionName}  />
         </div>
       </div>
     </div>
