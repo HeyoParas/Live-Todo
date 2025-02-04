@@ -112,7 +112,7 @@ const disableTask = async (req, res) => {
 };
 
 // add a new section to existing sections 
-const addNewSection =async()=>{
+const addNewSection =async(req,res)=>{
   const user = getUser(req.cookies.mycookie);
   const {section}=req.body;
   try{
@@ -129,7 +129,6 @@ const addNewSection =async()=>{
     console.log("Error adding new section: ",err);
     res.status(500).json({ error: "Failed to add section" });
   }
-
 }
 
 module.exports={
