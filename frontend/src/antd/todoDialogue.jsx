@@ -2,10 +2,8 @@ import React, { useState, useContext } from "react";
 import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-// import { AuthContext } from "../AuthContext/authcontext";
 
 const TodoDialogue = ({ mode, type }) => {
-  const { setRefetch } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -33,7 +31,6 @@ const TodoDialogue = ({ mode, type }) => {
 
       setIsModalOpen(false);
       reset();
-      setRefetch(true);
     } catch (error) {
       console.error("Error adding task:", error);
       message.error("Failed to add task. Please try again.");
@@ -67,144 +64,96 @@ const TodoDialogue = ({ mode, type }) => {
         className={mode ? "light-modal" : "dark-modal"}
       >
         <div className="p-4">
-          <form
-            className="flex flex-col space-y-4"
-            onSubmit={handleSubmit(handleOk)}
-          >
-            {/* Username */}
-            <div className="flex flex-col">
-              <label className="text-sm font-medium">Username</label>
-              <input
-                {...register("username", {
-                  required: "Username is required.",
-                  validate: (value) =>
-                    value.trim() !== "" || "Username cannot be blank.",
-                })}
-                type="text"
-                placeholder="Enter username"
-                className={`border rounded p-2 ${
-                  errors.username ? "border-red-500" : ""
-                }`}
-              />
-              {errors.username && (
-                <span className="text-red-500 text-xs">
-                  {errors.username.message}
-                </span>
-              )}
-            </div>
-
+          <form className="flex flex-col space-y-4" onSubmit={handleSubmit(handleOk)}>
             {/* Task Title */}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Task Title</label>
               <input
-                {...register("taskTitle", {
-                  required: "Task Title is required.",
-                  validate: (value) =>
-                    value.trim() !== "" || "Task Title cannot be blank.",
-                })}
+                {...register("taskTitle", { required: "Task Title is required." })}
                 type="text"
                 placeholder="Enter task title"
-                className={`border rounded p-2 ${
-                  errors.taskTitle ? "border-red-500" : ""
-                }`}
+                className={`border rounded p-2 ${errors.taskTitle ? "border-red-500" : ""}`}
               />
-              {errors.taskTitle && (
-                <span className="text-red-500 text-xs">
-                  {errors.taskTitle.message}
-                </span>
-              )}
+              {errors.taskTitle && <span className="text-red-500 text-xs">{errors.taskTitle.message}</span>}
             </div>
 
-            {/* Associated */}
+            {/* Task Description */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium">Associate With</label>
+              <label className="text-sm font-medium">Task Description</label>
               <textarea
-                {...register("associated", {
-                  required: "Task Association is required.",
-                  validate: (value) =>
-                    value.trim() !== "" || "Task Association cannot be blank.",
-                })}
-                placeholder="Enter task association"
-                className={`border rounded p-2 ${
-                  errors.associated ? "border-red-500" : ""
-                }`}
+                {...register("taskDescription", { required: "Task Description is required." })}
+                placeholder="Enter task description"
+                className={`border rounded p-2 ${errors.taskDescription ? "border-red-500" : ""}`}
               />
-              {errors.associated && (
-                <span className="text-red-500 text-xs">
-                  {errors.associated.message}
-                </span>
-              )}
+              {errors.taskDescription && <span className="text-red-500 text-xs">{errors.taskDescription.message}</span>}
             </div>
 
-            {/* Progress */}
+            {/* Section */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium">Progress (%)</label>
+              <label className="text-sm font-medium">Section</label>
+              <input
+                {...register("section", { required: "Section is required." })}
+                type="text"
+                value={type}
+                disabled
+                placeholder="Enter section"
+                className={`border rounded p-2 ${errors.section ? "border-red-500" : ""}`}
+              />
+              {errors.section && <span className="text-red-500 text-xs">{errors.section.message}</span>}
+            </div>
+
+            {/* Progress (1-10) */}
+            <div className="flex flex-col">
+              <label className="text-sm font-medium">Progress (1-10)</label>
               <input
                 {...register("progress", {
                   required: "Progress is required.",
                   valueAsNumber: true,
-                  validate: (value) =>
-                    (value >= 0 && value <= 100) ||
-                    "Progress must be between 0% and 100%.",
+                  validate: (value) => (value >= 1 && value <= 10) || "Progress must be between 1 and 10.",
                 })}
                 type="number"
-                placeholder="Enter progress percentage"
-                className={`border rounded p-2 ${
-                  errors.progress ? "border-red-500" : ""
-                }`}
-                defaultValue={0} 
+                placeholder="Enter progress"
+                className={`border rounded p-2 ${errors.progress ? "border-red-500" : ""}`}
               />
-              {errors.progress && (
-                <span className="text-red-500 text-xs">
-                  {errors.progress.message}
-                </span>
-              )}
+              {errors.progress && <span className="text-red-500 text-xs">{errors.progress.message}</span>}
             </div>
-              {/* Status */}
-              <div className="flex flex-col">
-                <label className="text-sm font-medium">Status</label>
-                <input
-                  {...register("status", {
-                    required: "Status is required.",
-                  })}
-                  disabled  
-                  value={type} 
-                  className={`border rounded p-2 ${errors.status ? "border-red-500" : ""}`}
-                />
-                {errors.status && (
-                  <span className="text-red-500 text-xs">
-                    {errors.status.message}
-                  </span>
-                )}
-              </div>
-
 
             {/* Assign Date */}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Assign Date</label>
               <input
-                {...register("assignDate", {
-                  required: "Correct Assign Date is required.",
-                  validate: (value) => {
-                    const selectedDate = new Date(value);
-                    const minDate = new Date("2000-01-01");
-                    const maxDate = new Date();
-                    return (
-                      (selectedDate >= minDate && selectedDate <= maxDate) ||
-                      "Year must be between 2000 and the current year."
-                    );
-                  },
-                })}
+                {...register("assignDate", { required: "Assign Date is required." })}
                 type="date"
-                className={`border rounded p-2 ${
-                  errors.assignDate ? "border-red-500" : ""
-                }`}
+                className={`border rounded p-2 ${errors.assignDate ? "border-red-500" : ""}`}
               />
-              {errors.assignDate && (
-                <span className="text-red-500 text-xs">
-                  {errors.assignDate.message}
-                </span>
-              )}
+              {errors.assignDate && <span className="text-red-500 text-xs">{errors.assignDate.message}</span>}
+            </div>
+
+            {/* Due Date */}
+            <div className="flex flex-col">
+              <label className="text-sm font-medium">Due Date</label>
+              <input
+                {...register("dueDate", { required: "Due Date is required." })}
+                type="date"
+                className={`border rounded p-2 ${errors.dueDate ? "border-red-500" : ""}`}
+              />
+              {errors.dueDate && <span className="text-red-500 text-xs">{errors.dueDate.message}</span>}
+            </div>
+
+            {/* Priority (1-10) */}
+            <div className="flex flex-col">
+              <label className="text-sm font-medium">Priority (1-10)</label>
+              <input
+                {...register("priority", {
+                  required: "Priority is required.",
+                  valueAsNumber: true,
+                  validate: (value) => (value >= 1 && value <= 10) || "Priority must be between 1 and 10.",
+                })}
+                type="number"
+                placeholder="Enter priority"
+                className={`border rounded p-2 ${errors.priority ? "border-red-500" : ""}`}
+              />
+              {errors.priority && <span className="text-red-500 text-xs">{errors.priority.message}</span>}
             </div>
           </form>
         </div>

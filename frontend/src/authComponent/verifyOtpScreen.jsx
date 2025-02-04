@@ -33,7 +33,7 @@ const OtpScreen = () => {
       console.log("Combined Data:", combinedData);
   
       const response = await axios.post('http://localhost:7000/signup', combinedData);
-
+      console.log("Response:", response.data)
       if (response.data.success) {
         Navigate("/login");
       } else {
