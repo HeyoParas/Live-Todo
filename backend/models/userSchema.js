@@ -40,7 +40,7 @@ const User = new mongoose.Schema({
   ],
   sections: [
     {
-      type: String,
+      type: [String],
       unique: true,
       default: ["todo", "inProgress", "completed"],
     },
