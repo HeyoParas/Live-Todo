@@ -18,7 +18,7 @@ const LoginScreen = () => {
     console.log("Login Data:", data);
     try {
       console.log("Logging in with:", data);
-      const response = await axios.post("http://localhost:7000/login", data);
+      const response = await axios.post("http://localhost:7000/login", data,{withCredentials:true});
 
       console.log("Response from backend:", response.data);
 

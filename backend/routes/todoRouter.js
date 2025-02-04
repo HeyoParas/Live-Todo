@@ -11,7 +11,7 @@ router.get('/getUserData',authController.getUserData)
 router.get('/auth/checkToken',authMiddleware.checkLoginStatus);
 router.post("/verifyEmail",authController.verifyEmail);
 router.post("/signup",authController.signupUser);
-router.post('/login',authController.loginUser);
+router.post('/login',authMiddleware.isLogin,authController.loginUser);
 router.post("/addTask",authMiddleware.verifyUser,taskController.addTask);
 router.post("/updateTask",authMiddleware.verifyUser,taskController.updateTask);
 router.post("/deleteTask",authMiddleware.verifyUser,taskController.disableTask)
