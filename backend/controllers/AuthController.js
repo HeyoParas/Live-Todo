@@ -54,7 +54,12 @@ const loginUser = async (req, res) => {
             id: user._id,
           };
           const token = makeToken(obj); //create token
-          res.cookie("mycookie", token); //store in cookie
+          console.log("token",token);
+          res.cookie("mycookie", token, {
+            httpOnly: true,  // Secure from JavaScript access
+            secure: true,   // Set to true in production (HTTPS required)
+            sameSite: "None", // Required for cross-origin cookies
+          }); //store in cookie
           res.status(200).json({
             message: "Login successful",
             userDetails: user,

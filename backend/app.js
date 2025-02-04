@@ -6,11 +6,11 @@ const todoRouter = require("./routes/todoRouter");
 const cors = require("cors");
 
 //..................................Middleware's setup
-app.use((req, res, next) => {
-    console.log("----request.method :", req.method);
-    console.log("----request.url :"   , req.url); 
-    next();
-  });
+// app.use((req, res, next) => {
+//     console.log("----request.method :", req.method);
+//     console.log("----request.url :"   , req.url); 
+//     next();
+//   });
 
 app.use(cors({
     origin:"http://localhost:5173",
