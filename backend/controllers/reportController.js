@@ -1,4 +1,5 @@
 const taskModel = require("../models/taskSchema");
+const assignModel = require("../models/assignSchema");
 const { getUser } = require("./token");
 const moment = require("moment");
 
@@ -13,6 +14,7 @@ const generateReport = async (req, res) => {
 
     // Fetch user's tasks
     const tasks = await taskModel.find({ userId: user._id });
+    const assignedTasks = await assignModel.find({ assignerId: user._id }).populate("tasks");
 
     let report = {
       completed: 0,
@@ -21,6 +23,8 @@ const generateReport = async (req, res) => {
       dueTasks: 0,
       categoryCount: {},
       mostCompletedCategory: "",
+      assignedTotal: 0,
+      assignedCompleted: 0,
     };
 
     // Count tasks based on status and category
@@ -30,8 +34,8 @@ const generateReport = async (req, res) => {
       else if (task.section === "todo") report.notStarted++;
       else if (task.section === "inProgress") report.inProgress++;
 
-      // Check for overdue tasks
-      if (moment(task.dueDate).isBefore(moment(), "day")) {
+      // Check for overdue tasks only if progress is 10 (completed)
+      if (task.progress.currProgress === 10 && new Date(task.dueDate) < new Date(task.progress.updatedAt)) {
         report.dueTasks++;
       }
 
@@ -48,6 +52,14 @@ const generateReport = async (req, res) => {
       if (task.section === "completed") {
         categoryCompletion[task.section]++;
       }
+    });
+
+    // Count assigned tasks
+    assignedTasks.forEach((assignedTask) => {
+      report.assignedTotal += assignedTask.tasks.length;
+      assignedTask.tasks.forEach((task) => {
+        if (task.section === "completed") report.assignedCompleted++;
+      });
     });
 
     // Determine most completed category
