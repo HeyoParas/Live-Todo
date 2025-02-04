@@ -18,7 +18,7 @@ import Shimmer from '../shimmer/shimmer';
 
 
 const Dashboard = () => {
-  const [data, setData] = useState([]); 
+  // const [section, setSection] = useState([]); 
   // const { data, setData } = useContext(AuthContext);
   // const location = useLocation();
   // const loginData = location.state?.loginData;
@@ -31,7 +31,7 @@ const Dashboard = () => {
           withCredentials: true,
         }); 
         console.log("response aaya backend se:",response)
-        setData(response.data);   
+        // setSection([...section, ...response.data.section]);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to load tasks! Please try again.");
@@ -77,18 +77,10 @@ const Dashboard = () => {
         <Header mode={mode}/>
         <Navbar mode={mode} /><hr />
         <div className="flex flex-col lg:flex-row justify-around items-center gap-x-4 h-[80%] m-3">
-          {/* <div className="w-full lg:w-1/3 h-full m-2">
-            <Todo mode={mode} data={data} setData={setData}/>
-          </div>
-          <div className="w-full lg:w-1/3 h-full m-2">
-            <Inprogress mode={mode} data={data} />
-          </div>
-          <div className="w-full lg:w-1/3 h-full m-2">
-            <Done mode={mode} data={data} />
-          </div> */}
-
-            <TaskSection />
-
+          {/* {section.map((elem,index)=>{
+            <TaskSection key={index} sectionName={elem}/>
+          })} */}
+          <TaskSection />
         </div>
       </div>
     </div>
