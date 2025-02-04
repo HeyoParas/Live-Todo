@@ -129,9 +129,11 @@ const signupUser = async (req, res) => {
 const getUserData = async (req,res) => {
   console.log("----inside getUserData function");
     const user = await getUser(req.cookies.mycookie);
+    console.log(user);
     try {
       const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
-      console.log("Tasks from DB ", tasks);
+      // console.log("Tasks from DB ", tasks);
+      console.log(userdata)
       res.status(200).json({userdata});
     } catch (err) {
       console.error("Error fetching tasks:", err);
