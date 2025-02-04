@@ -101,6 +101,7 @@ const signupUser = async (req, res) => {
         password,
       });
       await newUser.save();
+      console.log("user",newUser);
       var obj = { email: newUser.email, id: newUser._id };
       const token = makeToken(obj);
       res.cookie("mycookie", token);
