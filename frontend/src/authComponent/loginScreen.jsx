@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
@@ -6,6 +6,7 @@ import { message } from "antd";
 import { useNavigate } from "react-router-dom"; // ✅ Import useNavigate for navigation
 
 const LoginScreen = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // ✅ Initialize useNavigate
 
   const {
@@ -17,7 +18,6 @@ const LoginScreen = () => {
     console.log("Login Data:", data);
     try {
       console.log("Logging in with:", data);
-
       const response = await axios.post("http://localhost:7000/login", data);
 
       console.log("Response from backend:", response.data);
@@ -38,8 +38,8 @@ const LoginScreen = () => {
     <div className="min-h-screen min-w-full flex items-center justify-center overflow-hidden p-4">
       <div className="flex w-full h-full shadow-lg m-[5%]">
         {/* Left Section */}
-        <div className="w-full">
-          <div className="m-3 p-5">
+        <div className="w-full flex flex-col justify-center items-center">
+          <div className="m-3 p-5 text-center">
             <h3 className="m-3 font-bold text-xl mb-[10%]">Digital</h3>
             <h1 className="m-3 font-bold text-4xl">Todo - Get It Done</h1>
           </div>
@@ -53,8 +53,7 @@ const LoginScreen = () => {
               <div className="mb-4">
                 <label
                   className="block text-gray-600 font-medium mb-2"
-                  htmlFor="email"
-                >
+                  htmlFor="email">
                   Email Address
                 </label>
                 <input
@@ -67,8 +66,7 @@ const LoginScreen = () => {
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
-                      value:
-                        /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                       message: "Invalid email address",
                     },
                   })}
@@ -84,12 +82,11 @@ const LoginScreen = () => {
               <div className="mb-4">
                 <label
                   className="block text-gray-600 font-medium mb-2"
-                  htmlFor="password"
-                >
+                  htmlFor="password">
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   className={`w-[90%] border ${
                     errors.password ? "border-red-500" : "border-gray-300"
@@ -103,6 +100,19 @@ const LoginScreen = () => {
                     },
                   })}
                 />
+                <div className="flex items-center mt-2 mb-4">
+                  <input
+                    type="checkbox"
+                    id="showPassword"
+                    className="mr-2 cursor-pointer"
+                    onChange={(e) => setShowPassword(e.target.checked)}
+                  />
+                  <label
+                    htmlFor="showPassword"
+                    className="text-sm text-gray-600 cursor-pointer">
+                    Show password
+                  </label>
+                </div>
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-2">
                     {errors.password.message}
@@ -114,15 +124,13 @@ const LoginScreen = () => {
               <div className="flex justify-between">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
+                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                   Login
                 </button>
                 <button
                   type="button"
-                  onClick={() => navigate("/signup")} 
-                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
+                  onClick={() => navigate("/signup")}
+                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300">
                   Signup
                 </button>
               </div>
