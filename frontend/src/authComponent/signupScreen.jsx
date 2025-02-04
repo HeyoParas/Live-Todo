@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useState } from "react";
 import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,7 @@ import axios from "axios";
 import { message } from "antd";
 
 const SignupScreen = () => {
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate(); // ✅ Corrected function naming
 
   const {
@@ -22,9 +23,10 @@ const SignupScreen = () => {
       console.log("Response from backend:", response.data);
 
       if (response.data.success) {
-        sessionStorage.setItem("signupData", JSON.stringify(data));
+        // sessionStorage.setItem("signupData", JSON.stringify(data));
         message.success("Verification email sent! Redirecting...");
-        navigate("/verifyOtp"); // ✅ Corrected navigation
+        // navigate("/verifyOtp"); // ✅ Corrected navigation
+        navigate("/verifyOtp", { state: { signupData: data } });
       } else {
         message.error("Failed to send verification email.");
       }
@@ -38,8 +40,8 @@ const SignupScreen = () => {
     <div className="min-h-screen min-w-full flex items-center justify-center overflow-hidden p-4">
       <div className="flex w-full h-full shadow-lg m-[5%]">
         {/* Left Section */}
-        <div className="w-full">
-          <div className="m-3 p-5">
+        <div className="w-full flex flex-col justify-center items-center">
+          <div className="m-3 p-5 text-center">
             <h3 className="m-3 font-bold text-xl mb-[10%]">Digital</h3>
             <h1 className="m-3 font-bold text-4xl">Todo - Get It Done</h1>
           </div>
@@ -89,7 +91,7 @@ const SignupScreen = () => {
                   Password
                 </label>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   className={`w-[90%] border ${errors.password ? "border-red-500" : "border-gray-300"} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
                   placeholder="Enter your password"
@@ -98,6 +100,19 @@ const SignupScreen = () => {
                     minLength: { value: 6, message: "Password must be at least 6 characters long" },
                   })}
                 />
+                <div className="flex items-center mt-2 mb-4">
+                  <input
+                    type="checkbox"
+                    id="showPassword"
+                    className="mr-2 cursor-pointer"
+                    onChange={(e) => setShowPassword(e.target.checked)}
+                  />
+                  <label
+                    htmlFor="showPassword"
+                    className="text-sm text-gray-600 cursor-pointer">
+                    Show password
+                  </label>
+                </div>
                 {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
               </div>
 
