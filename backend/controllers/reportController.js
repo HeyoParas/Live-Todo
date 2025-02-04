@@ -1,4 +1,5 @@
 const taskModel = require("../models/taskSchema");
+const assignModel = require("../models/assignSchema");
 const { getUser } = require("./token");
 const moment = require("moment");
 
@@ -11,8 +12,9 @@ const generateReport = async (req, res) => {
     const user = await userModel.findOne({ email: extractedEmail });
     if (!user) return res.status(404).json({ error: "User not found" });
 
-    // Fetch user's tasks
+    // Fetch all tasks associated with the user
     const tasks = await taskModel.find({ userId: user._id });
+    const assignedTasks = await assignModel.find({ assignerId: user._id }).populate("tasks");
 
     let report = {
       completed: 0,
@@ -21,33 +23,45 @@ const generateReport = async (req, res) => {
       dueTasks: 0,
       categoryCount: {},
       mostCompletedCategory: "",
+      assignedTotal: 0,
+      assignedCompleted: 0,
     };
 
     // Count tasks based on status and category
     let categoryCompletion = {};
     tasks.forEach((task) => {
-      if (task.section === "completed") report.completed++;
-      else if (task.section === "todo") report.notStarted++;
-      else if (task.section === "inProgress") report.inProgress++;
+      // Track each section separately
+      if (task.section in report.categoryCount) {
+        report.categoryCount[task.section]++;
+      } else {
+        report.categoryCount[task.section] = 1;
+      }
 
-      // Check for overdue tasks
-      if (moment(task.dueDate).isBefore(moment(), "day")) {
+      // Track progress-based counts
+      if (task.section === "completed") report.completed++;
+      if (task.section === "todo") report.notStarted++;
+      if (task.section === "inProgress") report.inProgress++;
+
+      // Check for overdue tasks only if progress is 10 (completed)
+      if (task.progress.currProgress === 10 && new Date(task.dueDate) < new Date(task.progress.updatedAt)) {
         report.dueTasks++;
       }
 
-      // Count categories
-      if (!report.categoryCount[task.section]) {
-        report.categoryCount[task.section] = 0;
-      }
-      report.categoryCount[task.section]++;
-
       // Track completion per category
-      if (!categoryCompletion[task.section]) {
+      if (!(task.section in categoryCompletion)) {
         categoryCompletion[task.section] = 0;
       }
       if (task.section === "completed") {
         categoryCompletion[task.section]++;
       }
+    });
+
+    // Count assigned tasks
+    assignedTasks.forEach((assignedTask) => {
+      report.assignedTotal += assignedTask.tasks.length;
+      assignedTask.tasks.forEach((task) => {
+        if (task.section === "completed") report.assignedCompleted++;
+      });
     });
 
     // Determine most completed category
