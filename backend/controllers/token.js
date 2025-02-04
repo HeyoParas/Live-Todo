@@ -8,7 +8,7 @@ function makeToken(userObj) {
   // console.log("token",userObj);
   const payload = {
     email: userObj.email,
-    id: userObj._id,
+    id: userObj.id,
   };
   return jwt.sign(payload, secret, { expiresIn: '1 h'});
 }
