@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react';
 import Header from '../component/header';
 import Navbar from '../component/Navbar';
-import Todo from '../component/Todo';
-import Inprogress from '../component/Inprogress';
-import Done from '../component/Done';
+// import Todo from '../component/Todo';
+// import Inprogress from '../component/Inprogress';
+// import Done from '../component/Done';
+import TaskSection from '../component/taskSection';
 import Drawer from '../component/Drawer';
 // import { AuthContext } from '../AuthContext/authcontext';
 import Shimmer from '../shimmer/shimmer';
@@ -58,7 +59,9 @@ const Dashboard = () => {
           <div className="w-full lg:w-1/3 h-full m-2">
             <Done mode={mode} data={data} />
           </div> */}
-          <div>All tasks</div>
+
+            <TaskSection />
+
         </div>
       </div>
     </div>
