@@ -3,7 +3,7 @@ import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 
-const templateDialogue = ({ mode, type }) => {
+const templateDialogue = ({ mode, type ,reTrigger}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -31,7 +31,9 @@ const templateDialogue = ({ mode, type }) => {
         console.error("Error adding template:", error);
         message.error("Failed to add template. Please try again.");
       }
+      reTrigger(true); 
   };
+  
 
   const handleCancel = () => {
     setIsModalOpen(false);

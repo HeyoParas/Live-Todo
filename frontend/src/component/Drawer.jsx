@@ -12,6 +12,7 @@ import add_view from '../assets/add_view.svg';
 import light from "../assets/light.svg";
 import dark from "../assets/dark.svg";
 import exit from "../assets/exit.svg";
+import LogOut from "../antd/logOutPopUp";
 
 function Drawer({ setWidth, mode, setMode }) {
   const [isOpen, setIsOpen] = useState(true);
@@ -64,7 +65,9 @@ function Drawer({ setWidth, mode, setMode }) {
         </div>
         <div className="mt-[300px] gap-5 space-y-4 flex flex-col items-center ">
         <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
-            <img src={exit} />
+            {/* <img src={exit} /> */}
+            <LogOut/>
+
           </button>
         </div>
       </div>

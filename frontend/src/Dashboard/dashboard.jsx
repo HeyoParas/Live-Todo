@@ -18,11 +18,9 @@ import Shimmer from '../shimmer/shimmer';
 
 
 const Dashboard = () => {
-  // const [section, setSection] = useState([]); 
-  // const { data, setData } = useContext(AuthContext);
-  // const location = useLocation();
-  // const loginData = location.state?.loginData;
-  // console.log("loginData = ",loginData);
+  const [userData, setuserData] = useState(null); 
+  const [reTrigger, setReTrigger] = useState(null);
+
   useEffect(() => {
     console.log("inside dashboard")
     const fetchData = async () => {
@@ -31,7 +29,7 @@ const Dashboard = () => {
           withCredentials: true,
         }); 
         console.log("response aaya backend se:",response)
-        // setSection([...section, ...response.data.section]);
+        setuserData(response.data.userdata);
       } catch (err) {
         console.error("Error fetching data:", err);
         setError("Failed to load tasks! Please try again.");
@@ -39,10 +37,11 @@ const Dashboard = () => {
         setIsLoading(false);
       }
     };
-
+     
     fetchData();
-  }, []);
-
+  }, [reTrigger]);
+  
+  console.log("user Data",userData);
   const [isLoading, setIsLoading] = useState(true);
   const [w, setWidth] = useState("20%");
   const [mode, setMode] = useState(false);
@@ -75,16 +74,16 @@ const Dashboard = () => {
         }}
       >
         <Header mode={mode}/>
-        <Navbar mode={mode} /><hr />
+        <Navbar mode={mode}  reTrigger={setReTrigger} />
+        <hr />
         <div className="flex flex-col lg:flex-row justify-around items-center gap-x-4 h-[80%] m-3">
-          {/* {section.map((elem,index)=>{
-            <TaskSection key={index} sectionName={elem}/>
-          })} */}
-          <TaskSection />
+        {userData.sections.map((elem, index) => (
+        <TaskSection key={index} sectionName={elem}/>
+        ))} 
         </div>
       </div>
     </div>
-  );
+  );       
 }
 
 export default Dashboard

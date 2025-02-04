@@ -18,24 +18,23 @@ const TodoDialogue = ({ mode, type }) => {
   };
 
   const handleOk = async (data) => {
-    console.log(data);
+    console.log("Sending data to backend:", data);
+  
     try {
-      const endpointMap = {
-        todo: "http://localhost:5000/api/tasks/todo",
-        inprogress: "http://localhost:5000/api/tasks/inprogress",
-        done: "http://localhost:5000/api/tasks/done",
-      };
-
-      await axios.post(endpointMap[type], data);
-      message.success("Task added successfully!");
-
-      setIsModalOpen(false);
-      reset();
+      const response = await axios.post(
+        "http://localhost:7000/addTask", 
+        data,
+        { withCredentials: true } 
+      );
+  
+      console.log("Response from backend:", response.data);
+      message.success(response.data);
     } catch (error) {
-      console.error("Error adding task:", error);
-      message.error("Failed to add task. Please try again.");
+      console.error("Error sending data:", error);
+      message.error(error)
     }
   };
+  
 
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -69,7 +68,7 @@ const TodoDialogue = ({ mode, type }) => {
             <div className="flex flex-col">
               <label className="text-sm font-medium">Task Title</label>
               <input
-                {...register("taskTitle", { required: "Task Title is required." })}
+                {...register("tasktitle", { required: "Task Title is required." })}
                 type="text"
                 placeholder="Enter task title"
                 className={`border rounded p-2 ${errors.taskTitle ? "border-red-500" : ""}`}
@@ -106,7 +105,7 @@ const TodoDialogue = ({ mode, type }) => {
             <div className="flex flex-col">
               <label className="text-sm font-medium">Progress (1-10)</label>
               <input
-                {...register("progress", {
+                {...register("currentProgress", {
                   required: "Progress is required.",
                   valueAsNumber: true,
                   validate: (value) => (value >= 1 && value <= 10) || "Progress must be between 1 and 10.",
