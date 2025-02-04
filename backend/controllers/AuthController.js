@@ -1,5 +1,5 @@
 const { comparePassword, bcryptPassword } = require("./bcrypt");
-const { makeToken } = require("./token");
+const { makeToken,getUser } = require("./token");
 const userModel = require("../models/userSchema");
 const otpModel = require("../models/otpSchema");
 const assignedTasks = require("../models/assignedTaskSchema");
