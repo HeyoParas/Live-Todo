@@ -130,7 +130,7 @@ const getUserData = async(req,res) => {
   console.log("----inside getUserData function");
     const user = await getUser(req.cookies.mycookie);
     try {
-      const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
+      const userdata = await userModel.findById(user._id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
       console.log("Tasks from DB ", tasks);
       res.status(200).json({userdata});
     } catch (err) {
