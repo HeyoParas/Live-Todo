@@ -4,10 +4,6 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
 import SignupScreen from './signupScreen'
 import axios from 'axios'
-import { useLocation } from "react-router-dom";
-import SignupScreen from './signupScreen';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 
 const OtpScreen = () => {
   const Navigate = useNavigate();
