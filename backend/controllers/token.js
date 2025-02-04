@@ -1,7 +1,9 @@
 // creating signed token
 // create token for user and get user details from token for verification
 const jwt = require("jsonwebtoken");
+require('dotenv').config();
 const secret = process.env.JWT_SECRET;
+console.log(secret) ;
 function makeToken(userObj) {
   // console.log("token",userObj);
   const payload = {

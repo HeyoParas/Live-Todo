@@ -25,6 +25,7 @@ async function sendEmail(mail) {
       if (err) console.log(err);
       else {
         console.log("otp sent.");
+        console.log(otp) ;
       }
     }
   );
