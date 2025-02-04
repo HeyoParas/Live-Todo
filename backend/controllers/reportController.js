@@ -1,5 +1,5 @@
 const taskModel = require("../models/taskSchema");
-const assignModel = require("../models/assignSchema");
+const assignModel = require("../models/assignedTaskSchema");
 const { getUser } = require("./token");
 const moment = require("moment");
 
