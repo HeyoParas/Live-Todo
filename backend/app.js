@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const cookieParser = require("cookie-parser");
 const todoRouter = require("./routes/todoRouter");
-require('dotenv').config();
 const cors = require("cors");
 
 //..................................Middleware's setup
