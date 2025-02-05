@@ -2,17 +2,18 @@ const {getUser} = require("../controllers/token");
 const userModel = require("../models/userSchema");
 const verifyUser =async (req,res,next)=>{
     const userlogin = await getUser(req.cookies.mycookie);
-    const userExists = await userModel.findById({_id:userlogin.id})
-    if(userlogin && userExists)
+    let userExists;
+    userlogin?  userExists = await userModel.findById({_id:userlogin.id}):userExists=null;
+    if(userExists)
         next();
     else
         res.send({message:"Please Login first!!",loginStatus:false});
 }
 const checkLoginStatus = async (req,res)=>{
     const userlogin =  await getUser(req.cookies.mycookie);
-    const userExists = await userModel.findById({_id:userlogin.id})
-    console.log(userlogin) ;
-    if(userlogin && userExists){
+    let userExists;
+    userlogin?  userExists = await userModel.findById({_id:userlogin.id}):userExists=null;
+    if(userExists){
         console.log("true");
         res.json({success:true})
     }
