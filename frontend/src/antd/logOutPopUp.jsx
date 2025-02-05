@@ -3,21 +3,25 @@ import "../app.css";
 import exit from '../assets/exit.svg';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const logOut = () => {
+    const { isAuthenticated } = useAuth();
     const Navigate = useNavigate();
 
   const handleConfirm = async () => {
-    console.log("User confirmed logout");
     try {
         const response = await axios.get("http://localhost:7000/logout", {
           withCredentials: true, 
         });
-  
         console.log("Logout successful:", response.data);
-        message.success("Logged out successfully!"); 
-        Navigate("/login");
+        if(response.data.success){
+          message.success(response.data.message); 
+          isAuthenticated(false);
+          Navigate("/login");
+        }
+
       } catch (error) {
         console.error("Logout failed:", error);
         message.error("Logout failed! Please try again."); 
@@ -25,7 +29,6 @@ const logOut = () => {
   };
 
   const handleCancel = () => {
-    console.log("User canceled logout");
     message.info("Logout canceled");  
   };
 
