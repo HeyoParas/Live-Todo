@@ -5,15 +5,20 @@ import Navbar from '../component/Navbar';
 import TaskSection from '../component/taskSection';
 import Drawer from '../component/Drawer';
 import Shimmer from '../shimmer/shimmer';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
+import {useNavigation } from 'react-router-dom'
 
 const Dashboard = () => {
+  const Navigation = useNavigation();
   const { userData, setUserData, setTasks } = useAuth();
   const [reTrigger, setReTrigger] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
+
   const [w, setWidth] = useState("20%");
   const [mode, setMode] = useState(false);
+
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -38,7 +43,7 @@ const Dashboard = () => {
     useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    },1500);
+    },2500);
 
     return () => clearTimeout(timer);
   }, []);
@@ -67,12 +72,10 @@ const Dashboard = () => {
         <Navbar mode={mode}  reTrigger={setReTrigger} />
         <hr />
 
-        <div className="flex flex-col lg:flex-row overflow-x-auto  justify-start items-center gap-x-5 h-[80%] m-3 flex-nowrap w-full py-1 border">
-        {/* <div className='h-[80%] overflow-x-auto flex items-center justify-start gap-5 flex-nowrap w-full py-1 mt-16 border'> */}
+        <div className="h-[85%] overflow-x-auto flex items-center justify-start gap-5 flex-nowrap w-full border scrollbar-hide p-5">
         {userData.sections.map((elem, index) => (
         <TaskSection key={index} sectionName={elem}/>
         ))} 
-        
         </div>
       </div>
     </div>

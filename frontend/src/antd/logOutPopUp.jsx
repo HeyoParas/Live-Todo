@@ -4,27 +4,32 @@ import exit from '../assets/exit.svg';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
+import axios from 'axios';
 
 const logOut = () => {
-    const { isAuthenticated } = useAuth();
+    const { setIsAuthenticated } = useAuth();
     const Navigate = useNavigate();
 
-  const handleConfirm = async () => {
-    try {
-        const response = await axios.get("http://localhost:7000/logout", {
-          withCredentials: true, 
-        });
-        console.log("Logout successful:", response.data);
-        if(response.data.success){
-          message.success(response.data.message); 
-          isAuthenticated(false);
-          Navigate("/login");
-        }
+    const handleConfirm = async () => {
 
+      try {
+          const response = await axios.post("http://localhost:7000/logout", {}, {
+              withCredentials: true,
+          });
+          
+          if (response.data.success) {
+              message.success(response.data.message);
+              setIsAuthenticated(false);
+              Navigate("/login");
+          } else {
+              message.error("Please Try Again");
+          }
+  
       } catch (error) {
-        console.error("Logout failed:", error);
-        message.error("Logout failed! Please try again."); 
+        console.log("6")
+          console.error("Logout failed:", error.response?.data || error.message);
+          // message.error("Logout failed! Please try again.");
       }
   };
 
