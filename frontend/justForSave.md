@@ -85,3 +85,12 @@ const updateTask = async (taskId, updatedData) => {
     message.error("Error updating task. Try again!");
   }
 };
+
+        task?.progress?.currProgress === 10
+        ? "#78d700" // Green for 100% progress
+        : task?.progress?.currProgress <= 3
+        ? "#ff7979" // Light red for progress <= 3
+        : "#ffa048", // Orange for progress > 3
+
+
+

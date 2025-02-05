@@ -18,8 +18,10 @@ const LoginScreen = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
+    console.log("inside login")
     try {
       const response = await axios.post("http://localhost:7000/login", data,{withCredentials:true});
+      
       console.log("Response from backend:", response.data);
 
       if (response.data.success) {

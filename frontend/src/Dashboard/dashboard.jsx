@@ -24,7 +24,7 @@ const Dashboard = () => {
         const response = await axios.get("http://localhost:7000/getUserData", {
           withCredentials: true,
         }); 
-        console.log("response from backend:",response.data);
+        // console.log("response from backend:",response.data);
         setUserData(response.data.userdata);
         setTasks(response.data.userdata.mytasks);
       } catch (err) {
@@ -72,7 +72,7 @@ const Dashboard = () => {
 
         <div className="h-[85%] overflow-x-auto flex items-center justify-start gap-5 flex-nowrap w-full border scrollbar-hide p-5">
         {userData.sections.map((elem, index) => (
-        <TaskSection key={index} sectionName={elem}/>
+        <TaskSection key={index} sectionName={elem} reTrigger={setReTrigger}/>
         ))} 
         </div>
       </div>

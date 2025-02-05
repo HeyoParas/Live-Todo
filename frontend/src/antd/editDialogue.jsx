@@ -1,57 +1,85 @@
-import React, { useState, useContext, useEffect } from 'react';
-import { Button, Modal } from 'antd';
+import React, { useState } from 'react';
+import { Button, Modal, message } from 'antd';
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
-// import { AuthContext } from '../AuthContext/authcontext';
-import { message } from 'antd';
 import edit from '../assets/edit.svg';
+import {useAuth } from '../context/AuthContext';
 
-const editDialogue = ({ mode, id }) => {
-  // console.log("ye aai edited todo ki id",id)
-    const {
-      register,
-      handleSubmit,
-      reset,
-      formState: { errors },
-    } = useForm();
-  // const { data, setRefetch } = useContext(AuthContext);
+const EditDialogue = ({ mode, id, task,reTrigger }) => {
+  const { setTasks } = useAuth();
+  // console.log("Tasks", task);
+  // console.log("Edited Task ID", id);
+
+  // Initialize form state with task data
+  const [formData, setFormData] = useState({
+    taskId:id || "",
+    tasktitle: task?.tasktitle || '',
+    taskDescription: task?.taskDescription || '',
+    section: task?.section || '',
+    currentProgress: task?.progress?.currProgress || '',
+    priority: task?.priority || '',
+  });
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-
-  // useEffect(() => {
-  //   if (isModalOpen) {
-  //     const allKeys = [data.todo, data.inProgress, data.done];
-  //     allKeys.forEach(item => {
-  //       let index = item.findIndex(task => task._id.toString() === id);
-  //       if (index !== -1) {
-  //         const task = item[index];
-  //         settasktitle(task.tasktitle);
-  //         setAssociated(task.associated);
-  //         setProgress(Number(task.progress));
-  //       }
-  //     });
-  //   }
-  // }, [isModalOpen, data, id]);
 
   const showModal = () => {
     setIsModalOpen(true);
   };
 
-  const handleOk = async (data) => {
+  const handleOk = async () => {
+    // console.log("Task ID:", id);
+    // console.log("Form Data:", formData);
+
+    // try {
+    //   await axios.patch(`http://localhost:5000/api/update/tasks/${id}`, formData);
+    //   message.success('Task updated successfully!');
+    //   setIsModalOpen(false);
+    //   reset();
+    // } catch (error) {
+    //   message.error('Failed to update task. Please try again.');
+    // }
+
     try {
-      await axios.patch(`http://localhost:5000/api/update/tasks/${id}`, data);
-      message.success('Task updated successfully!');
-      setIsModalOpen(false);
-      reset();
-      setRefetch(true);
+      const response = await axios.post("http://localhost:7000/updateTask",formData,{ withCredentials: true }
+      );
+      // console.log("from backend response",response.data)
+      if (response.data.success) {
+        message.success(response.data.message);
+        // setTasks(prevTasks =>
+        //   prevTasks.map(task =>
+        //     task._id === taskId ? { ...task, ...updatedData } : task
+        //   )
+        // );       //No need Because of retrigger
+        setIsModalOpen(false);
+        reTrigger(true);
+      } else {
+        message.error("Failed to update task!");
+      }
     } catch (error) {
-      message.error('Failed to update task. Please try again.');
+      console.error("Update failed:", error);
+      message.error("Error updating task. Try again!");
     }
   };
 
   const handleCancel = () => {
     setIsModalOpen(false);
     reset();
+  };
+
+  // Function to handle input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   return (
@@ -73,62 +101,105 @@ const editDialogue = ({ mode, id }) => {
         okText="Submit"
         cancelText="Cancel"
       >
-        {/* <div className="p-4">
-          <form className="flex flex-col space-y-4" onSubmit={handleSubmit(handleOk)}>
+        <div className="p-4">
+          <form className="flex flex-col space-y-4">
+            {/* Task Title */}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Task Title</label>
               <input
-                {...register('tasktitle', { required: 'Task Title is required',
-                  validate: value => value.trim()!== '' || 'Task Title cannot be blank.',
-                 })}
+                {...register('tasktitle', {
+                  required: 'Task Title is required.',
+                  validate: (value) => value.trim() !== '' || 'Task Title cannot be blank.',
+                })}
                 type="text"
+                name="tasktitle"
+                value={formData.tasktitle}
+                onChange={handleChange}
                 placeholder="Enter task title"
-                onChange={(e) => settasktitle(e.target.value)}
                 className={`border rounded p-2 ${errors.tasktitle ? 'border-red-500' : ''}`}
               />
-                            {errors.tasktitle && (
-                              <span className="text-red-500 text-xs">{errors.tasktitle.message}</span>
-                            )}
-            </div> */}
-            {/* associated */}
-            {/* <div className="flex flex-col">
-              <label className="text-sm font-medium">Associate With</label>
-              <textarea
-                {...register('associated',{
-                  required: 'Task Association is required.',
-                  validate: value => value.trim()!== '' || 'Association cannot be blank.',
- 
-                })}
-                placeholder="Enter task Association"
-                value={associated}
-                onChange={(e) => setAssociated(e.target.value)}
-                className={`border rounded p-2 ${errors.associated ? 'border-red-500' : ''}`}
-              />
-                            {errors.associated && (
-                              <span className="text-red-500 text-xs">{errors.associated.message}</span>
-                            )}
+              {errors.tasktitle && <span className="text-red-500 text-xs">{errors.tasktitle.message}</span>}
             </div>
+
+            {/* Task Description */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium">Progress (%)</label>
+              <label className="text-sm font-medium">Task Description</label>
+              <textarea
+                {...register('taskDescription', {
+                  required: 'Task Description is required.',
+                  validate: (value) => value.trim() !== '' || 'Description cannot be blank.',
+                })}
+                name="taskDescription"
+                value={formData.taskDescription}
+                onChange={handleChange}
+                placeholder="Enter task description"
+                className={`border rounded p-2 ${errors.taskDescription ? 'border-red-500' : ''}`}
+              />
+              {errors.taskDescription && <span className="text-red-500 text-xs">{errors.taskDescription.message}</span>}
+            </div>
+
+            {/* Section */}
+            <div className="flex flex-col">
+              <label className="text-sm font-medium">Section</label>
               <input
-                {...register('progress', { valueAsNumber: true,
-                  validate: value =>(value >= 0 && value <= 100)  || 'Progress must be between 0% and 100%.' 
-                 })}
+                {...register('section', {
+                  required: 'Section is required.',
+                  validate: (value) => value.trim() !== '' || 'Section cannot be blank.',
+                })}
+                type="text"
+                name="section"
+                value={formData.section}
+                disabled
+                placeholder="Enter section"
+                className={`border rounded p-2 ${errors.section ? 'border-red-500' : ''}`}
+              />
+              {errors.section && <span className="text-red-500 text-xs">{errors.section.message}</span>}
+            </div>
+
+            {/* Current Progress (1-10) */}
+            <div className="flex flex-col">
+              <label className="text-sm font-medium">Current Progress (1-10)</label>
+              <input
+                {...register('currentProgress', {
+                  required: 'Progress is required.',
+                  valueAsNumber: true,
+                  min: { value: 1, message: 'Progress must be at least 1.' },
+                  max: { value: 10, message: 'Progress must be at most 10.' },
+                })}
                 type="number"
-                placeholder="Enter progress percentage"
-                value={progress}
-                onChange={(e) => setProgress(e.target.value)}
-                className={`border rounded p-2 ${errors.progress ? 'border-red-500' : ''}`}
-                />
-                              {errors.progress && (
-                                <span className="text-red-500 text-xs">{errors.progress.message}</span>
-                              )}
+                name="currentProgress"
+                value={formData.currentProgress}
+                onChange={handleChange}
+                placeholder="Enter progress"
+                className={`border rounded p-2 ${errors.currentProgress ? 'border-red-500' : ''}`}
+              />
+              {errors.currentProgress && <span className="text-red-500 text-xs">{errors.currentProgress.message}</span>}
+            </div>
+
+            {/* Priority (1-10) */}
+            <div className="flex flex-col">
+              <label className="text-sm font-medium">Priority (1-10)</label>
+              <input
+                {...register('priority', {
+                  required: 'Priority is required.',
+                  valueAsNumber: true,
+                  min: { value: 1, message: 'Priority must be at least 1.' },
+                  max: { value: 10, message: 'Priority must be at most 10.' },
+                })}
+                type="number"
+                name="priority"
+                value={formData.priority}
+                onChange={handleChange}
+                placeholder="Enter priority level"
+                className={`border rounded p-2 ${errors.priority ? 'border-red-500' : ''}`}
+              />
+              {errors.priority && <span className="text-red-500 text-xs">{errors.priority.message}</span>}
             </div>
           </form>
-        </div> */}
+        </div>
       </Modal>
     </>
   );
 };
 
-export default editDialogue;
+export default EditDialogue;

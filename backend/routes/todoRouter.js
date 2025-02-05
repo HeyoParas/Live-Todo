@@ -23,4 +23,4 @@ router.get("/report",authMiddleware.verifyUser,reportController.generateReport);
 
 router.get("/assigned",authMiddleware.verifyUser,assignedController.getAssigned);
 
-module.exports =router
+module.exports =router  

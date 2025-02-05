@@ -8,9 +8,10 @@ import { Popconfirm, message } from "antd";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import EditDialogue from "../antd/editDialogue";
-
-const TaskBox = ({ task, mode }) => {
-  // console.log(task)
+import info from "../assets/info.svg";
+import TaskInfo from "../antd/taskInfo";
+const TaskBox = ({ task, mode, reTrigger, type }) => {
+  // console.log("from taskbox:",task)
   const { setTasks } = useAuth();
   const [deleteVisible, setDeleteVisible] = useState(false);
 
@@ -25,7 +26,7 @@ const TaskBox = ({ task, mode }) => {
 
   const deleteTask = async (taskId) => {
     try {
-      console.log("in deleteTask, taskID:", taskId);
+      // console.log("in deleteTask, taskID:", taskId);
       const response = await axios.post(
         `http://localhost:7000/deleteTask`,
         { taskId },
@@ -34,7 +35,7 @@ const TaskBox = ({ task, mode }) => {
         }
       );
 
-      console.log(response.data);
+      // console.log(response.data);
       if (response.data.success) {
         message.success(response.data.message);
         setTasks((prevTasks) =>
@@ -71,10 +72,9 @@ const TaskBox = ({ task, mode }) => {
         </div>
 
         <div className="flex justify-between w-[20%] ">
-
           {/* Edit Button */}
           <div>
-            <EditDialogue id={task?._id} />
+            <EditDialogue id={task?._id} task={task} reTrigger={reTrigger} />
           </div>
 
           {/* Delete Button */}
@@ -141,11 +141,11 @@ const TaskBox = ({ task, mode }) => {
                 height: "100%",
                 borderRadius: "10px",
                 backgroundColor:
-                  task?.progress?.currProgress === 100
-                    ? "#78d700"
-                    : task?.progress?.currProgress <= 30
-                    ? "#ff7979"
-                    : "#ffa048",
+                  task?.progress?.currProgress === 10
+                    ? "#78D700" // Green for 100% progress
+                    : task?.progress?.currProgress <= 3
+                    ? "#ff7979" // Light red for progress <= 3
+                    : "#ffa048", // Orange for progress > 3
               }}></div>
           </div>
         </div>
@@ -153,13 +153,25 @@ const TaskBox = ({ task, mode }) => {
 
       {/* Priority & Actions */}
       <div className="flex items-center justify-between">
-        {/* asiign date */}
+        {/* asign date */}
         <div
+          className={`box-content border-1 text-sm w-[35%] h-5 rounded-full font-bold text-center ${
+            mode
+              ? "bg-gray-200 text-gray-700"
+              : new Date(task.dueDate).toLocaleDateString() ===
+                  new Date().toLocaleDateString() ||
+                new Date(task.dueDate) < new Date()
+              ? "bg-[#fff2f2] text-[#ff7079]"
+              : "bg-[#f4f4f7] text-[#888da7]"
+          }`}>
+          {task?.createdAt}
+        </div>
+        {/* <div
           className={`box-content border-4 text-sm w-[35%] h-5 rounded-full font-bold text-center ${
             mode ? "bg-gray-200 text-gray-700" : "bg-gray-600 text-gray-300"
           }`}>
           {task?.createdAt}
-        </div>
+        </div> */}
 
         {/* Comments & Links */}
         <div className="flex items-center gap-x-4">
@@ -176,17 +188,9 @@ const TaskBox = ({ task, mode }) => {
             <span className="ml-1">{task?.comments?.length || 0}</span>
           </div>
 
-          {/* Links */}
+          {/* info */}
           <div className="flex items-center">
-            <button className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
-              <img
-                src={link}
-                alt="link"
-                className="w-5 h-5"
-                style={{ filter: mode ? "none" : "invert(1)" }}
-              />
-            </button>
-            <span className="ml-1">4</span>
+            <TaskInfo mode={mode} id={task?._id} />
           </div>
         </div>
       </div>

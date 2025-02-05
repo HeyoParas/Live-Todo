@@ -67,6 +67,8 @@ const addTask = async (req, res) => {
 
 // update existing task
 const updateTask = async (req, res) => {
+  console.log("am here");
+  console.log(req.body);
   const {
     taskId,
     tasktitle,
