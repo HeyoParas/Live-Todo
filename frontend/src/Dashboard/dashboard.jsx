@@ -67,14 +67,13 @@ const Dashboard = () => {
         <Navbar mode={mode}  reTrigger={setReTrigger} />
         <hr />
 
-        <div className="flex flex-col lg:flex-row justify-around items-center gap-x-4 h-[80%] m-3">
-
+        <div className="flex flex-col lg:flex-row overflow-x-auto  justify-start items-center gap-x-5 h-[80%] m-3 flex-nowrap w-full py-1 border">
+        {/* <div className='h-[80%] overflow-x-auto flex items-center justify-start gap-5 flex-nowrap w-full py-1 mt-16 border'> */}
         {userData.sections.map((elem, index) => (
         <TaskSection key={index} sectionName={elem}/>
         ))} 
         
         </div>
-
       </div>
     </div>
   );       
