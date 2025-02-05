@@ -1,3 +1,4 @@
+const assignModel = require("../models/assignedTaskSchema");
 const taskModel = require("../models/taskSchema");
 const userModel = require("../models/userSchema");
 const {getUser} = require("./token");
@@ -86,16 +87,21 @@ const updateTask = async (req, res) => {
         .status(200)
         .json({message: "Task updated successfully",success:true});
     }
+    else{
+      res.json({message:"Task updation failed!!",success:false});
+    }
   } catch (err) {
     console.log(err);
-    res.json({ error: "Failed to add task",success:false});
+    res.json({ error: "Failed to update task",success:false});
   }
 };
 
 // disable the task 
 const disableTask = async (req, res) => {
   const { taskId } = req.body;
+  const user = getUser(req.cookies.mycookie);
   // console.log(req.body);
+<<<<<<< HEAD
   try {
     const newTask = await taskModel.findByIdAndUpdate(taskId,{
       isDisable:true
@@ -104,6 +110,34 @@ const disableTask = async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Failed to delete task" });
+=======
+  if(user && taskId){
+    try {
+      const newTask = await taskModel.findByIdAndUpdate(taskId,{
+        isDisable:true
+      });
+      const updateUser = await userModel.findByIdAndUpdate({_id:user.id},{
+        $pull:{mytasks:taskId}
+      });
+      const assignedTasks = await assignModel.findOneAndUpdate({assignerId:user.id},{
+        $pull:{tasks:taskId}
+      })
+      if(newTask && updateUser)
+      res.status(200).json({ message: "Task deleted successfully",success:true });
+      else
+      res.json({ message: "Task deleted unsuccessfull",success:false});
+  
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Failed to delete task",success:false });
+    }
+  }
+  if(!user){
+    res.json({message:"Please Login first",success:false});
+  }
+  if(!taskId){
+    res.json({message:"Please send a valid taskId",success:false});
+>>>>>>> 74fe83bc997fe1c241a249ee5acd24efdccc7fc4
   }
 };
 
