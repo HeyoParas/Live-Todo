@@ -8,10 +8,10 @@ import { Popconfirm, message } from "antd";
 import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import EditDialogue from "../antd/editDialogue";
-import info from "../assets/info.svg";
 import TaskInfo from "../antd/taskInfo";
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
-const TaskBox = ({ task, mode, reTrigger, type }) => {
+const TaskBox = ({ task, mode, reTrigger, type, index }) => {
   // console.log("from taskbox:",task)
   const { setTasks } = useAuth();
   const [deleteVisible, setDeleteVisible] = useState(false);
@@ -52,12 +52,22 @@ const TaskBox = ({ task, mode, reTrigger, type }) => {
   };
 
   return (
-    <div
+    <Draggable draggableId={task._id} index={index}>
+      {(provided, snapshot) => (
+        <div
+          ref={provided.innerRef}
+          {...provided.draggableProps}
+          {...provided.dragHandleProps}
+          className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition ${
+            snapshot.isDragging ? "bg-blue-300" : mode ? "bg-white text-black border-solid border-3 border-slate-200" : "bg-[#292b31] text-white"
+          }`}
+        >
+    {/* <div
       className={`gap-y-4 space-y-4 p-3 rounded-lg  mb-3 ${
         mode
           ? "bg-[white] text-black  border-solid border-3 border-slate-200"
           : "bg-[#292b31] text-white"
-      }`}>
+      }`}> */}
       {/* Task Header */}
       <div className="flex items-center justify-between ">
         <div className="w-[90%]">
@@ -193,6 +203,8 @@ const TaskBox = ({ task, mode, reTrigger, type }) => {
         </div>
       </div>
     </div>
+      )}
+    </Draggable>
   );
 };
 
