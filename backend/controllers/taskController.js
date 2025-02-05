@@ -87,9 +87,12 @@ const updateTask = async (req, res) => {
         .status(200)
         .json({message: "Task updated successfully",success:true});
     }
+    else{
+      res.json({message:"Task updation failed!!",success:false});
+    }
   } catch (err) {
     console.log(err);
-    res.json({ error: "Failed to add task",success:false});
+    res.json({ error: "Failed to update task",success:false});
   }
 };
 
