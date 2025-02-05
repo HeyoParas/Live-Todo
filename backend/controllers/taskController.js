@@ -101,16 +101,6 @@ const disableTask = async (req, res) => {
   const { taskId } = req.body;
   const user = getUser(req.cookies.mycookie);
   // console.log(req.body);
-<<<<<<< HEAD
-  try {
-    const newTask = await taskModel.findByIdAndUpdate(taskId,{
-      isDisable:true
-    });
-    res.status(200).json({ message: "Task deleted successfully", success: true });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Failed to delete task" });
-=======
   if(user && taskId){
     try {
       const newTask = await taskModel.findByIdAndUpdate(taskId,{
@@ -137,7 +127,6 @@ const disableTask = async (req, res) => {
   }
   if(!taskId){
     res.json({message:"Please send a valid taskId",success:false});
->>>>>>> 74fe83bc997fe1c241a249ee5acd24efdccc7fc4
   }
 };
 
