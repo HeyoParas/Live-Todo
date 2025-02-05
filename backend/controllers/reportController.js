@@ -1,9 +1,12 @@
 const taskModel = require("../models/taskSchema");
 const assignModel = require("../models/assignedTaskSchema");
+const userModel = require("../models/userSchema") ;
+
 const { getUser } = require("./token");
 const moment = require("moment");
 
 const generateReport = async (req, res) => {
+  console.log("----generate Report Called.")
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
     console.log(`Report for ${extractedEmail} being generated, please wait...`);

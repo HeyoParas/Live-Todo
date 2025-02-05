@@ -27,6 +27,8 @@ const isLogin=(req,res,next)=>{
     const userlogin = getUser(req.cookies.mycookie);
     if(!userlogin){
         next();
+    }else{
+        res.json({message:"You are already logged in",success:false});
     }
 }
 module.exports={
