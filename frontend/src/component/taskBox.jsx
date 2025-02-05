@@ -10,6 +10,7 @@ import axios from "axios";
 import EditDialogue from "../antd/editDialogue";
 import info from "../assets/info.svg";
 import TaskInfo from "../antd/taskInfo";
+
 const TaskBox = ({ task, mode, reTrigger, type }) => {
   // console.log("from taskbox:",task)
   const { setTasks } = useAuth();
@@ -53,7 +54,9 @@ const TaskBox = ({ task, mode, reTrigger, type }) => {
   return (
     <div
       className={`gap-y-4 space-y-4 p-3 rounded-lg  mb-3 ${
-        mode ? "bg-[white] text-black  border-solid border-3 border-slate-200" : "bg-[#292b31] text-white"
+        mode
+          ? "bg-[white] text-black  border-solid border-3 border-slate-200"
+          : "bg-[#292b31] text-white"
       }`}>
       {/* Task Header */}
       <div className="flex items-center justify-between ">
@@ -156,22 +159,17 @@ const TaskBox = ({ task, mode, reTrigger, type }) => {
         {/* asign date */}
         <div
           className={`box-content border-1 text-sm w-[35%] h-5 rounded-full font-bold text-center ${
-            mode
-              ? "bg-gray-200 text-gray-700"
-              : new Date(task.dueDate).toLocaleDateString() ===
-                  new Date().toLocaleDateString() ||
-                new Date(task.dueDate) < new Date()
+            type !== "completed" &&
+            (new Date(task.dueDate).toLocaleDateString() ===
+              new Date().toLocaleDateString() ||
+              new Date(task.dueDate) < new Date())
               ? "bg-[#fff2f2] text-[#ff7079]"
+              : mode
+              ? "bg-gray-200 text-gray-700"
               : "bg-[#f4f4f7] text-[#888da7]"
           }`}>
           {task?.createdAt}
         </div>
-        {/* <div
-          className={`box-content border-4 text-sm w-[35%] h-5 rounded-full font-bold text-center ${
-            mode ? "bg-gray-200 text-gray-700" : "bg-gray-600 text-gray-300"
-          }`}>
-          {task?.createdAt}
-        </div> */}
 
         {/* Comments & Links */}
         <div className="flex items-center gap-x-4">

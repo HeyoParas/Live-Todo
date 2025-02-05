@@ -11,7 +11,7 @@ const formatDate = (dateString) => {
 
 const info = (id, tasks) => {
   const target = tasks.find((elem) => elem._id === id);
-  console.log(target);
+  // console.log(target);
   if (!target) {
     Modal.error({
       title: "Error",
