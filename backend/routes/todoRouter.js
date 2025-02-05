@@ -20,4 +20,4 @@ router.post("/logout",authController.logoutUser );
 
 router.get("/report",authMiddleware.verifyUser,reportController.generateReport);
 
-module.exports =router
+module.exports =router  

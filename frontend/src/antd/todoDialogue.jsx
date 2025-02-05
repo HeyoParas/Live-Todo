@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useAuth } from "../context/AuthContext"
+import { useAuth } from "../context/AuthContext";
 
 const TodoDialogue = ({ mode, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,32 +21,32 @@ const TodoDialogue = ({ mode, type }) => {
 
   const handleOk = async (data) => {
     console.log("Sending data to backend:", data);
-  
+
     try {
-      const response = await axios.post(
-        "http://localhost:7000/addTask", 
-        data,
-        { withCredentials: true } 
-      );
-  
+      const response = await axios.post("http://localhost:7000/addTask", data, {
+        withCredentials: true,
+      });
+
       console.log("Response from backend:", response.data);
 
-      const newTask = response.data; 
-      setTasks((prevTasks) => [...prevTasks, newTask]);  // Update the tasks in the context
+      const newTask = response.data;
+      if(response.data.success) {};
+      setTasks((prevTasks) => [...prevTasks, newTask]); // Update the tasks in the context
       message.success("Task Added");
       setIsModalOpen(false);
-
+      reset();
     } catch (error) {
       console.error("Error sending data:", error);
-      message.error(error)
+      message.error(error);
     }
   };
-  
 
   const handleCancel = () => {
     setIsModalOpen(false);
     reset();
   };
+
+  const currentType = type;
 
   return (
     <>
@@ -56,8 +56,7 @@ const TodoDialogue = ({ mode, type }) => {
         style={{
           color: mode ? "#000000" : "#ffffff",
           background: mode ? "#ffffff" : "#2A2B2F",
-        }}
-      >
+        }}>
         Add New Task
       </Button>
       <Modal
@@ -67,31 +66,48 @@ const TodoDialogue = ({ mode, type }) => {
         onCancel={handleCancel}
         okText="Submit"
         cancelText="Cancel"
-        className={mode ? "light-modal" : "dark-modal"}
-      >
+        className={mode ? "light-modal" : "dark-modal"}>
         <div className="p-4">
-          <form className="flex flex-col space-y-4" onSubmit={handleSubmit(handleOk)}>
+          <form
+            className="flex flex-col space-y-4"
+            onSubmit={handleSubmit(handleOk)}>
             {/* Task Title */}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Task Title</label>
               <input
-                {...register("tasktitle", { required: "Task Title is required." })}
+                {...register("tasktitle", {
+                  required: "Task Title is required.",
+                })}
                 type="text"
                 placeholder="Enter task title"
-                className={`border rounded p-2 ${errors.taskTitle ? "border-red-500" : ""}`}
+                className={`border rounded p-2 ${
+                  errors.taskTitle ? "border-red-500" : ""
+                }`}
               />
-              {errors.taskTitle && <span className="text-red-500 text-xs">{errors.taskTitle.message}</span>}
+              {errors.taskTitle && (
+                <span className="text-red-500 text-xs">
+                  {errors.taskTitle.message}
+                </span>
+              )}
             </div>
 
             {/* Task Description */}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Task Description</label>
               <textarea
-                {...register("taskDescription", { required: "Task Description is required." })}
+                {...register("taskDescription", {
+                  required: "Task Description is required.",
+                })}
                 placeholder="Enter task description"
-                className={`border rounded p-2 ${errors.taskDescription ? "border-red-500" : ""}`}
+                className={`border rounded p-2 ${
+                  errors.taskDescription ? "border-red-500" : ""
+                }`}
               />
-              {errors.taskDescription && <span className="text-red-500 text-xs">{errors.taskDescription.message}</span>}
+              {errors.taskDescription && (
+                <span className="text-red-500 text-xs">
+                  {errors.taskDescription.message}
+                </span>
+              )}
             </div>
 
             {/* Section */}
@@ -103,9 +119,15 @@ const TodoDialogue = ({ mode, type }) => {
                 value={type}
                 disabled
                 placeholder="Enter section"
-                className={`border rounded p-2 ${errors.section ? "border-red-500" : ""}`}
+                className={`border rounded p-2 ${
+                  errors.section ? "border-red-500" : ""
+                }`}
               />
-              {errors.section && <span className="text-red-500 text-xs">{errors.section.message}</span>}
+              {errors.section && (
+                <span className="text-red-500 text-xs">
+                  {errors.section.message}
+                </span>
+              )}
             </div>
 
             {/* Progress (1-10) */}
@@ -114,25 +136,42 @@ const TodoDialogue = ({ mode, type }) => {
               <input
                 {...register("currentProgress", {
                   required: "Progress is required.",
-                  valueAsNumber: true,
-                  validate: (value) => (value >= 1 && value <= 10) || "Progress must be between 1 and 10.",
+                  valueAsNumber: true, 
+                  min: { value: 0, message: "Progress must be at least 0." }, 
+                  max: { value: 10, message: "Progress must be at most 10." },
                 })}
                 type="number"
                 placeholder="Enter progress"
-                className={`border rounded p-2 ${errors.progress ? "border-red-500" : ""}`}
+                className={`border rounded p-2 ${
+                  errors.currentProgress ? "border-red-500" : ""
+                }`}
+                value={currentType === "completed" ? 10 : undefined} // Progress 10 for completed
+                disabled={currentType === "completed"} // Disable input if type is completed
               />
-              {errors.progress && <span className="text-red-500 text-xs">{errors.progress.message}</span>}
+              {errors.currentProgress && (
+                <span className="text-red-500 text-xs">
+                  {errors.currentProgress.message}
+                </span> // error message show karega
+              )}
             </div>
 
             {/* Assign Date */}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Assign Date</label>
               <input
-                {...register("assignDate", { required: "Assign Date is required." })}
+                {...register("assignDate", {
+                  required: "Assign Date is required.",
+                })}
                 type="date"
-                className={`border rounded p-2 ${errors.assignDate ? "border-red-500" : ""}`}
+                className={`border rounded p-2 ${
+                  errors.assignDate ? "border-red-500" : ""
+                }`}
               />
-              {errors.assignDate && <span className="text-red-500 text-xs">{errors.assignDate.message}</span>}
+              {errors.assignDate && (
+                <span className="text-red-500 text-xs">
+                  {errors.assignDate.message}
+                </span>
+              )}
             </div>
 
             {/* Due Date */}
@@ -141,9 +180,15 @@ const TodoDialogue = ({ mode, type }) => {
               <input
                 {...register("dueDate", { required: "Due Date is required." })}
                 type="date"
-                className={`border rounded p-2 ${errors.dueDate ? "border-red-500" : ""}`}
+                className={`border rounded p-2 ${
+                  errors.dueDate ? "border-red-500" : ""
+                }`}
               />
-              {errors.dueDate && <span className="text-red-500 text-xs">{errors.dueDate.message}</span>}
+              {errors.dueDate && (
+                <span className="text-red-500 text-xs">
+                  {errors.dueDate.message}
+                </span>
+              )}
             </div>
 
             {/* Priority (1-10) */}
@@ -153,13 +198,21 @@ const TodoDialogue = ({ mode, type }) => {
                 {...register("priority", {
                   required: "Priority is required.",
                   valueAsNumber: true,
-                  validate: (value) => (value >= 1 && value <= 10) || "Priority must be between 1 and 10.",
+                  validate: (value) =>
+                    (value >= 1 && value <= 10) ||
+                    "Priority must be between 1 and 10.",
                 })}
                 type="number"
                 placeholder="Enter priority"
-                className={`border rounded p-2 ${errors.priority ? "border-red-500" : ""}`}
+                className={`border rounded p-2 ${
+                  errors.priority ? "border-red-500" : ""
+                }`}
               />
-              {errors.priority && <span className="text-red-500 text-xs">{errors.priority.message}</span>}
+              {errors.priority && (
+                <span className="text-red-500 text-xs">
+                  {errors.priority.message}
+                </span>
+              )}
             </div>
           </form>
         </div>

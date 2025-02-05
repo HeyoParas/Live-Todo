@@ -5,7 +5,7 @@ import '../index.css';
 import TaskBox from './taskBox'
 
 import { useAuth } from '../context/AuthContext'
-const taskSection = ({ mode, sectionName }) => {
+const taskSection = ({ mode, sectionName ,reTrigger}) => {
   const { tasks } = useAuth();
   const sectionTasks = tasks.filter(task => task.section === sectionName);
 
@@ -32,7 +32,7 @@ const taskSection = ({ mode, sectionName }) => {
   {/* TaskBox Container with Scroll */}
   <div className="flex-1 overflow-y-auto px-2 scrollbar-hide m-1">
     {sortedTasks.map(task => (
-      <TaskBox key={task._id} task={task} mode={mode} />
+      <TaskBox key={task._id} task={task} mode={mode} reTrigger={reTrigger} type={sectionName} />
     ))}
   </div>
 </div>
