@@ -3,21 +3,6 @@ const taskModel = require("../models/taskSchema");
 const userModel = require("../models/userSchema");
 const { getUser } = require("./token");
 
-// const getTasks = async (req, res) => {
-//   console.log("inside /gettasks");
-//   const user = getUser(req.cookies.mycookie);
-//   try {
-//     const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]);
-//     console.log("Tasks from DB ", tasks);
-//     // Send tasks to the frontend
-//     res.status(200).json({ mytasks:userdata.mytasks,assignedTasks:userdata.assignedTasks});
-//   } catch (err) {
-//     console.error("Error fetching tasks:", err);
-//     res
-//       .status(500)
-//       .json({ error: "Internal server error. Please try again later." });
-//   }
-// };
 const verifydate = (aDate, dDate) => {
   const assignDate = new Date(aDate);
   const dueDate = new Date(dDate);
