@@ -46,7 +46,7 @@ const addTask = async (req, res) => {
               $push: { mytasks: savedTask._id },
             }
           );
-          res.status(201).json({savedTask, success: true });
+          res.status(201).json({ savedTask, success: true });
         } catch (err) {
           console.log("Error in id pushing in sectionModel", err);
           res.json({ message: "Error in id pushing !", success: false });
@@ -55,7 +55,7 @@ const addTask = async (req, res) => {
       // res.status(201).json(savedTask);
     } catch (err) {
       console.log(err);
-      res.json({ error: "Failed to add task",success:false });
+      res.json({ error: "Failed to add task", success: false });
     }
   } else {
     res.json({
@@ -172,6 +172,24 @@ const getDataforAssignTasks = async (req, res) => {
     console.log("Error fetching data for assign Tasks: ", err);
   }
 };
+const assignTask = async (req, res) => {
+  // const { email, taskId, assignDate, dueDate, currProgress } = req.body;
+  // if (!verifydate(assignDate, dueDate)) {
+  //   const user = await getUser(req.cookies.mycookie);
+  //   if (user) {
+  //     try {
+  //       const newAssignTask = new assignModel({
+  //         assignerId: user.id,
+  //         assignTo:email,
+  //         $addToSet: { tasks: { taskId, assignDate, dueDate, currProgress } },
+  //       });
+  //       await newAssignTask.save();
+  //     }catch (error) {
+  //       console.log("Error Assigning Tasks", error);
+  //     }
+  //   }
+  // }
+};
 
 module.exports = {
   addTask,
@@ -179,5 +197,6 @@ module.exports = {
   updateTask,
   disableTask,
   getDataforAssignTasks,
+  assignTask
   // getTasks
 };

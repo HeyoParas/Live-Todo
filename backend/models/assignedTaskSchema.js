@@ -4,18 +4,35 @@ const assignTasks = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: "users",
   },
-  assignDate: {
-    type: Date,
-    default: Date.now,
+  assignTo:{
+    type:String,
   },
-  dueDate: {
-    type: Date,
-    default: Date.now,
-  },
-  tasks:[{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "tasks",
-  }]
+  tasks: [
+    {
+      taskId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "tasks",
+      },
+      assignDate: {
+        type: Date,
+        default: Date.now,
+      },
+      dueDate: {
+        type: Date,
+        default: Date.now,
+      },
+      currProgress:{
+        type:Number,
+        min:0,
+        max:10,
+        default:0
+      },
+      status:{
+        type:String,
+        default:"pending"
+      }
+    },
+  ],
 });
 const assignModel = mongoose.model("assignTasks", assignTasks);
 module.exports = assignModel;
