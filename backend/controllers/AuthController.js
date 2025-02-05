@@ -132,17 +132,26 @@ const getUserData = async (req,res) => {
   console.log("----inside getUserData function");
     const user = await getUser(req.cookies.mycookie);
     console.log(user);
+    if(user){
     try {
       const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
       const AllTasks = await taskModel.find();
       // console.log("Tasks from DB ", tasks);
-      res.status(200).json({userdata,AllTasks});
+      if(userdata)
+      res.status(200).json({userdata,AllTasks,success:true});
+      else{
+        res.json({message:"User not found in DB",success:false})
+      }
     } catch (err) {
       console.error("Error fetching tasks:", err);
       res
         .status(500)
-        .json({ error: "Internal server error. Please try again later." });
+        .json({ error: "Internal server error. Please try again later." ,success:false});
     }
+  }
+  else{
+    res.json({message:"Please login First to access this route!!",success:false});
+  }
 }
 
 module.exports = {
