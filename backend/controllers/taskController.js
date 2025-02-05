@@ -18,9 +18,9 @@ const { getUser } = require("./token");
 //       .json({ error: "Internal server error. Please try again later." });
 //   }
 // };
-const verifydate = (assignDate, dueDate) => {
-  const assignDate = new Date(assignDate);
-  const dueDate = new Date(dueDate);
+const verifydate = (aDate, dDate) => {
+  const assignDate = new Date(aDate);
+  const dueDate = new Date(dDate);
   if (assignDate > dueDate) {
     return true;
   }
