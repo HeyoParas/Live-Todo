@@ -17,12 +17,9 @@ const SignupScreen = () => {
 
   const onSubmit = async (data) => {
     try {
-      // console.log("Signup Data:", data);
-
       const response = await axios.post("http://localhost:7000/verifyEmail", data);
 
       if (response.data.success) {
-        // sessionStorage.setItem("signupData", JSON.stringify(data));
         message.success("Verification otp sent! Please check you mail");
         navigate("/verifyOtp", { state: { signupData: data } });
       } else {

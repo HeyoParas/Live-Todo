@@ -64,7 +64,7 @@ const SkeletonBoard = () => {
         {/* Columns */}
         <div className="flex gap-4">
           {/* Column */}
-          {["To do", "In Progress", "Done"].map((_, index) => (
+          {["To do", "In Progress", "completed"].map((_, index) => (
             <div
               key={index}
               className="flex-1 bg-[#2a2b2f] p-4 rounded-lg border border-dashed border-gray-500"

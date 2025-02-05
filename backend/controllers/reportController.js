@@ -25,7 +25,7 @@ const generateReport = async (req, res) => {
       mostCompletedCategory: "",
       assignedTotal: 0,
       assignedCompleted: 0,
-    };
+    }; 
 
     // Count tasks based on status and category
     let categoryCompletion = {};

@@ -28,7 +28,7 @@ const Dashboard = () => {
         const response = await axios.get("http://localhost:7000/getUserData", {
           withCredentials: true,
         }); 
-        console.log("response aaya backend se:",response)
+        console.log("response aaya backend se:",response.data);
         setuserData(response.data.userdata);
       } catch (err) {
         console.error("Error fetching data:", err);
@@ -41,7 +41,7 @@ const Dashboard = () => {
     fetchData();
   }, [reTrigger]);
   
-  console.log("user Data",userData);
+  // console.log("user Data",userData);
   const [isLoading, setIsLoading] = useState(true);
   const [w, setWidth] = useState("20%");
   const [mode, setMode] = useState(false);

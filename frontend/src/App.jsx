@@ -4,7 +4,6 @@ import LoginScreen from './authComponent/loginScreen'
 import SignupScreen from './authComponent/signupScreen'
 import Dashboard from './Dashboard/dashboard';
 import VerifyOtpScreen from './authComponent/verifyOtpScreen'
-import verifyToken from './utils/verifyToken';
 import './App.css'
 import axios from 'axios'
 
@@ -15,10 +14,10 @@ function App() {
     const verifyAuth = async () => {
       try {
         const response = await axios.get("http://localhost:7000/auth/checkToken", {
-          withCredentials: true, // ✅ Correct for Axios
+          withCredentials: true, 
         });
         console.log("Authentication response:", response.data.success);
-        setIsAuthenticated(response.data.success); // ✅ Update state with auth status
+        setIsAuthenticated(response.data.success);
       } catch (error) {
         console.error("Error checking authentication:", error);
         setIsAuthenticated(false);
@@ -29,7 +28,7 @@ function App() {
   }, []);
 
   if (isAuthenticated === null) {
-    return <></>; // Ya koi Loader component laga sakte ho
+    return <></>;
   }
 
   const router = createBrowserRouter([
