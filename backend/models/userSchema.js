@@ -41,7 +41,6 @@ const User = new mongoose.Schema({
   sections:
     {
       type: [String],
-      unique: true,
       default: ["todo", "inProgress", "completed"],
     },
 });
