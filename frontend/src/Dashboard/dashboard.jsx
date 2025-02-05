@@ -5,7 +5,7 @@ import Navbar from '../component/Navbar';
 import TaskSection from '../component/taskSection';
 import Drawer from '../component/Drawer';
 import Shimmer from '../shimmer/shimmer';
-import { useAuth } from '../../context/AuthContext';
+import { useAuth } from '../context/AuthContext';
 import {useNavigation } from 'react-router-dom'
 
 const Dashboard = () => {

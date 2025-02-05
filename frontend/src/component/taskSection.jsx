@@ -4,7 +4,7 @@ import TodoDialogue from "../antd/todoDialogue";
 import '../index.css';
 import TaskBox from './taskBox'
 
-import { useAuth } from '../../context/AuthContext'
+import { useAuth } from '../context/AuthContext'
 const taskSection = ({ mode, sectionName }) => {
   const { tasks } = useAuth();
   const sectionTasks = tasks.filter(task => task.section === sectionName);

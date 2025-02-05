@@ -5,7 +5,7 @@ import SignupScreen from "./authComponent/signupScreen";
 import Dashboard from "./Dashboard/dashboard";
 import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
 import "./App.css";
-import { useAuth, AuthProvider } from "../context/AuthContext";
+import { useAuth, AuthProvider } from "./context/AuthContext";
 
 function AppContent() {
   const { isAuthenticated } = useAuth();

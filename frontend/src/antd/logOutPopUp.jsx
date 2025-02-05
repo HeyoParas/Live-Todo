@@ -4,7 +4,7 @@ import exit from '../assets/exit.svg';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "../context/AuthContext";
 import axios from 'axios';
 
 const logOut = () => {
