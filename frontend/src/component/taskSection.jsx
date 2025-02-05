@@ -13,30 +13,30 @@ const taskSection = ({ mode, sectionName }) => {
    const sortedTasks = [...sectionTasks].sort((a, b) => a.priority - b.priority);
 
   return (
-    <div className='flex flex-col h-full w-1/3 min-w-[31.5%] mx-2 border-2 border-dashed border-black-300  rounded-lg'>
-      <div className='flex flex-col sm:flex-row justify-between items-center text-sm top-0 p-3 rounded-lg m-2 [@media(max-width:1300px)]:flex-col'>
-        <div className='text-slate-500 font-bold text-[1.2rem] '>
-          {sectionName} ({sectionTasks.length})
-        </div>
-        <div className='flex items-center mt-2 sm:mt-0'>
-          <img 
-            src={add_todo} 
-            alt="add_todo" 
-            className='w-7 h-7 object-contain'
-            style={{
-              filter: mode ? "none" : "invert(1) brightness(0.8)",
-            }} 
-          />
-          <TodoDialogue mode={mode} type={sectionName}  />
-        </div>
-      </div>
-
-      {/* Map sorted tasks to TaskBox */}
-      {sortedTasks.map(task => (
-        <TaskBox key={task._id} task={task} mode={mode} />
-      ))}
-
+<div className="flex flex-col h-full w-1/3 min-w-[31.5%] mx-2 border-2 border-dashed border-black-300 rounded-lg overflow-hidden scrollbar-hide">
+  <div className="flex flex-col sm:flex-row justify-between items-center text-sm top-0 p-3 rounded-lg m-2 [@media(max-width:1300px)]:flex-col">
+    <div className="text-slate-500 font-bold text-[1.2rem]">
+      {sectionName} ({sectionTasks.length})
     </div>
+    <div className="flex items-center mt-2 sm:mt-0">
+      <img 
+        src={add_todo} 
+        alt="add_todo" 
+        className="w-7 h-7 object-contain"
+        style={{ filter: mode ? "none" : "invert(1) brightness(0.8)" }} 
+      />
+      <TodoDialogue mode={mode} type={sectionName} />
+    </div>
+  </div>
+
+  {/* TaskBox Container with Scroll */}
+  <div className="flex-1 overflow-y-auto px-2 scrollbar-hide m-1">
+    {sortedTasks.map(task => (
+      <TaskBox key={task._id} task={task} mode={mode} />
+    ))}
+  </div>
+</div>
+
   );
 };
 

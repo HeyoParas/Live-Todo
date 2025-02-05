@@ -18,15 +18,13 @@ const Dashboard = () => {
   const [w, setWidth] = useState("20%");
   const [mode, setMode] = useState(false);
 
-
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:7000/getUserData", {
           withCredentials: true,
         }); 
-        // console.log("response from backend:",response.data);
+        console.log("response from backend:",response.data);
         setUserData(response.data.userdata);
         setTasks(response.data.userdata.mytasks);
       } catch (err) {

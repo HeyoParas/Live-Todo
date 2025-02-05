@@ -7,32 +7,31 @@ import { message } from 'antd';
 import edit from '../assets/edit.svg';
 
 const editDialogue = ({ mode, id }) => {
+  // console.log("ye aai edited todo ki id",id)
     const {
       register,
       handleSubmit,
       reset,
       formState: { errors },
     } = useForm();
-  const { data, setRefetch } = useContext(AuthContext);
+  // const { data, setRefetch } = useContext(AuthContext);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [taskTitle, setTaskTitle] = useState('');
-  const [associated, setAssociated] = useState('');
-  const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    if (isModalOpen) {
-      const allKeys = [data.todo, data.inProgress, data.done];
-      allKeys.forEach(item => {
-        let index = item.findIndex(task => task._id.toString() === id);
-        if (index !== -1) {
-          const task = item[index];
-          setTaskTitle(task.taskTitle);
-          setAssociated(task.associated);
-          setProgress(Number(task.progress));
-        }
-      });
-    }
-  }, [isModalOpen, data, id]);
+
+  // useEffect(() => {
+  //   if (isModalOpen) {
+  //     const allKeys = [data.todo, data.inProgress, data.done];
+  //     allKeys.forEach(item => {
+  //       let index = item.findIndex(task => task._id.toString() === id);
+  //       if (index !== -1) {
+  //         const task = item[index];
+  //         settasktitle(task.tasktitle);
+  //         setAssociated(task.associated);
+  //         setProgress(Number(task.progress));
+  //       }
+  //     });
+  //   }
+  // }, [isModalOpen, data, id]);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -74,27 +73,25 @@ const editDialogue = ({ mode, id }) => {
         okText="Submit"
         cancelText="Cancel"
       >
-        <div className="p-4">
+        {/* <div className="p-4">
           <form className="flex flex-col space-y-4" onSubmit={handleSubmit(handleOk)}>
-            {/* taskTitle*/}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Task Title</label>
               <input
-                {...register('taskTitle', { required: 'Task Title is required',
+                {...register('tasktitle', { required: 'Task Title is required',
                   validate: value => value.trim()!== '' || 'Task Title cannot be blank.',
                  })}
                 type="text"
                 placeholder="Enter task title"
-                value={taskTitle}
-                onChange={(e) => setTaskTitle(e.target.value)}
-                className={`border rounded p-2 ${errors.taskTitle ? 'border-red-500' : ''}`}
+                onChange={(e) => settasktitle(e.target.value)}
+                className={`border rounded p-2 ${errors.tasktitle ? 'border-red-500' : ''}`}
               />
-                            {errors.taskTitle && (
-                              <span className="text-red-500 text-xs">{errors.taskTitle.message}</span>
+                            {errors.tasktitle && (
+                              <span className="text-red-500 text-xs">{errors.tasktitle.message}</span>
                             )}
-            </div>
+            </div> */}
             {/* associated */}
-            <div className="flex flex-col">
+            {/* <div className="flex flex-col">
               <label className="text-sm font-medium">Associate With</label>
               <textarea
                 {...register('associated',{
@@ -111,7 +108,6 @@ const editDialogue = ({ mode, id }) => {
                               <span className="text-red-500 text-xs">{errors.associated.message}</span>
                             )}
             </div>
-            {/* Progress */}
             <div className="flex flex-col">
               <label className="text-sm font-medium">Progress (%)</label>
               <input
@@ -129,7 +125,7 @@ const editDialogue = ({ mode, id }) => {
                               )}
             </div>
           </form>
-        </div>
+        </div> */}
       </Modal>
     </>
   );
