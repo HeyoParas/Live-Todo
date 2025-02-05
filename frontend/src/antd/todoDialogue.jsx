@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 
+import add_todo from '../assets/add_view.svg';
+
 const TodoDialogue = ({ mode, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { tasks, setTasks } = useAuth();
@@ -26,15 +28,18 @@ const TodoDialogue = ({ mode, type }) => {
       const response = await axios.post("http://localhost:7000/addTask", data, {
         withCredentials: true,
       });
-
       console.log("Response from backend:", response.data);
 
-      const newTask = response.data;
-      if(response.data.success) {};
-      setTasks((prevTasks) => [...prevTasks, newTask]); // Update the tasks in the context
+      const newTask = response.data.savedTask;
+      if(response.data.success) {
+      setTasks((prevTasks) => [...prevTasks, newTask]);   // Update the tasks in the context
       message.success("Task Added");
       setIsModalOpen(false);
       reset();
+      }else{
+        message.error("Try Again");
+      }
+
     } catch (error) {
       console.error("Error sending data:", error);
       message.error(error);
@@ -51,12 +56,20 @@ const TodoDialogue = ({ mode, type }) => {
   return (
     <>
       <Button
-        className="border-none font-bold text-[1rem]"
+      
         onClick={showModal}
         style={{
           color: mode ? "#000000" : "#ffffff",
           background: mode ? "#ffffff" : "#2A2B2F",
+          border : mode ? "none" : "none",
+          fontWeight: mode ? "bold" : "bold",
         }}>
+           <img 
+        src={add_todo} 
+        alt="add_todo" 
+        className="w-7 h-7 object-contain"
+        style={{ filter: mode ? "none" : "invert(1) brightness(0.8)" }} 
+      />
         Add New Task
       </Button>
       <Modal

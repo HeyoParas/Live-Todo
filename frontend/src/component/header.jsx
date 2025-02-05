@@ -4,7 +4,7 @@ import notifications from '../assets/notifications.svg'
 import icons from '../assets/icon.svg'
 import image from '../assets/image.png'
 
-const Header = ({mode}) => {
+const Header = ({mode,name}) => {
   return (
     <div>
       <div className='flex flex-col lg:flex-row justify-between items-center p-1 bg-white text-black'
@@ -13,7 +13,7 @@ const Header = ({mode}) => {
         color: mode? "#000000" : "#ffffff", 
         
       }}>
-        <div className='ml-5 text-xl lg:text-2xl'>Welcome Back, Unknown</div>
+        <div className='ml-5 text-xl lg:text-2xl font-bold'>Welcome Back,<span className="italic">{name}</span></div>
         <div className='flex items-center mt-2 lg:mt-0 mr-8 p-4 space-x-4'
         style={{
           filter: mode ? "none" : "invert(1) brightness(0.8)",

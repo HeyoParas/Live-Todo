@@ -41,7 +41,10 @@
     "__v": 0
 }
 
-taskBox-color: #323740
+task box color: background: #292B31;
+task section color: background: #24262C;
+.
+
 
 const deleteTask = async (taskId) => {
     try {

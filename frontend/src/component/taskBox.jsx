@@ -52,8 +52,8 @@ const TaskBox = ({ task, mode, reTrigger, type }) => {
 
   return (
     <div
-      className={`gap-y-4 space-y-4 p-3 border rounded-lg shadow-md mb-3 ${
-        mode ? "bg-[white] text-black" : "bg-[#323740] text-white"
+      className={`gap-y-4 space-y-4 p-3 rounded-lg  mb-3 ${
+        mode ? "bg-[white] text-black  border-solid border-3 border-slate-200" : "bg-[#292b31] text-white"
       }`}>
       {/* Task Header */}
       <div className="flex items-center justify-between ">

@@ -62,17 +62,20 @@ const Dashboard = () => {
         style={{
           marginLeft: w,
           background: mode ? "#ffffff" : "#2a2b2f",
-          color: mode ? "#000000" : "#ffffff",
+          color: mode ? "#2a2b2f" : "#ffffff",
         }}
       >
-        <Header mode={mode}/>
+        <Header mode={mode} name={userData.username}/>
         {/* <Navbar mode={mode} /> */}
         <Navbar mode={mode}  reTrigger={setReTrigger} />
-        <hr />
+        {/* <hr className=""/> */}
+      <hr  className={`${mode ? "border-gray-300 border-2" : "border-[#3f4044] border-2"
+      }`}/>
 
-        <div className="h-[85%] overflow-x-auto flex items-center justify-start gap-5 flex-nowrap w-full border scrollbar-hide p-5">
+
+        <div className="h-[85%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-5">
         {userData.sections.map((elem, index) => (
-        <TaskSection key={index} sectionName={elem} reTrigger={setReTrigger}/>
+        <TaskSection key={index} sectionName={elem} mode={mode} reTrigger={setReTrigger}/>
         ))} 
         </div>
       </div>

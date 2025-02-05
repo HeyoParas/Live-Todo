@@ -16,11 +16,11 @@ const Navbar = ({mode,reTrigger}) => {
               style={{
                 filter: mode ? "none" : "invert(.5) brightness(3)",
               }}>
-        <div className='flex items-center space-x-2 hover:cursor-pointer'>
+        <div className='flex items-center space-x-2 hover:cursor-pointer active:border-bottom-black font-bold'>
           <img src={board_view} alt="board_view" />
           <span >Board view</span>
         </div>
-        <div className='flex items-center space-x-2 hover:cursor-pointer'>
+        <div className='flex items-center space-x-2 hover:cursor-pointer font-bold'>
           <img src={add_view} alt="add_view" />
           <span>Add view</span>
         </div>
