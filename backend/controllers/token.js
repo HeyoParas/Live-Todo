@@ -10,7 +10,7 @@ function makeToken(userObj) {
     email: userObj.email,
     id: userObj.id,
   };
-  return jwt.sign(payload, secret, { expiresIn: '1 h'});
+  return jwt.sign(payload, secret, { expiresIn: '1h'});
 }
 
 function getUser(token) {
@@ -22,6 +22,7 @@ function getUser(token) {
     return null;
   }
 }
+
 const authMiddleware = (req, res, next) => {
   const token = req.cookies.mycookie; // Get token from cookies
 
@@ -36,7 +37,7 @@ const authMiddleware = (req, res, next) => {
         const newToken = jwt.sign(
           { id: decoded.id, email: decoded.email }, 
           process.env.JWT_SECRET, 
-          { expiresIn: "1m" } // Set expiration
+          { expiresIn: "1h" } // Set expiration
         );
 
         res.cookie("mycookie", newToken, {
