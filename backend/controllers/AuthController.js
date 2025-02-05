@@ -70,7 +70,7 @@ const loginUser = async (req, res) => {
             success: true,
           });
         } else {
-          res.json({ message: "Invalid password", success: false });
+          res.json({ message: "Invalid credentials", success: false });
         }
       } else {
         res.json({ message: "User not found", success: false });
