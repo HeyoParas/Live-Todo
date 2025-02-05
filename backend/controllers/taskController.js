@@ -109,7 +109,7 @@ const disableTask = async (req, res) => {
       const assignedTasks = await assignModel.findOneAndUpdate({assignerId:user.id},{
         $pull:{tasks:taskId}
       })
-      if(newTask && updateUser && assignedTasks)
+      if(newTask && updateUser)
       res.status(200).json({ message: "Task deleted successfully",success:true });
       else
       res.json({ message: "Task deleted unsuccessfull",success:false});
