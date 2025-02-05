@@ -134,11 +134,14 @@ const getUserData = async (req,res) => {
     console.log(user);
     if(user){
     try {
-      const userdata = await userModel.findById(user.id).populate([{path:"mytasks"},{path:"assignedTasks"}]); 
-      const AllTasks = await taskModel.find();
+      const userdata = await userModel.findById(user.id).populate([
+        { path: "mytasks", match: { isDisable: false } },
+        { path: "assignedTasks"}
+      ]);
+      // const AllTasks = await taskModel.find();
       // console.log("Tasks from DB ", tasks);
       if(userdata)
-      res.status(200).json({userdata,AllTasks,success:true});
+      res.status(200).json({userdata,success:true});
       else{
         res.json({message:"User not found in DB",success:false})
       }

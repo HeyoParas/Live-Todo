@@ -1,3 +1,4 @@
+const assignModel = require("../models/assignedTaskSchema");
 const taskModel = require("../models/taskSchema");
 const userModel = require("../models/userSchema");
 const {getUser} = require("./token");
@@ -95,15 +96,34 @@ const updateTask = async (req, res) => {
 // disable the task 
 const disableTask = async (req, res) => {
   const { taskId } = req.body;
+  const user = getUser(req.cookies.mycookie);
   // console.log(req.body);
-  try {
-    const newTask = await taskModel.findByIdAndUpdate(taskId,{
-      isDisable:true
-    });
-    res.status(200).json({ message: "Task deleted successfully" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).json({ error: "Failed to delete task" });
+  if(user && taskId){
+    try {
+      const newTask = await taskModel.findByIdAndUpdate(taskId,{
+        isDisable:true
+      });
+      const updateUser = await userModel.findByIdAndUpdate({_id:user.id},{
+        $pull:{mytasks:taskId}
+      });
+      const assignedTasks = await assignModel.findOneAndUpdate({assignerId:user.id},{
+        $pull:{tasks:taskId}
+      })
+      if(newTask && updateUser)
+      res.status(200).json({ message: "Task deleted successfully",success:true });
+      else
+      res.json({ message: "Task deleted unsuccessfull",success:false});
+  
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ error: "Failed to delete task",success:false });
+    }
+  }
+  if(!user){
+    res.json({message:"Please Login first",success:false});
+  }
+  if(!taskId){
+    res.json({message:"Please send a valid taskId",success:false});
   }
 };
 
