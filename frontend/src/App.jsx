@@ -1,52 +1,35 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
-import LoginScreen from './authComponent/loginScreen'
-import SignupScreen from './authComponent/signupScreen'
-import Dashboard from './Dashboard/dashboard';
-import VerifyOtpScreen from './authComponent/verifyOtpScreen'
-import './App.css'
-import axios from 'axios'
+import LoginScreen from "./authComponent/loginScreen";
+import SignupScreen from "./authComponent/signupScreen";
+import Dashboard from "./Dashboard/dashboard";
+import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
+import "./App.css";
+import { useAuth, AuthProvider } from "../context/AuthContext";
 
-function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(null); 
-
-  useEffect(() => {
-    const verifyAuth = async () => {
-      try {
-        const response = await axios.get("http://localhost:7000/auth/checkToken", {
-          withCredentials: true, 
-        });
-        console.log("Authentication response:", response.data.success);
-        setIsAuthenticated(response.data.success);
-      } catch (error) {
-        console.error("Error checking authentication:", error);
-        setIsAuthenticated(false);
-      }
-    };
-  
-    verifyAuth();
-  }, []);
+function AppContent() {
+  const { isAuthenticated } = useAuth();
 
   if (isAuthenticated === null) {
-    return <></>;
+    return <></>;     // Waiting for authentication check
   }
 
   const router = createBrowserRouter([
     {
       path: "/",
-      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen setIsAuthenticated={setIsAuthenticated}/>,
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen />,
     },
     {
-      path : "/verifyOtp",
+      path: "/verifyOtp",
       element: isAuthenticated ? <Navigate to="/dashboard" /> : <VerifyOtpScreen />,
     },
     {
       path: "/login",
-      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen setIsAuthenticated={setIsAuthenticated}/>,
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <LoginScreen />,
     },
     {
       path: "/signup",
-      element:isAuthenticated ? <Navigate to="/dashboard" /> : <SignupScreen />,
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <SignupScreen />,
     },
     {
       path: "/dashboard",
@@ -59,6 +42,14 @@ function App() {
   ]);
 
   return <RouterProvider router={router} />;
-};
+}
 
-export default App
+function App() {
+  return (
+    <AuthProvider>
+      <AppContent />
+    </AuthProvider>
+  );
+}
+
+export default App;

@@ -2,9 +2,11 @@ import React, { useState, useContext } from "react";
 import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { useAuth } from "../../context/AuthContext"
 
 const TodoDialogue = ({ mode, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { tasks, setTasks } = useAuth();
 
   const {
     register,
@@ -28,7 +30,12 @@ const TodoDialogue = ({ mode, type }) => {
       );
   
       console.log("Response from backend:", response.data);
-      message.success(response.data);
+
+      const newTask = response.data; 
+      setTasks((prevTasks) => [...prevTasks, newTask]);  // Update the tasks in the context
+      message.success("Task Added");
+      setIsModalOpen(false);
+
     } catch (error) {
       console.error("Error sending data:", error);
       message.error(error)

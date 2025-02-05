@@ -1,23 +1,22 @@
 import React from 'react';
 import add_todo from '../assets/add_view.svg';
-import TodoContent from './TodoContent';
-// import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
-
 import TodoDialogue from "../antd/todoDialogue";
 import '../index.css';
+import TaskBox from './taskBox'
 
-const taskSection = ({ mode, data ,setData , sectionName }) => {
-  // console.log(sectionName);
+import { useAuth } from '../../context/AuthContext'
+const taskSection = ({ mode, sectionName }) => {
+  const { tasks } = useAuth();
+  const sectionTasks = tasks.filter(task => task.section === sectionName);
 
-  const todos = data?.todo || [];
-  
-  //console.log("Extracted todos:", todos);
+   // Sort tasks based on priority (Higher priority first)
+   const sortedTasks = [...sectionTasks].sort((a, b) => b.priority - a.priority);
 
   return (
     <div className='flex flex-col h-full border-2 border-dashed border-black-300 rounded-lg'>
       <div className='flex flex-col sm:flex-row justify-between items-center text-sm top-0 p-3 rounded-lg m-2 [@media(max-width:1300px)]:flex-col'>
         <div className='text-slate-500 font-bold text-[1.2rem] '>
-          {sectionName} ({todos.length})
+          {sectionName} ({sectionTasks.length})
         </div>
         <div className='flex items-center mt-2 sm:mt-0'>
           <img 
@@ -31,6 +30,12 @@ const taskSection = ({ mode, data ,setData , sectionName }) => {
           <TodoDialogue mode={mode} type={sectionName}  />
         </div>
       </div>
+
+      {/* Map sorted tasks to TaskBox */}
+      {sortedTasks.map(task => (
+        <TaskBox key={task._id} task={task} />
+      ))}
+
     </div>
   );
 };

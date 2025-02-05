@@ -3,11 +3,13 @@ import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { message } from "antd";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext"; // Import useAuth
 
-const LoginScreen = ({setIsAuthenticated}) => {
+const LoginScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { setIsAuthenticated } = useAuth(); // Get setIsAuthenticated & setUserData from context
 
   const {
     register,
@@ -21,14 +23,13 @@ const LoginScreen = ({setIsAuthenticated}) => {
       console.log("Response from backend:", response.data);
 
       if (response.data.success) {
-        message.success("Login successful! Redirecting...");
         message.success(response.data.message);
         setIsAuthenticated(true);
         navigate("/dashboard"); 
       } else {
         message.error(response.data.message);
       }
-      
+
     } catch (error) {
       console.error("Login error:", error);
       message.error("An error occurred. Please try again.");

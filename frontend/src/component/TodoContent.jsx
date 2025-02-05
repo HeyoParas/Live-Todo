@@ -14,31 +14,33 @@ import { message, Popconfirm } from 'antd';
 const TodoContent = ({ mode, data }) => {
   // console.log("data in todocontent",data);
 
-  formatAssignDate(data);
+  // formatAssignDate(data);
   
   const [deleteVisible, setDeleteVisible] = useState(false); 
-     const{x,setRefetch} = useContext(AuthContext);
+    //  const{x,setRefetch} = useContext(AuthContext);
   
 
   const deleteTask = async (id) => {
-    console.log(id)
-    try {
-      const response = await axios.delete(`http://localhost:5000/api/tasks/${id}`);
-      if (response.status === 200) {
-        message.success('Task deleted successfully');
-        setRefetch(true);
-      }
-    } catch (error) {
-      message.error('Failed to delete task');
-      console.error('Error deleting task:', error);
-    }
+    console.log("am in delete Task");
+    // console.log(id)
+    // try {
+    //   const response = await axios.delete(`http://localhost:5000/api/tasks/${id}`);
+    //   if (response.status === 200) {
+    //     message.success('Task deleted successfully');
+    //     setRefetch(true);
+    //   }
+    // } catch (error) {
+    //   message.error('Failed to delete task');
+    //   console.error('Error deleting task:', error);
+    // }
   };
+
   function formatAssignDate(task) {
     const date = new Date(task.assignDate); // Convert to Date object
     const options = { month: 'short', day: '2-digit', year: 'numeric' }; // Formatting options
     task.assignDate = date.toLocaleDateString('en-US', options).replace(',', ''); // Format and remove the comma
     return task;
-}
+  }
 
   return (
     <div className='gap-y-4 space-y-4 p-3'>
@@ -54,7 +56,7 @@ const TodoContent = ({ mode, data }) => {
           </div>
         </div>
         <div className='flex items-center gap-x-4'>
-        <EditDialogue mode={mode} id={data?._id}/>
+        {/* <EditDialogue mode={mode} id={data?._id}/> */}
 
           <Popconfirm
             title="Are you sure you want to delete this task?"
