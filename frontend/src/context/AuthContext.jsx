@@ -11,7 +11,6 @@ export const AuthProvider = ({children}) => {
     const [userData, setUserData] = useState(null);
     const [tasks, setTasks] = useState([]);
 
-    // ✅ Check if user is authenticated (Runs on App Load)
   useEffect(() => {
     const verifyAuth = async () => {
       try {
@@ -38,16 +37,3 @@ export const AuthProvider = ({children}) => {
 export const useAuth = () => {
     return useContext(AuthContext);
 };
-        
-        //    // Fetch User Data (Runs when Dashboard Mounts)
-        //    const fetchUserData = async () => {
-        //     setLoading(true);
-        //     try {
-        //       const response = await axios.get("http://localhost:7000/getUserData", { withCredentials: true });
-        //       setUserData(response.data.userdata);
-        //     } catch (err) {
-        //       console.error("Error fetching user data:", err);
-        //     } finally {
-        //       setLoading(false);
-        //     }
-        //   };

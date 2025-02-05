@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import { useAuth } from "../../context/AuthContext"
+import { useAuth } from "../context/AuthContext"
 
 const TodoDialogue = ({ mode, type }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
