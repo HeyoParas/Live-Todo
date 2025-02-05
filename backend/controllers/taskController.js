@@ -100,7 +100,7 @@ const disableTask = async (req, res) => {
     const newTask = await taskModel.findByIdAndUpdate(taskId,{
       isDisable:true
     });
-    res.status(200).json({ message: "Task deleted successfully" });
+    res.status(200).json({ message: "Task deleted successfully", success: true });
   } catch (err) {
     console.log(err);
     res.status(500).json({ error: "Failed to delete task" });
