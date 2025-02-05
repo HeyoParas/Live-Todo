@@ -27,9 +27,9 @@ const assignTasks = new mongoose.Schema({
         max:10,
         default:0
       },
-      accepted:{
-        type:Boolean,
-        default:0
+      status:{
+        type:String,
+        default:"pending"
       }
     },
   ],
