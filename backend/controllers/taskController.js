@@ -155,9 +155,9 @@ const addNewSection = async (req, res) => {
       { new: false }
     );
     if (!newSection.sections.includes(section)) {
-      res.status(200).json({ message: `${section} added successfully!!` });
+      res.status(200).json({ message: `${section} added successfully!!`,success:true });
     } else {
-      res.status(200).json({ message: `${section} already exists!!` });
+      res.status(200).json({ message: `${section} already exists!!`,success:false});
     }
   } catch (err) {
     console.log("Error adding new section: ", err);
