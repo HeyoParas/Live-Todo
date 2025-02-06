@@ -75,7 +75,7 @@ const App = ({ mode, id }) => {
   return (
     <Space wrap>
       <button
-        className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600"
+        className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 p-1"
         onClick={() => info(id, tasks)}
       >
         <img

@@ -97,3 +97,26 @@ const updateTask = async (taskId, updatedData) => {
 
 
 
+
+<Droppable droppableId="sections" type="section" direction="horizontal">
+            {(provided) => (
+              <div
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+                className="h-[84%] overflow-x-auto flex items-center gap-3 flex-nowrap w-full p-5">
+                {userData.sections.map((elem, index) => (
+                  <Draggable key={elem} draggableId={elem} index={index}>
+                    {(provided) => (
+                      <div
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}>
+                        <TaskSection sectionName={elem} mode={mode} reTrigger={setReTrigger} />
+                      </div>
+                    )}
+                  </Draggable>
+                ))}
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>

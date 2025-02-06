@@ -7,9 +7,11 @@ import Drawer from "../component/Drawer";
 import Shimmer from "../shimmer/shimmer";
 import { useAuth } from "../context/AuthContext";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { message } from "antd";
 
 const Dashboard = () => {
-  const { userData, setUserData, setTasks } = useAuth();
+  const { userData, setUserData, tasks, setTasks } = useAuth();
+  // console.log(tasks);
   const [reTrigger, setReTrigger] = useState(null);
 
   const [isLoading, setIsLoading] = useState(true);
@@ -40,7 +42,7 @@ const Dashboard = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 2500);
+    }, 3000);
 
     return () => clearTimeout(timer);
   }, []);
@@ -50,21 +52,52 @@ const Dashboard = () => {
   }
 
   const onDragEnd = async (result) => {
-    if (!result.destination) return; // Agar kahi drop nahi hua toh kuch nahi karna
+    //"If it is not dropped anywhere, do nothing."
+    if (!result.destination) return;
 
     const { source, destination, draggableId } = result;
+    const currentTask = tasks.filter((task, index) => {
+      if (task._id == draggableId) {
+        return task;
+      }
+    });
+    // console.log("currentTask: ", currentTask);
+    // console.log("draggableId: ", draggableId);
+    // console.log("destination.droppableId: ", destination.droppableId);
 
-    // Backend me task ka section update karna
     try {
-      // await axios.post("http://localhost:7000/updateTaskSection", {
-      //   taskId: draggableId,
-      //   sectionName: destination.droppableId,
-      // });
-      console.log("draggableId: ", draggableId);
-      cosnole.log("draggable taskSection: ")
-      console.log("destination.droppableId: ", destination.droppableId);
+      const obj = {
+        taskId: draggableId,
+        section: destination.droppableId,
+      };
 
-      // setReTrigger((prev) => !prev); // UI refresh karne ke liye
+      if(destination.droppableId == currentTask[0].section){
+        return message.warning("Cannot update in same section");
+      }
+
+      if(currentTask[0].section == 'completed'){
+        return message.warning("Cannot change section of completed task");
+      }
+
+        const response = await axios.patch(
+          "http://localhost:7000/updateSection",
+          obj,
+          {
+            withCredentials: true,
+          }
+        );
+        if (response.data.success) {
+          message.success("Task " + response?.data?.message);
+          setTasks((prevTasks) =>
+            prevTasks.map((task) =>
+              task._id === draggableId
+                ? { ...task, section: destination.droppableId }
+                : task
+            )
+          );
+        }
+      
+
     } catch (error) {
       console.error("Error updating task section:", error);
     }
@@ -72,17 +105,18 @@ const Dashboard = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex h-screen">
+      <div className="flex h-screen w-full">
         <div>
           <Drawer setWidth={setWidth} mode={mode} setMode={setMode} />
         </div>
-
+        {/* main section */}
         <div
-          className="h-full overflow-y-none scrollbar-hide flex-grow"
+          className="h-full overflow-y-none scrollbar-hide"
           style={{
             marginLeft: w,
-            background: mode ? "#ffffff" : "#2a2b2f",
-            color: mode ? "#2a2b2f" : "#ffffff",
+            width: `calc(96% - ${w})`,
+            background: "#2a2b2f",
+            color: "#ffffff",
           }}>
           <Header mode={mode} name={userData.username} />
           {/* <Navbar mode={mode} /> */}
@@ -94,11 +128,21 @@ const Dashboard = () => {
             }`}
           />
 
-          <div className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-5">
+          <div
+            className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
+            style={{
+              background: mode ? "#ffffff" : "#2a2b2f",
+            }}>
             {userData.sections.map((elem, index) => (
-        <TaskSection key={index} sectionName={elem} mode={mode} reTrigger={setReTrigger}/>
-        ))} 
+              <TaskSection
+                key={index}
+                sectionName={elem}
+                mode={mode}
+                reTrigger={setReTrigger}
+              />
+            ))}
           </div>
+
         </div>
       </div>
     </DragDropContext>

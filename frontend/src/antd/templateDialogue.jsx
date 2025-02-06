@@ -23,10 +23,16 @@ const templateDialogue = ({ mode, type ,reTrigger}) => {
         const response = await axios.post("http://localhost:7000/addSection", data,{
             withCredentials:true,
         });
-        message.success("Template added successfully!");
-  
+        console.log(response.data)
+        if(response.data.success){
+          message.success(response.data.message);
+        }
+        else{
+          message.warning(response.data.message);
+        }
         setIsModalOpen(false);
         reset(); // Reset form after successful submission
+  
       } catch (error) {
         console.error("Error adding template:", error);
         message.error("Failed to add template. Please try again.");
@@ -48,6 +54,7 @@ const templateDialogue = ({ mode, type ,reTrigger}) => {
         style={{
           color: mode ? "#000000" : "#ffffff",
           background: mode ? "#ffffff" : "#2A2B2F",
+          borderRadius: "20px"
         }}
       >
         New Template
@@ -65,15 +72,23 @@ const templateDialogue = ({ mode, type ,reTrigger}) => {
           <form className="flex flex-col space-y-4" onSubmit={handleSubmit(handleOk)}>
             {/* section  */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium">Section </label>
-              <input
-                {...register("section", { required: "Task section name is required." })}
-                type="text"
-                placeholder="Enter section title"
-                className={`border rounded p-2 ${errors.taskTitle ? "border-red-500" : ""}`}
-              />
-              {errors.taskTitle && <span className="text-red-500 text-xs">{errors.taskTitle.message}</span>}
-            </div>
+  <label className="text-sm font-medium">Section</label>
+  <input
+    {...register("section", {
+      required: "Section title is required.",
+      minLength: { value: 3, message: "Section title must be at least 3 characters long." },
+      maxLength: { value: 50, message: "Section title must not exceed 50 characters." },
+      pattern: { value: /^[A-Za-z0-9 ]+$/, message: "Only alphanumeric characters are allowed." },
+      validate: (value) => value.trim() !== "" || "Section title must be at least 3 characters long."
+    })}
+    type="text"
+    placeholder="Enter section title"
+    className={`border rounded p-2 ${errors.section ? "border-red-500" : ""}`}
+  />
+  {errors.section && <span className="text-red-500 text-xs">{errors.section.message}</span>}
+</div>
+
+
           </form>
         </div>
       </Modal>

@@ -139,7 +139,7 @@ const TodoDialogue = ({ mode, type }) => {
                 value={type}
                 disabled
                 placeholder="Enter section"
-                className={`border rounded p-2 ${
+                className={`border rounded p-2 hover:cursor-not-allowed ${
                   errors.section ? "border-red-500" : ""
                 }`}
               />

@@ -24,7 +24,6 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
     task.createdAt = date.toLocaleDateString("en-US", options).replace(",", ""); // Format and remove the comma
     return task;
   }
-
   const deleteTask = async (taskId) => {
     try {
       // console.log("in deleteTask, taskID:", taskId);
@@ -35,13 +34,14 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
           withCredentials: true,
         }
       );
-
-      // console.log(response.data);
+  
       if (response.data.success) {
-        message.success(response.data.message);
-        setTasks((prevTasks) =>
-          prevTasks.filter((task) => task._id !== taskId)
-        );
+        message.loading("Deleting task...", 1.5); // Show loading message for 2.5 sec
+  
+        setTimeout(() => {
+          setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
+          message.success("Task deleted successfully!");
+        }, 2000); // Delay task deletion by 3 sec
       } else {
         message.error("Failed to delete task!");
       }
@@ -50,6 +50,7 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
       message.error("Error deleting task. Try again!");
     }
   };
+  
 
   return (
     <Draggable draggableId={task._id} index={index}>
@@ -59,39 +60,33 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
           {...provided.draggableProps}
           {...provided.dragHandleProps}
           className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition ${
-            snapshot.isDragging ? "bg-blue-300" : mode ? "bg-white text-black border-solid border-3 border-slate-200" : "bg-[#292b31] text-white"
+            snapshot.isDragging ? "bg-blue-300" : mode ? "bg-white text-black border-solid border-2 border-slate-200" : "bg-[#292b31] text-white"
           }`}
         >
-    {/* <div
-      className={`gap-y-4 space-y-4 p-3 rounded-lg  mb-3 ${
-        mode
-          ? "bg-[white] text-black  border-solid border-3 border-slate-200"
-          : "bg-[#292b31] text-white"
-      }`}> */}
       {/* Task Header */}
       <div className="flex items-center justify-between ">
         <div className="w-[90%]">
           {/* Task Title */}
-          <div className="text-md font-bold">
+          <div className="text-sm font-medium">
             {task?.tasktitle || "Untitled Task"}
           </div>
           {/* Task Description */}
           <div
             className={`text-opacity-60 ${
-              mode ? "text-gray-600" : "text-gray-300"
+              mode ? "text-gray-600 text-sm" : "text-gray-300 text-sm"
             }`}>
             {task?.taskDescription || "No Description"}
           </div>
         </div>
 
-        <div className="flex justify-between w-[20%] ">
+        <div className="flex justify-between w-[20%] gap-x-2">
           {/* Edit Button */}
-          <div>
+          <div className="mt-1">
             <EditDialogue id={task?._id} task={task} reTrigger={reTrigger} />
           </div>
 
           {/* Delete Button */}
-          <div className="flex items-center gap-x-4 ">
+          <div className="flex items-center">
             <Popconfirm
               title="Are you sure you want to delete this task?"
               open={deleteVisible}
@@ -99,12 +94,11 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
               onCancel={() => setDeleteVisible(false)}
               okText="Yes"
               cancelText="No"
-              onVisibleChange={(visible) => setDeleteVisible(visible)}>
+              onOpenChange={(visible) => setDeleteVisible(visible)}>
               <button className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
                 <img
                   src={more}
                   alt="more"
-                  className="w-5 h-5"
                   style={{ filter: mode ? "none" : "invert(1)" }}
                 />
               </button>
@@ -168,7 +162,7 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
       <div className="flex items-center justify-between">
         {/* asign date */}
         <div
-          className={`box-content border-1 text-sm w-[35%] h-5 rounded-full font-bold text-center ${
+          className={` border-none text-sm rounded-full font-medium text-center p-1 ${
             type !== "completed" &&
             (new Date(task.dueDate).toLocaleDateString() ===
               new Date().toLocaleDateString() ||
@@ -197,12 +191,12 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
           </div>
 
           {/* info */}
-          <div className="flex items-center">
+          <div className="flex items-center ">
             <TaskInfo mode={mode} id={task?._id} />
           </div>
         </div>
       </div>
-    </div>
+      </div>
       )}
     </Draggable>
   );
