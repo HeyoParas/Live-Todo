@@ -164,35 +164,7 @@ const addNewSection = async (req, res) => {
     res.status(500).json({ error: "Failed to add section" });
   }
 };
-const getDataforAssignTasks = async (req, res) => {
-  const user = await getUser(req.cookies.mycookie);
-  try {
-    const otherUsers = await userModel.find({ _id: { $ne: user.id } });
-    const tasksCanBeAssigned = await taskModel.find({ userId: user.id });
-    res.json({ users: otherUsers, tasks: tasksCanBeAssigned ,success:true });
-  } catch (err) {
-    console.log("Error fetching data for assign Tasks: ", err);
-    res.json({success:false ,message:"Error fetching data for assign Tasks"}) ;
-  }
-};
-const assignTask = async (req, res) => {
-  // const { email, taskId, assignDate, dueDate, currProgress } = req.body;
-  // if (!verifydate(assignDate, dueDate)) {
-  //   const user = await getUser(req.cookies.mycookie);
-  //   if (user) {
-  //     try {
-  //       const newAssignTask = new assignModel({
-  //         assignerId: user.id,
-  //         assignTo:email,
-  //         $addToSet: { tasks: { taskId, assignDate, dueDate, currProgress } },
-  //       });
-  //       await newAssignTask.save();
-  //     }catch (error) {
-  //       console.log("Error Assigning Tasks", error);
-  //     }
-  //   }
-  // }
-};
+
 
 // update section of a task (for drag and drop)
 const updateSection = async (req,res)=>{
@@ -217,7 +189,5 @@ module.exports = {
   addNewSection,
   updateTask,
   disableTask,
-  getDataforAssignTasks,
-  assignTask,updateSection
   // getTasks
 };
