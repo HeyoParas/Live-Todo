@@ -60,7 +60,7 @@ const TodoDialogue = ({ mode, type }) => {
         onClick={showModal}
         style={{
           color: mode ? "#000000" : "#ffffff",
-          background: mode ? "#ffffff" : "#2A2B2F",
+          background: mode ? "#ffffff" : "#24262C",
           border : mode ? "none" : "none",
           fontWeight: mode ? "bold" : "bold",
         }}>
@@ -79,8 +79,15 @@ const TodoDialogue = ({ mode, type }) => {
         onCancel={handleCancel}
         okText="Submit"
         cancelText="Cancel"
-        className={mode ? "light-modal" : "dark-modal"}>
-        <div className="p-4">
+        // height={"80vh"}
+        width={"40%"}
+        style={{
+          height:"100vh",
+          overflow: "hidden"
+        }}
+
+        >
+        <div className="p-4 ">
           <form
             className="flex flex-col space-y-4"
             onSubmit={handleSubmit(handleOk)}>
@@ -132,7 +139,7 @@ const TodoDialogue = ({ mode, type }) => {
                 value={type}
                 disabled
                 placeholder="Enter section"
-                className={`border rounded p-2 ${
+                className={`border rounded p-2 hover:cursor-not-allowed ${
                   errors.section ? "border-red-500" : ""
                 }`}
               />

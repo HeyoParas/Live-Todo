@@ -33,14 +33,17 @@ function Drawer({ setWidth, mode, setMode  }) {
 
   return (
     <div className="flex h-screen">
-      <div className="w-[65px] bg-[#1c1d22] text-white flex flex-col items-center relative ">
-        <button
-          className="rounded-full mt-4 text-xl focus:outline-none p-5 hover:bg-slate-800"
+      <div className="w-[65px] bg-[#1c1d22] text-white flex flex-col justify-between items-center relative ">
+        <div className="flex flex-col items-center justify-center">
+        <div>
+       <button
+          className="rounded-full  text-xl focus:outline-none p-5 hover:bg-slate-800"
           onClick={toggleDrawer}
         >
           <img src={sideBarLogo} alt="siderBar" />
         </button>
-        <div className="mt-10 gap-5 space-y-4 flex flex-col items-center">
+       </div>
+        <div className="mt-5 gap-5  flex flex-col items-center">
           <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
             <img src={square} />
           </button>
@@ -63,7 +66,8 @@ function Drawer({ setWidth, mode, setMode  }) {
             <img src={filter} />
           </button>
         </div>
-        <div className="mt-[300px] gap-5 space-y-4 flex flex-col items-center ">
+        </div>
+        <div className="flex flex-col items-center mb-4 ">
         <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
             {/* <img src={exit} /> */}
             <LogOut />

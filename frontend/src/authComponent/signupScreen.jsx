@@ -33,7 +33,7 @@ const SignupScreen = () => {
 
   return (
     <div className="min-h-screen min-w-full flex items-center justify-center overflow-hidden p-4">
-      <div className="flex w-full h-full shadow-lg m-[5%]">
+      <div className="flex w-full h-full shadow-lg m-2">
         {/* Left Section */}
         <div className="w-full flex flex-col justify-center items-center">
           <div className="m-3 p-5 text-center">
@@ -68,7 +68,7 @@ const SignupScreen = () => {
                   type="email"
                   id="email"
                   className={`w-[90%] border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
-                  placeholder="hakeem@digital.com"
+                  placeholder="paras@gmail.com"
                   {...register("email", {
                     required: "Email is required",
                     pattern: {
