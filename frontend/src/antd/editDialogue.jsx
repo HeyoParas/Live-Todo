@@ -7,8 +7,6 @@ import {useAuth } from '../context/AuthContext';
 
 const EditDialogue = ({ mode, id, task,reTrigger }) => {
   const { setTasks } = useAuth();
-  // console.log("Tasks", task);
-  // console.log("Edited Task ID", id);
 
   // Initialize form state with task data
   const [formData, setFormData] = useState({
@@ -34,18 +32,6 @@ const EditDialogue = ({ mode, id, task,reTrigger }) => {
   };
 
   const handleOk = async () => {
-    // console.log("Task ID:", id);
-    // console.log("Form Data:", formData);
-
-    // try {
-    //   await axios.patch(`http://localhost:5000/api/update/tasks/${id}`, formData);
-    //   message.success('Task updated successfully!');
-    //   setIsModalOpen(false);
-    //   reset();
-    // } catch (error) {
-    //   message.error('Failed to update task. Please try again.');
-    // }
-
     try {
       const response = await axios.post("http://localhost:7000/updateTask",formData,{ withCredentials: true }
       );
