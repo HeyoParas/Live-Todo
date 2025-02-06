@@ -84,7 +84,7 @@ const updateTask = async (req, res) => {
         tasktitle,
         taskDescription,
         section,
-        currentProgress,
+        progress:{currProgress:currentProgress},
         priority,
       },
       { new: true }
