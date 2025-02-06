@@ -79,7 +79,7 @@ const assignTask = async (req, res) => {
         const newAssignTask = new assignModel({
           assignerId: user.id,
           assignTo: email,
-          $addToSet: { tasks: { taskId, assignDate, dueDate, currProgress } },
+          $push: { tasks: { taskId, assignDate, dueDate, currProgress } },
         });
         await newAssignTask.save();
         res.json({message:"Task Assigned Successfully!!",success:true});
