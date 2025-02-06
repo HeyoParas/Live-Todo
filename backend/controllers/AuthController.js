@@ -40,15 +40,14 @@ const loginUser = async (req, res) => {
         .findOne({ email: req.body.email })
         .populate([{ path: "mytasks", match: { isDisable: false } }]); // Only populate `mytasks` for now.
 
-      // Check if assignTasks model is available
-      if (mongoose.modelNames().includes('assignTasks')) {
-        user = await userModel
-          .findOne({ email: req.body.email })
-          .populate([
-            { path: "mytasks", match: { isDisable: false } },
-            { path: "assignedTasks", match: { isDisable: false } } // Populate assignTasks if available
-          ]);
-      }
+      // // Check if assignTasks model is available
+      // if (mongoose.modelNames().includes('assignTasks')) {
+      //   user = await userModel
+      //     .findOne({ email: req.body.email })
+      //     .populate([
+      //       { path: "mytasks", match: { isDisable: false } }
+      //     ]);
+      // }
 
       if (user) {
         let check = await comparePassword(req.body.password, user.password); //compare bcrypt pswrd to plain pssword
@@ -135,8 +134,7 @@ const getUserData = async (req,res) => {
     if(user){
     try {
       const userdata = await userModel.findById(user.id).populate([
-        { path: "mytasks", match: { isDisable: false } },
-        { path: "assignedTasks"}
+        { path: "mytasks", match: { isDisable: false } }
       ]);
       // const AllTasks = await taskModel.find();
       // console.log("Tasks from DB ", tasks);
