@@ -77,6 +77,12 @@ const updateTask = async (req, res) => {
     currentProgress,
     priority,
   } = req.body;
+  if (currentProgress === '10') {
+    return res.json({
+      success: false,
+      message: "Move it to the completed section",
+    });
+  }
   try {
     const newTask = await taskModel.findByIdAndUpdate(
       taskId,

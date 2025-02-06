@@ -46,7 +46,7 @@ const EditDialogue = ({ mode, id, task,reTrigger }) => {
         setIsModalOpen(false);
         reTrigger(true);
       } else {
-        message.error("Failed to update task!");
+        message.error(response.data.message);
       }
     } catch (error) {
       console.error("Update failed:", error);
