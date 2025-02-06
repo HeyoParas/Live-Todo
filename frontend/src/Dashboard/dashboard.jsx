@@ -58,12 +58,13 @@ const Dashboard = () => {
     try {
       // await axios.post("http://localhost:7000/updateTaskSection", {
       //   taskId: draggableId,
-      //   newSection: destination.droppableId,
+      //   sectionName: destination.droppableId,
       // });
       console.log("draggableId: ", draggableId);
+      cosnole.log("draggable taskSection: ")
       console.log("destination.droppableId: ", destination.droppableId);
 
-      setReTrigger((prev) => !prev); // UI refresh karne ke liye
+      // setReTrigger((prev) => !prev); // UI refresh karne ke liye
     } catch (error) {
       console.error("Error updating task section:", error);
     }
@@ -77,7 +78,7 @@ const Dashboard = () => {
         </div>
 
         <div
-          className="h-screen overflow-y-auto flex-grow"
+          className="h-full overflow-y-none scrollbar-hide flex-grow"
           style={{
             marginLeft: w,
             background: mode ? "#ffffff" : "#2a2b2f",
@@ -93,7 +94,7 @@ const Dashboard = () => {
             }`}
           />
 
-          <div className="h-[85%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-5">
+          <div className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-5">
             {userData.sections.map((elem, index) => (
         <TaskSection key={index} sectionName={elem} mode={mode} reTrigger={setReTrigger}/>
         ))} 
