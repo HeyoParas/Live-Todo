@@ -29,7 +29,8 @@ const Dashboard = () => {
         setUserData(response.data.userdata);
         setTasks(response.data.userdata.mytasks);
       } catch (err) {
-        console.error("Error fetching data:", err);
+        // console.error("Error fetching data:", err);
+        message.error(err)
         setError("Failed to load tasks! Please try again.");
       } finally {
         setIsLoading(false);
@@ -56,7 +57,7 @@ const Dashboard = () => {
     if (!result.destination) return;
 
     const { source, destination, draggableId } = result;
-    const currentTask = tasks.filter((task, index) => {
+    const currentTask = tasks.filter((task) => {
       if (task._id == draggableId) {
         return task;
       }
@@ -99,7 +100,8 @@ const Dashboard = () => {
       
 
     } catch (error) {
-      console.error("Error updating task section:", error);
+      // console.error("Error updating task section:", error);
+      message.error(error)
     }
   };
 

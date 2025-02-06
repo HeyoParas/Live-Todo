@@ -30,7 +30,7 @@ const OtpScreen = () => {
       // console.log("Combined Data:", combinedData);
 
       const response = await axios.post('http://localhost:7000/signup', combinedData);
-      console.log("Response:", response.data)
+      // console.log("Response:", response.data)
       if (response.data.success) {
         message.success(response.data.message);
         Navigate("/login");
@@ -38,7 +38,7 @@ const OtpScreen = () => {
         message.error(response.data.message);
       }
     } catch (error) {
-      console.error("Error during the request:", error);
+      // console.error("Error during the request:", error);
       message.error("An error occurred. Please try again later.");
     }
   };
@@ -52,7 +52,7 @@ const OtpScreen = () => {
         return <SignupScreen />;
       }
 
-      console.log("Resending email:", signupData.email);
+      // console.log("Resending email:", signupData.email);
       const response = await axios.post('http://localhost:7000/verifyEmail', signupData);
 
       if (response.data.success) {
@@ -62,8 +62,8 @@ const OtpScreen = () => {
       }
 
     } catch (error) {
-      console.error("Error while resending OTP:", error);
-      message.error("An error occurred. Please try again later.");
+      // console.error("Error while resending OTP:", error);
+      message.error(error);
     }
   };
 

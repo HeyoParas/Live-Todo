@@ -46,7 +46,7 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
         message.error("Failed to delete task!");
       }
     } catch (error) {
-      console.error("Delete failed:", error);
+      //console.error("Delete failed:", error);
       message.error("Error deleting task. Try again!");
     }
   };
