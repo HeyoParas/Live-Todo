@@ -22,8 +22,6 @@ const checkLoginStatus = async (req,res)=>{
     }
 }
 const isLogin=(req,res,next)=>{
-    console.log("hiiiii")
-    console.log(req.body)
     const userlogin = getUser(req.cookies.mycookie);
     if(!userlogin){
         next();

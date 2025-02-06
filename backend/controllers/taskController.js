@@ -92,7 +92,7 @@ const updateTask = async (req, res) => {
     if (newTask) {
       res
         .status(200)
-        .json({ message: "Task updated successfully", success: true });
+        .json({updatedTask:newTask, message: "Task updated successfully", success: true });
     } else {
       res.json({ message: "Task updation failed!!", success: false });
     }
@@ -155,9 +155,9 @@ const addNewSection = async (req, res) => {
       { new: false }
     );
     if (!newSection.sections.includes(section)) {
-      res.status(200).json({ message: `${section} added successfully!!` });
+      res.status(200).json({ message: `${section} added successfully!!`,success:true });
     } else {
-      res.status(200).json({ message: `${section} already exists!!` });
+      res.status(200).json({ message: `${section} already exists!!`,success:false});
     }
   } catch (err) {
     console.log("Error adding new section: ", err);
@@ -169,9 +169,10 @@ const getDataforAssignTasks = async (req, res) => {
   try {
     const otherUsers = await userModel.find({ _id: { $ne: user.id } });
     const tasksCanBeAssigned = await taskModel.find({ userId: user.id });
-    res.json({ users: otherUsers, tasks: tasksCanBeAssigned });
+    res.json({ users: otherUsers, tasks: tasksCanBeAssigned ,success:true });
   } catch (err) {
     console.log("Error fetching data for assign Tasks: ", err);
+    res.json({success:false ,message:"Error fetching data for assign Tasks"}) ;
   }
 };
 const assignTask = async (req, res) => {
@@ -193,12 +194,30 @@ const assignTask = async (req, res) => {
   // }
 };
 
+// update section of a task (for drag and drop)
+const updateSection = async (req,res)=>{
+  const {taskId,section} = req.body;
+  try{
+    const updatedTask = await taskModel.findByIdAndUpdate({_id:taskId},{
+      section:section
+    },{new:true});
+    if(updatedTask){
+      res.json({updatedTask,success:true,message:"Section updated successfully!!"});
+    }
+    else{
+      res.json({message:"Send valid data for updation",success:false});
+    }
+  }catch(err){
+    console.log("Error Updating Section: ",err);
+    res.status(500).json({message:"Error Updating Section",success:false});
+  }
+}
 module.exports = {
   addTask,
   addNewSection,
   updateTask,
   disableTask,
   getDataforAssignTasks,
-  assignTask
+  assignTask,updateSection
   // getTasks
 };
