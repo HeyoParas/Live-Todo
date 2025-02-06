@@ -30,7 +30,6 @@ const TodoDialogue = ({ mode, type }) => {
       });
       console.log("Response from backend:", response.data);
 
-      const newTask = response.data.savedTask;
       if(response.data.success) {
       setTasks((prevTasks) => [...prevTasks, newTask]);   // Update the tasks in the context
       message.success("Task Added");
@@ -38,6 +37,7 @@ const TodoDialogue = ({ mode, type }) => {
       reset();
       }else{
         message.error("Try Again");
+        // message.error(response.data.message);
       }
 
     } catch (error) {

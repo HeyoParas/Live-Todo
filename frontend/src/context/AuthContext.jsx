@@ -10,6 +10,7 @@ export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [userData, setUserData] = useState(null);
     const [tasks, setTasks] = useState([]);
+    // const [reTrigger, setReTrigger] = useState(false);
 
   useEffect(() => {
     const verifyAuth = async () => {

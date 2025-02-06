@@ -37,7 +37,7 @@ const templateDialogue = ({ mode, type ,reTrigger}) => {
         console.error("Error adding template:", error);
         message.error("Failed to add template. Please try again.");
       }
-      reTrigger(true); 
+      reTrigger((prev)=>!prev);
   };
   
 
