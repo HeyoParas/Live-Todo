@@ -18,7 +18,7 @@ router.post("/updateTask",authMiddleware.verifyUser,taskController.updateTask);
 router.post("/deleteTask",authMiddleware.verifyUser,taskController.disableTask)
 router.post("/addSection",authMiddleware.verifyUser,taskController.addNewSection);
 router.post("/logout",authController.logoutUser );   
-router.post("/assignTask",authMiddleware.verifyUser,taskController.assignTask);
+router.post("/assignTask",authMiddleware.verifyUser,assignedController.assignTask);
 router.get("/report",authMiddleware.verifyUser,reportController.generateReport);
 router.patch("/updateSection",authMiddleware.verifyUser,taskController.updateSection);
 router.get("/assignedtask",authMiddleware.verifyUser,assignedController.getAssigned);

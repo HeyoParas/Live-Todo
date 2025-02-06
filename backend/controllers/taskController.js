@@ -189,5 +189,5 @@ module.exports = {
   addNewSection,
   updateTask,
   disableTask,
-  // getTasks
+  updateSection
 };
