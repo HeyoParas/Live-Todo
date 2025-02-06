@@ -1,7 +1,16 @@
-//Fetches all the tasks that are assigned to the current loggedin users.
 const assignModel = require("../models/assignedTaskSchema");
 const { getUser } = require("./token");
 
+const verifydate = (aDate, dDate) => {
+  const assignDate = new Date(aDate);
+  const dueDate = new Date(dDate);
+  if (assignDate > dueDate) {
+    return true;
+  }
+  return false;
+};
+
+// Fetches all the tasks that are assigned to the current loggedin users.
 const getAssigned = async (req, res) => {
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
@@ -60,37 +69,59 @@ const getDataforAssignTasks = async (req, res) => {
 // assignTask to user
 const assignTask = async (req, res) => {
   const { email, taskId, assignDate, dueDate, currProgress } = req.body;
+  console.log(req.body);
+
   if (!verifydate(assignDate, dueDate)) {
     const user = await getUser(req.cookies.mycookie);
+    console.log("user", user);
+
     if (user) {
       try {
-        const dataExists = await assignModel.findOne({assignerId:user.id,assignTo:email});
-        if(dataExists){
-          const updateData = await assignModel.findByIdAndUpdate({_id:dataExists._id},{
-            $addToSet:{tasks:{email,taskId,assignDate,dueDate,currProgress}}
-          })
-          if(updateData.nModified==0){
-            res.json({message:"Task Already assigned!!",success:false})
-          }
-          else{
-          res.json({message:"Task Assigned Successfully!!",success:true})
-          }
-        }else{
-        const newAssignTask = new assignModel({
+        // Find the existing assignment for the given assignerId and assignTo
+        const dataExists = await assignModel.findOne({
           assignerId: user.id,
           assignTo: email,
-          $addToSet: { tasks: { taskId, assignDate, dueDate, currProgress } },
         });
-        await newAssignTask.save();
-        res.json({message:"Task Assigned Successfully!!",success:true});
-      }
+
+        if (dataExists) {
+          // Check if the task with the same taskId already exists in the tasks array
+          const taskExists = dataExists.tasks.some((task) => task.taskId.toString() === taskId.toString());
+          
+          if (taskExists) {
+            // If the taskId already exists in the tasks array, deny adding the new task
+            res.json({ message: "Task with this ID already assigned to this user!", success: false });
+          } else {
+            // If the taskId doesn't exist, add the new task to the tasks array
+            const updateData = await assignModel.findByIdAndUpdate(
+              { _id: dataExists._id },
+              {
+                $push: {
+                  tasks: { taskId, assignDate, dueDate, currProgress },
+                },
+              },
+              { new: true } // Ensure that the updated document is returned
+            );
+
+            res.json({ message: "Task Assigned Successfully!", success: true });
+          }
+        } else {
+          // If no existing data, create a new assignment for the user
+          const newAssignTask = new assignModel({
+            assignerId: user.id,
+            assignTo: email,
+            tasks: [{ taskId, assignDate, dueDate, currProgress }],
+          });
+          await newAssignTask.save();
+          res.json({ message: "Task Assigned Successfully!", success: true });
+        }
       } catch (error) {
         console.log("Error Assigning Tasks", error);
-        res.json({message:"Error Assigning Tasks",success:false});
+        res.json({ message: "Error Assigning Tasks", success: false });
       }
     } else {
       res.json({ message: "Please Login First", success: false });
     }
   }
 };
+
 module.exports = { getAssigned, getDataforAssignTasks, assignTask };
