@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
-import SignupScreen from './signupScreen'
-import axios from 'axios'
+import SignupScreen from './signupScreen';
+import axios from 'axios';
 import { message } from 'antd';
 
 const OtpScreen = () => {
@@ -11,7 +11,8 @@ const OtpScreen = () => {
   const signupData = location.state?.signupData;
 
   const [timer, setTimer] = useState(30);
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const inputRefs = useRef([]);
 
   useEffect(() => {
     let interval;
@@ -27,10 +28,8 @@ const OtpScreen = () => {
     try {
       const otpNumber = parseInt(Object.values(data).join(""), 10);
       const combinedData = { ...signupData, otpNumber };
-      // console.log("Combined Data:", combinedData);
 
       const response = await axios.post('http://localhost:7000/signup', combinedData);
-      // console.log("Response:", response.data)
       if (response.data.success) {
         message.success(response.data.message);
         Navigate("/login");
@@ -38,7 +37,6 @@ const OtpScreen = () => {
         message.error(response.data.message);
       }
     } catch (error) {
-      // console.error("Error during the request:", error);
       message.error("An error occurred. Please try again later.");
     }
   };
@@ -48,22 +46,45 @@ const OtpScreen = () => {
       setTimer(30);
 
       if (!signupData) {
-        message.error("Signup First");
-        return <SignupScreen />;
+        message.warning("Signup First");
+        await new Promise((resolve) => setTimeout(resolve, 2500));
+      
+        Navigate("/signup")
       }
+      
 
-      // console.log("Resending email:", signupData.email);
       const response = await axios.post('http://localhost:7000/verifyEmail', signupData);
-
+      console.log(response.data)
       if (response.data.success) {
         message.success(response.data.message);
       } else {
+        console.log("hii")
         message.error(response.data.message);
       }
 
     } catch (error) {
-      // console.error("Error while resending OTP:", error);
+      console.log("hu")
       message.error(error);
+    }
+  };
+
+  const handleChange = (e, index) => {
+    const { value } = e.target;
+    
+    // Sirf ek number allow karega aur next input pe focus karega
+    if (/^\d$/.test(value)) {
+      setValue(`digit${index}`, value); // React Hook Form ke state ko update karna
+      if (index < inputRefs.current.length - 1) {
+        inputRefs.current[index + 1].focus(); // Next input pe focus karega
+      }
+    } else {
+      setValue(`digit${index}`, ""); // Agar valid nahi hai toh empty kar dega
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && !e.target.value && index > 0) {
+      inputRefs.current[index - 1].focus(); // Pichle input pe focus karega
     }
   };
 
@@ -92,6 +113,9 @@ const OtpScreen = () => {
                   }
                 })}
                 className="w-12 h-12 text-center text-xl border rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                onChange={(e) => handleChange(e, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => inputRefs.current[index] = el}
               />
             ))}
           </div>

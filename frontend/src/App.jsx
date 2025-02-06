@@ -21,7 +21,7 @@ function AppContent() {
     },
     {
       path: "/verifyOtp",
-      element: isAuthenticated ? <Navigate to="/dashboard" /> : <VerifyOtpScreen />,
+      element: isAuthenticated ? <Navigate to="/dashboard" /> : <VerifyOtpScreen/>,
     },
     {
       path: "/login",

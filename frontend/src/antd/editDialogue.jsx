@@ -33,9 +33,10 @@ const EditDialogue = ({ mode, id, task,reTrigger }) => {
 
   const handleOk = async () => {
     try {
+      console.log("formData: ",formData)
       const response = await axios.post("http://localhost:7000/updateTask",formData,{ withCredentials: true }
       );
-      // console.log("from backend response",response.data)
+      console.log("from backend response",response.data)
       if (response.data.success) {
         message.success(response.data.message);
         // setTasks(prevTasks =>
