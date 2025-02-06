@@ -32,12 +32,6 @@ const User = new mongoose.Schema({
       ref: "tasks",
     },
   ],
-  assignedTasks: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "assignTasks",
-    },
-  ],
   sections:
     {
       type: [String],

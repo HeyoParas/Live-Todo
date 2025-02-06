@@ -92,7 +92,11 @@ const updateTask = async (req, res) => {
     if (newTask) {
       res
         .status(200)
-        .json({updatedTask:newTask, message: "Task updated successfully", success: true });
+        .json({
+          updatedTask: newTask,
+          message: "Task updated successfully",
+          success: true,
+        });
     } else {
       res.json({ message: "Task updation failed!!", success: false });
     }
@@ -155,69 +159,62 @@ const addNewSection = async (req, res) => {
       { new: false }
     );
     if (!newSection.sections.includes(section)) {
-      res.status(200).json({ message: `${section} added successfully!!`,success:true });
+      res
+        .status(200)
+        .json({ message: `${section} added successfully!!`, success: true });
     } else {
-      res.status(200).json({ message: `${section} already exists!!`,success:false});
+      res
+        .status(200)
+        .json({ message: `${section} already exists!!`, success: false });
     }
   } catch (err) {
     console.log("Error adding new section: ", err);
     res.status(500).json({ error: "Failed to add section" });
   }
 };
-const getDataforAssignTasks = async (req, res) => {
-  const user = await getUser(req.cookies.mycookie);
-  try {
-    const otherUsers = await userModel.find({ _id: { $ne: user.id } });
-    const tasksCanBeAssigned = await taskModel.find({ userId: user.id });
-    res.json({ users: otherUsers, tasks: tasksCanBeAssigned ,success:true });
-  } catch (err) {
-    console.log("Error fetching data for assign Tasks: ", err);
-    res.json({success:false ,message:"Error fetching data for assign Tasks"}) ;
-  }
-};
-const assignTask = async (req, res) => {
-  // const { email, taskId, assignDate, dueDate, currProgress } = req.body;
-  // if (!verifydate(assignDate, dueDate)) {
-  //   const user = await getUser(req.cookies.mycookie);
-  //   if (user) {
-  //     try {
-  //       const newAssignTask = new assignModel({
-  //         assignerId: user.id,
-  //         assignTo:email,
-  //         $addToSet: { tasks: { taskId, assignDate, dueDate, currProgress } },
-  //       });
-  //       await newAssignTask.save();
-  //     }catch (error) {
-  //       console.log("Error Assigning Tasks", error);
-  //     }
-  //   }
-  // }
-};
 
 // update section of a task (for drag and drop)
-const updateSection = async (req,res)=>{
-  const {taskId,section} = req.body;
-  try{
-    const updatedTask = await taskModel.findByIdAndUpdate({_id:taskId},{
-      section:section
-    },{new:true});
-    if(updatedTask){
-      res.json({updatedTask,success:true,message:"Section updated successfully!!"});
+const updateSection = async (req, res) => {
+  const { taskId, section } = req.body;
+  let updatedTask=null;
+  try {
+    if (section == "completed") {
+      updatedTask = await taskModel.findByIdAndUpdate(
+        { _id: taskId },
+        {
+          section: section,
+          progress:{currProgress:10}
+
+        },
+        { new: true }
+      );
+    }else{
+      updatedTask = await taskModel.findByIdAndUpdate(
+        { _id: taskId },
+        {
+          section: section,
+        },
+        { new: true }
+      );
     }
-    else{
-      res.json({message:"Send valid data for updation",success:false});
-    }
-  }catch(err){
-    console.log("Error Updating Section: ",err);
-    res.status(500).json({message:"Error Updating Section",success:false});
+    if (updatedTask) {
+        res.json({
+          updatedTask,
+          success: true,
+          message: "Section updated successfully!!",
+        });
+      } else {
+        res.json({ message: "Send valid data for updation", success: false });
+      }
+  } catch (err) {
+    console.log("Error Updating Section: ", err);
+    res.status(500).json({ message: "Error Updating Section", success: false });
   }
-}
+};
 module.exports = {
   addTask,
   addNewSection,
   updateTask,
   disableTask,
-  getDataforAssignTasks,
-  assignTask,updateSection
-  // getTasks
+  updateSection
 };
