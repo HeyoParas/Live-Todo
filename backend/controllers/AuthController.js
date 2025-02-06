@@ -99,7 +99,7 @@ const signupUser = async (req, res) => {
     .sort({ createdAt: -1 });
   console.log("OtpData",otpData);
     if (!otpData) {
-      return res.json({ success: false, message: "OTP not found in the Database!" });
+      return res.json({ success: false, message: "OTP expired!!" });
     }    
 
   if (otpData.email == email && otpData.otp == otpNumber) {
