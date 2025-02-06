@@ -169,9 +169,10 @@ const getDataforAssignTasks = async (req, res) => {
   try {
     const otherUsers = await userModel.find({ _id: { $ne: user.id } });
     const tasksCanBeAssigned = await taskModel.find({ userId: user.id });
-    res.json({ users: otherUsers, tasks: tasksCanBeAssigned });
+    res.json({ users: otherUsers, tasks: tasksCanBeAssigned ,success:true });
   } catch (err) {
     console.log("Error fetching data for assign Tasks: ", err);
+    res.json({success:false ,message:"Error fetching data for assign Tasks"}) ;
   }
 };
 const assignTask = async (req, res) => {

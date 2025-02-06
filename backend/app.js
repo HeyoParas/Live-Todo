@@ -24,7 +24,7 @@ app.use(express.static("/public"));
 app.use(express.urlencoded({ extended: true }));
 app.use(todoRouter);
 
-//.............................App initialization
+//................................................App initialization
 app.listen(7000,(err,data)=>{
     if(err)
         console.log("Server is not connected!!");
