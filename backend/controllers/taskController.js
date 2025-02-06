@@ -92,7 +92,7 @@ const updateTask = async (req, res) => {
     if (newTask) {
       res
         .status(200)
-        .json({ message: "Task updated successfully", success: true });
+        .json({updatedTask:newTask, message: "Task updated successfully", success: true });
     } else {
       res.json({ message: "Task updation failed!!", success: false });
     }
@@ -193,12 +193,30 @@ const assignTask = async (req, res) => {
   // }
 };
 
+// update section of a task (for drag and drop)
+const updateSection = async (req,res)=>{
+  const {taskId,section} = req.body;
+  try{
+    const updatedTask = await taskModel.findByIdAndUpdate({_id:taskId},{
+      section:section
+    },{new:true});
+    if(updatedTask){
+      res.json({updatedTask,success:true,message:"Section updated successfully!!"});
+    }
+    else{
+      res.json({message:"Send valid data for updation",success:false});
+    }
+  }catch(err){
+    console.log("Error Updating Section: ",err);
+    res.status(500).json({message:"Error Updating Section",success:false});
+  }
+}
 module.exports = {
   addTask,
   addNewSection,
   updateTask,
   disableTask,
   getDataforAssignTasks,
-  assignTask
+  assignTask,updateSection
   // getTasks
 };

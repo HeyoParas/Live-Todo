@@ -19,5 +19,5 @@ router.post("/addSection",authMiddleware.verifyUser,taskController.addNewSection
 router.post("/logout",authController.logoutUser );   
 router.post("/assignTask",authMiddleware.verifyUser,taskController.assignTask);
 router.get("/report",authMiddleware.verifyUser,reportController.generateReport);
-
+router.patch("/updateSection",authMiddleware.verifyUser,taskController.updateSection);
 module.exports =router  
