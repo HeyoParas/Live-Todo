@@ -1,12 +1,11 @@
 const taskModel = require("../models/taskSchema");
 const assignModel = require("../models/assignedTaskSchema");
-const userModel = require("../models/userSchema") ;
-
+const userModel = require("../models/userSchema");
 const { getUser } = require("./token");
 const moment = require("moment");
 
 const generateReport = async (req, res) => {
-  console.log("----generate Report Called.")
+  console.log("----generate Report Called.");
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
     console.log(`Report for ${extractedEmail} being generated, please wait...`);
@@ -17,41 +16,45 @@ const generateReport = async (req, res) => {
 
     // Fetch all tasks associated with the user
     const tasks = await taskModel.find({ userId: user._id });
-    const assignedTasks = await assignModel.find({ assignerId: user._id }).populate("tasks");
+    const assignedTasks = await assignModel.find({ assignTo: extractedEmail }).populate("tasks.taskId");
 
     let report = {
       completed: 0,
       notStarted: 0,
       inProgress: 0,
-      dueTasks: 0,
+      deadlinesPending: 0,
+      deadlineCompletedOntime: 0,
       categoryCount: {},
       mostCompletedCategory: "",
       assignedTotal: 0,
       assignedCompleted: 0,
-    }; 
+    };
 
-    // Count tasks based on status and category
     let categoryCompletion = {};
     tasks.forEach((task) => {
-      // Track each section separately
-      if (task.section in report.categoryCount) {
+      // Count tasks by section dynamically
+      if (report.categoryCount[task.section]) {
         report.categoryCount[task.section]++;
       } else {
         report.categoryCount[task.section] = 1;
       }
 
-      // Track progress-based counts
+      // Categorize tasks based on section
       if (task.section === "completed") report.completed++;
       if (task.section === "todo") report.notStarted++;
       if (task.section === "inProgress") report.inProgress++;
 
-      // Check for overdue tasks only if progress is 10 (completed)
-      if (task.progress.currProgress === 10 && new Date(task.dueDate) < new Date(task.progress.updatedAt)) {
-        report.dueTasks++;
+      // Count deadlinesPending and deadlinesMissed
+      if (task.progress.currProgress === 10) {
+        if (new Date(task.progress.updatedAt) > new Date(task.dueDate)) {
+          report.deadlineCompletedOntime++;
+        }
+      } else if (new Date(task.dueDate) < new Date()) {
+        report.deadlinesPending++;
       }
 
-      // Track completion per category
-      if (!(task.section in categoryCompletion)) {
+      // Track category completion
+      if (!categoryCompletion[task.section]) {
         categoryCompletion[task.section] = 0;
       }
       if (task.section === "completed") {
@@ -63,7 +66,7 @@ const generateReport = async (req, res) => {
     assignedTasks.forEach((assignedTask) => {
       report.assignedTotal += assignedTask.tasks.length;
       assignedTask.tasks.forEach((task) => {
-        if (task.section === "completed") report.assignedCompleted++;
+        if (task.taskId?.section === "completed") report.assignedCompleted++;
       });
     });
 
