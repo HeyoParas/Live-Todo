@@ -32,12 +32,12 @@ const TodoDialogue = ({ mode, type }) => {
 
       if(response.data.success) {
       setTasks((prevTasks) => [...prevTasks, newTask]);   // Update the tasks in the context
-      message.success("Task Added");
+      message.success("Task added");
       setIsModalOpen(false);
       reset();
       }else{
-        message.error("Try Again");
-        // message.error(response.data.message);
+        // message.error("Try Again");
+        message.error(response.data.message);
       }
 
     } catch (error) {

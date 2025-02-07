@@ -41,7 +41,7 @@ const EditDialogue = ({ mode, id, task,reTrigger }) => {
         message.success(response.data.message);
         // setTasks(prevTasks =>
         //   prevTasks.map(task =>
-        //     task._id === taskId ? { ...task, ...updatedData } : task
+        //     task._id === taskId ? { ...task, ...formData } : task
         //   )
         // );       //No need Because of retrigger
         setIsModalOpen(false);
@@ -51,7 +51,7 @@ const EditDialogue = ({ mode, id, task,reTrigger }) => {
       }
     } catch (error) {
       console.error("Update failed:", error);
-      message.error("Error updating task. Try again!");
+      message.error(error);
     }
   };
 
