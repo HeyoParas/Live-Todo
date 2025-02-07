@@ -23,7 +23,7 @@ const generateReport = async (req, res) => {
       notStarted: 0,
       inProgress: 0,
       deadlinesPending: 0,
-      deadlineCompletedOntime: 0,
+      deadlinesMissed: 0,
       categoryCount: {},
       mostCompletedCategory: "",
       assignedTotal: 0,
@@ -47,7 +47,7 @@ const generateReport = async (req, res) => {
       // Count deadlinesPending and deadlinesMissed
       if (task.progress.currProgress === 10) {
         if (new Date(task.progress.updatedAt) > new Date(task.dueDate)) {
-          report.deadlineCompletedOntime++;
+          report.deadlinesMissed++;
         }
       } else if (new Date(task.dueDate) < new Date()) {
         report.deadlinesPending++;
@@ -66,7 +66,9 @@ const generateReport = async (req, res) => {
     assignedTasks.forEach((assignedTask) => {
       report.assignedTotal += assignedTask.tasks.length;
       assignedTask.tasks.forEach((task) => {
-        if (task.taskId?.section === "completed") report.assignedCompleted++;
+        if (task.taskId?.section === "completed" || task.currProgress === 10) {
+          report.assignedCompleted++;
+        }
       });
     });
 

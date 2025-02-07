@@ -4,11 +4,11 @@ fetch('http://localhost:7000/assignTask', {
       'Content-Type': 'application/json', 
     },
     body: JSON.stringify({
-      email: 'x@x.com',
-      taskId:"67a313a9d3d315f003513a80",
-      currProgress:0,
+      email: 'y@y.com',
+      taskId:"67a3048a3cc9e19229a74fcd ",
+      currProgress:2,
       assignDate:'2025-02-05T07:30:49.564+00:00',
-      dueDate:'2025-02-05T07:30:49.564+00:00'
+      dueDate:'2025-03-05T07:30:49.564+00:00'
     })
   })
   .then(response => response.json())
