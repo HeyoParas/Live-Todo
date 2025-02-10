@@ -11,9 +11,6 @@ import { message } from "antd";
 
 const Dashboard = () => {
   const { userData, setUserData, tasks, setTasks } = useAuth();
-  // console.log(tasks);
-  const [reTrigger, setReTrigger] = useState(null);
-
   const [isLoading, setIsLoading] = useState(true);
 
   const [w, setWidth] = useState("20%");
@@ -43,7 +40,7 @@ const Dashboard = () => {
     };
 
     fetchData();
-  }, [reTrigger]);
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -129,7 +126,7 @@ const Dashboard = () => {
           }}>
           <Header mode={mode} name={userData.username} />
           {/* <Navbar mode={mode} /> */}
-          <Navbar mode={mode} reTrigger={setReTrigger} />
+          <Navbar mode={mode} />
           {/* <hr className=""/> */}
           <hr
             className={`${
@@ -147,7 +144,6 @@ const Dashboard = () => {
                 key={index}
                 sectionName={elem}
                 mode={mode}
-                reTrigger={setReTrigger}
               />
             ))}
           </div>

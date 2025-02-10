@@ -5,7 +5,7 @@ import axios from 'axios';
 import edit from '../assets/edit.svg';
 import {useAuth } from '../context/AuthContext';
 
-const EditDialogue = ({ mode, id, task,reTrigger }) => {
+const EditDialogue = ({ mode, id, task }) => {
   const { setTasks } = useAuth();
 
   // Initialize form state with task data
@@ -39,13 +39,12 @@ const EditDialogue = ({ mode, id, task,reTrigger }) => {
       console.log("from backend response",response.data)
       if (response.data.success) {
         message.success(response.data.message);
-        // setTasks(prevTasks =>
-        //   prevTasks.map(task =>
-        //     task._id === taskId ? { ...task, ...formData } : task
-        //   )
-        // );       //No need Because of retrigger
+        setTasks(prevTasks =>
+          prevTasks.map(task =>
+            task._id === formData.taskId ? { ...task, ...response.data.updatedTask } : task
+          )
+        );
         setIsModalOpen(false);
-        reTrigger((prev)=>!prev);
       } else {
         message.error(response.data.message);
       }

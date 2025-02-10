@@ -5,7 +5,7 @@ import TaskBox from "./taskBox";
 import { useAuth } from "../context/AuthContext";
 import { Droppable } from "@hello-pangea/dnd";
 
-const taskSection = ({ mode, sectionName, reTrigger }) => {
+const taskSection = ({ mode, sectionName }) => {
   const { tasks } = useAuth();
   const sectionTasks = tasks.filter((task) => task.section === sectionName);
 
@@ -41,7 +41,6 @@ const taskSection = ({ mode, sectionName, reTrigger }) => {
             key={task._id}
             task={task}
             mode={mode}
-            reTrigger={reTrigger}
             type={sectionName}
             index={index}
           />

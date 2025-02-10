@@ -1,16 +1,14 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
-import camera from "../assets/camera.svg"
-import {useAuth } from '../context/AuthContext';
+import camera from "../assets/camera.svg";
+import { useAuth } from "../context/AuthContext";
 
-  const ProfileComponent = ({closeModal}) => {
-  const {userData} = useAuth();
+const ProfileComponent = ({ closeModal }) => {
+  const { userData } = useAuth();
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [showDialog, setShowDialog] = useState(true);
   const videoRef = useRef(null);
-
 
   // React Hook Form setup
   const {
@@ -99,14 +97,24 @@ import {useAuth } from '../context/AuthContext';
 
   // Form Submission
   const onSubmit = async (data) => {
-    console.log(data)
-    // try {
-    //   await axios.post("/api/update-username", data);
-    //   alert("Profile updated successfully!");
-    // } catch (error) {
-    //   console.error("Error updating profile:", error);
-    // }
+    try {
+      const formData = new FormData();
+      formData.append("username", data.username);
+      formData.append("image", data.image[0]); // Image file is sent here
+  
+      // const response = await axios.post("http://localhost:7000/api/update-username", formData, {
+      //   headers: { "Content-Type": "multipart/form-data" },
+      // });
+      console.log(data)
+      console.log(formData);
+  
+      // alert("Profile updated successfully!");
+      // console.log("Response:", response.data);
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
+  
 
   // // Close Dialog
   // const closeDialog = () => {
@@ -115,93 +123,106 @@ import {useAuth } from '../context/AuthContext';
 
   // handle Report
   const handleReport = async () => {
-
-    const response = await axios.get('http://localhost:7000/report',{
-      withCredentials: true
+    const response = await axios.get("http://localhost:7000/report", {
+      withCredentials: true,
     });
-    console.log("report response:",response.data);
+    console.log("report response:", response.data);
     closeModal();
-  }
+  };
 
   return (
-      <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-bold">Profile</h2>
-          
+    <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
+      {/* Header */}
+      <div className="flex justify-between items-center">
+        <h2 className="text-xl font-bold">Profile</h2>
+      </div>
+
+      {/* Profile Picture */}
+      <div className="text-center">
+        <div className="relative inline-block">
+          <img
+            src={capturedImage || "/default-avatar.png"}
+            alt={userData.username}
+            className="w-[150px] h-[150px] rounded-full mx-auto object-cover shadow-lg"
+          />
+          <button
+            className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full"
+            onClick={openCamera}>
+            <img
+              src={camera}
+              alt="camera"
+              style={{
+                filter: "invert(1) brightness(.8)",
+              }}
+            />
+          </button>
+        </div>
+        {/* Image Upload */}
+        <input
+          type="file"
+          accept="image/*"
+          onChange={handleImageUpload}
+          className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+        />
+      </div>
+
+      {/* Form */}
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div>
+          <label className="block text-gray-700">Username:</label>
+          <input
+            type="text"
+            defaultValue={userData.username} // ✅ Use defaultValue instead of value
+            {...register("username", {
+              required: "Username is required",
+              minLength: { value: 3, message: "At least 3 characters" },
+            })}
+            className="border border-gray-300 rounded p-2 w-full text-black"
+          />
+
+          {errors.username && (
+            <p className="text-red-500 text-sm">{errors.username.message}</p>
+          )}
         </div>
 
-        {/* Profile Picture */}
+        {/* Submit Button */}
+        <button
+          type="submit"
+          className="mt-4 block w-full  bg-slate-600 text-white py-2 rounded hover:bg-slate-500">
+          Save Profile
+        </button>
+      </form>
+
+      {/* My Reports Button */}
+      <button
+        className="block w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-500"
+        onClick={handleReport}>
+        My Reports
+      </button>
+
+      {/* Camera Modal */}
+      {showCamera && (
         <div className="text-center">
-          <div className="relative inline-block">
-            <img
-              src={capturedImage || "/default-avatar.png"}
-              alt = {userData.username}
-              className="w-[150px] h-[150px] rounded-full mx-auto object-cover shadow-lg"
-            />
+          <video
+            ref={videoRef}
+            className="mx-auto border border-gray-300 rounded w-[300px] h-[200px] object-cover"
+          />
+          <div className="space-x-4 mt-2">
             <button
-              className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full"
-              onClick={openCamera}
-            >
-            <img src={camera} alt="camera" 
-             style={{
-              filter: "invert(1) brightness(.8)",
-            }}/>
+              onClick={captureImage}
+              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+              Capture
+            </button>
+            <button
+              onClick={closeCamera}
+              className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-500">
+              Cancel
             </button>
           </div>
-          {/* Image Upload */}
-          <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            className="mt-2 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
-          />
         </div>
-
-        {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div>
-            <label className="block text-gray-700">Username:</label>
-            <input
-  type="text"
-  defaultValue={userData.username} // ✅ Use defaultValue instead of value
-  {...register("username", {
-    required: "Username is required",
-    minLength: { value: 3, message: "At least 3 characters" },
-  })}
-  className="border border-gray-300 rounded p-2 w-full text-black"
-/>
-
-            {errors.username && <p className="text-red-500 text-sm">{errors.username.message}</p>}
-          </div>
-
-          {/* Submit Button */}
-          <button type="submit" className="mt-4 block w-full  bg-slate-600 text-white py-2 rounded hover:bg-slate-500">
-            Save Profile
-          </button>
-        </form>
-
-        {/* My Reports Button */}
-        <button className="block w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-500" onClick={handleReport}>
-          My Reports
-        </button>
-
-        {/* Camera Modal */}
-        {showCamera && (
-          <div className="text-center">
-            <video ref={videoRef} className="mx-auto border border-gray-300 rounded w-[300px] h-[200px] object-cover" />
-            <div className="space-x-4 mt-2">
-              <button onClick={captureImage} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-                Capture
-              </button>
-              <button onClick={closeCamera} className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-500">
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-    )
+      )}
+    </div>
+  );
 };
 
 export default ProfileComponent;

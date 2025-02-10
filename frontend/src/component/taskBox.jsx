@@ -11,7 +11,7 @@ import EditDialogue from "../antd/editDialogue";
 import TaskInfo from "../antd/taskInfo";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
-const TaskBox = ({ task, mode, reTrigger, type, index }) => {
+const TaskBox = ({ task, mode, type, index }) => {
   // console.log("from taskbox:",task)
   const { setTasks } = useAuth();
   const [deleteVisible, setDeleteVisible] = useState(false);
@@ -82,7 +82,7 @@ const TaskBox = ({ task, mode, reTrigger, type, index }) => {
         <div className="flex justify-between w-[20%] gap-x-2">
           {/* Edit Button */}
           <div className="mt-1">
-            <EditDialogue id={task?._id} task={task} reTrigger={reTrigger} />
+            <EditDialogue id={task?._id} task={task} />
           </div>
 
           {/* Delete Button */}

@@ -2,8 +2,10 @@ import React, { useState, useContext } from "react";
 import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import {useAuth} from '../context/AuthContext'
 
-const templateDialogue = ({ mode, type ,reTrigger}) => {
+const templateDialogue = ({ mode}) => {
+  const {userData,setUserData} = useAuth();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const {
@@ -20,12 +22,17 @@ const templateDialogue = ({ mode, type ,reTrigger}) => {
   const handleOk = async (data) => {
     console.log(data);
     try {
+        console.log("data =",data);
         const response = await axios.post("http://localhost:7000/addSection", data,{
             withCredentials:true,
         });
         console.log(response.data)
         if(response.data.success){
           message.success(response.data.message);
+          setUserData((prevUserData) => ({
+            ...prevUserData, 
+            sections: [...prevUserData.sections, data.section],
+          }));
         }
         else{
           message.warning(response.data.message);
@@ -37,7 +44,6 @@ const templateDialogue = ({ mode, type ,reTrigger}) => {
         console.error("Error adding template:", error);
         message.error("Failed to add template. Please try again.");
       }
-      reTrigger((prev)=>!prev);
   };
   
 

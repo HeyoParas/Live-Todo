@@ -18,7 +18,6 @@ const LoginScreen = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("inside login")
     try {
       const response = await axios.post("http://localhost:7000/login", data,{withCredentials:true});
       
