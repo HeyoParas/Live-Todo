@@ -4,7 +4,7 @@ import board_view from '../assets/board_view.svg'
 import more from '../assets/more.svg'
 import { useState } from 'react'
 import TemplateDialogue from '../antd/templateDialogue'
-const Navbar = ({mode}) => {
+const Navbar = ({mode,handleMyTaskOpen,handleAssingedTaskOpen}) => {
   
   return (
     <div className='flex justify-between items-center bg-white text-black text-md'
@@ -18,11 +18,11 @@ const Navbar = ({mode}) => {
               }}>
         <div className='flex items-center space-x-2 hover:cursor-pointer active:border-bottom-black   font-medium'>
           <img src={board_view} alt="board_view" />
-          <span >Board view</span>
+          <span onClick={handleMyTaskOpen}>My Tasks</span>
         </div>
         <div className='flex items-center space-x-2 hover:cursor-pointer font-medium'>
           <img src={add_view} alt="add_view" />
-          <span>Add view</span>
+          <span onClick={handleAssingedTaskOpen}>Assigned Tasks</span>
         </div>
       </div>
       <div className='flex items-center mr-8 p-2 space-x-5'>
