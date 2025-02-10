@@ -24,8 +24,8 @@ const generateReport = async (req, res) => {
       inProgress: 0,
       deadlinesPending: 0,
       deadlinesMissed: 0,
-      categoryCount: {},
-      mostCompletedCategory: "",
+      // categoryCount: {},
+      // mostCompletedCategory: "",
       assignedTotal: 0,
       assignedCompleted: 0,
     };
@@ -33,16 +33,16 @@ const generateReport = async (req, res) => {
     let categoryCompletion = {};
     tasks.forEach((task) => {
       // Count tasks by section dynamically
-      if (report.categoryCount[task.section]) {
-        report.categoryCount[task.section]++;
-      } else {
-        report.categoryCount[task.section] = 1;
-      }
+      // if (report.categoryCount[task.section]) {
+      //   report.categoryCount[task.section]++;
+      // } else {
+      //   report.categoryCount[task.section] = 1;
+      // }
 
       // Categorize tasks based on section
-      if (task.section === "completed") report.completed++;
-      if (task.section === "todo") report.notStarted++;
-      if (task.section === "inProgress") report.inProgress++;
+      if (task.progress.currProgress == 10) report.completed++;
+      if (task.progress.currProgress == 0) report.notStarted++;
+      if (task.progress.currProgress >0 && task.progress.currProgress<10) report.inProgress++;
 
       // Count deadlinesPending and deadlinesMissed
       if (task.progress.currProgress === 10) {
@@ -73,8 +73,8 @@ const generateReport = async (req, res) => {
     });
 
     // Determine most completed category
-    report.mostCompletedCategory = Object.keys(categoryCompletion).reduce((a, b) =>
-      categoryCompletion[a] > categoryCompletion[b] ? a : b, "");
+    // report.mostCompletedCategory = Object.keys(categoryCompletion).reduce((a, b) =>
+    //   categoryCompletion[a] > categoryCompletion[b] ? a : b, "");
 
     res.json(report);
   } catch (error) {
