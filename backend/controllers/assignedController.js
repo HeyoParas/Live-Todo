@@ -14,8 +14,12 @@ const verifydate = (aDate, dDate) => {
 const getAssigned = async (req, res) => {
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
-    const assignedTasks = await assignModel.find({ assignTo: extractedEmail });
-
+    const assignedTasks = await assignModel
+      .find({ assignTo: extractedEmail })
+      .populate({
+        path: "tasks.taskId",
+        select: "taskTitle taskDescription _id",
+      });
     if (assignedTasks.length === 0) {
       return res.json({
         message: "No assigned tasks found for this user.",
@@ -29,7 +33,9 @@ const getAssigned = async (req, res) => {
         assignTo: assignment.assignTo,
         tasks: assignment.tasks.map((task) => {
           return {
-            taskId: task.taskId,
+            taskId: task.taskId._id,  // Getting the _id from populated taskId
+            taskTitle: task.taskId.taskTitle, // Task title from populated data
+            taskDescription: task.taskId.taskDescription, // Task description from populated data
             assignDate: task.assignDate,
             dueDate: task.dueDate,
             currProgress: task.currProgress,
@@ -39,13 +45,13 @@ const getAssigned = async (req, res) => {
       };
     });
 
-    res.json(assignedTaskscurrent);
+    res.json({ assignedTaskscurrent, success: false });
   } catch (error) {
     console.error(error);
     res.status(500).json({
       message: "Error fetching assigned tasks.",
       error: error.message,
-      success: true,
+      success: false,
     });
   }
 };
@@ -55,8 +61,8 @@ const getDataforAssignTasks = async (req, res) => {
   const user = await getUser(req.cookies.mycookie);
   try {
     const otherUsers = await userModel.find({ _id: { $ne: user.id } });
-    const tasksCanBeAssigned = await taskModel.find({ userId: user.id });
-    res.json({ users: otherUsers, tasks: tasksCanBeAssigned, success: true });
+    // const tasksCanBeAssigned = await taskModel.find({ userId: user.id });
+    res.json({ users: otherUsers, success: true });
   } catch (err) {
     console.log("Error fetching data for assign Tasks: ", err);
     res.json({
@@ -85,11 +91,16 @@ const assignTask = async (req, res) => {
 
         if (dataExists) {
           // Check if the task with the same taskId already exists in the tasks array
-          const taskExists = dataExists.tasks.some((task) => task.taskId.toString() === taskId.toString());
-          
+          const taskExists = dataExists.tasks.some(
+            (task) => task.taskId.toString() === taskId.toString()
+          );
+
           if (taskExists) {
             // If the taskId already exists in the tasks array, deny adding the new task
-            res.json({ message: "Task with this ID already assigned to this user!", success: false });
+            res.json({
+              message: "Task with this ID already assigned to this user!",
+              success: false,
+            });
           } else {
             // If the taskId doesn't exist, add the new task to the tasks array
             const updateData = await assignModel.findByIdAndUpdate(
