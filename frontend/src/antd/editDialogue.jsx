@@ -51,7 +51,8 @@ const EditDialogue = ({ mode, id, task,reTrigger }) => {
       }
     } catch (error) {
       console.error("Update failed:", error);
-      message.error(error);
+      // message.error(error);
+      message.error(error.message || "An error occurred");
     }
   };
 

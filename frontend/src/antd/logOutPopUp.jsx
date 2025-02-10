@@ -27,9 +27,9 @@ const logOut = () => {
           }
   
       } catch (error) {
-        console.log("6")
           console.error("Logout failed:", error.response?.data || error.message);
           // message.error("Logout failed! Please try again.");
+          message.error(error.message || "An error occurred");
       }
   };
 

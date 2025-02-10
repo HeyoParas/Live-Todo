@@ -26,11 +26,16 @@ const Dashboard = () => {
           withCredentials: true,
         });
         // console.log("response from backend:",response.data);
-        setUserData(response.data.userdata);
-        setTasks(response.data.userdata.mytasks);
+        if(response.data.success){
+          setUserData(response.data.userdata);
+          setTasks(response.data.userdata.mytasks);
+        }
+        else{
+          message.error(response.data.message);
+        }
       } catch (err) {
         // console.error("Error fetching data:", err);
-        message.error(err)
+        message.error(error.message || "An error occurred");
         setError("Failed to load tasks! Please try again.");
       } finally {
         setIsLoading(false);
@@ -87,21 +92,23 @@ const Dashboard = () => {
             withCredentials: true,
           }
         );
+        console.log("drag response",response.data);
         if (response.data.success) {
           message.success("Task " + response?.data?.message);
           setTasks((prevTasks) =>
             prevTasks.map((task) =>
-              task._id === draggableId
-                ? { ...task, section: destination.droppableId }
-                : task
+                task._id === draggableId
+                    ? { ...task, ...response.data.updatedTask } // Update all fields
+                    : task
             )
           );
+        }else{
+          message.warning(response.data.message);
         }
       
-
     } catch (error) {
-      // console.error("Error updating task section:", error);
-      message.error(error)
+      console.error("Error updating task section:", error);
+      message.error(error.message || "An error occurred");
     }
   };
 

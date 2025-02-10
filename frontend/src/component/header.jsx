@@ -4,13 +4,14 @@ import notifications from '../assets/notifications.svg';
 import icons from '../assets/icon.svg';
 import image from '../assets/image.png';
 import Profile from '../antd/profile.jsx';
+import PfpModal from '../antd/pfpModal.jsx';
 
 const Header = ({ mode, name }) => {
-  const [showProfile, setShowProfile] = useState(false);
+  // const [showProfile, setShowProfile] = useState(false);
 
-  function handlePfp() {
-    setShowProfile(!showProfile); // Toggle profile visibility
-  }
+  // function handlePfp() {
+  //   setShowProfile(!showProfile); // Toggle profile visibility
+  // }
 
   return (
     <div>
@@ -46,7 +47,7 @@ const Header = ({ mode, name }) => {
             </button>
           </div>
           <div className='w-8'>
-            <button
+            {/* <button
               className='hover:bg-slate-600 hover:cursor-pointer rounded-full'
               onClick={handlePfp}
               style={{
@@ -54,13 +55,14 @@ const Header = ({ mode, name }) => {
               }}
             >
               <img src={image} alt='user' className='rounded-full' />
-            </button>
+            </button> */}
+              <PfpModal mode={mode}/>
           </div>
         </div>
       </div>
 
-      {/* Profile component renders conditionally */}
-      {showProfile && <Profile />}
+      {/* Profile component renders conditionally
+      {showProfile && <Profile />} */}
     </div>
   );
 };

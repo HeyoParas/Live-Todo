@@ -31,7 +31,7 @@ const TodoDialogue = ({ mode, type }) => {
       console.log("Response from backend:", response.data);
 
       if(response.data.success) {
-      setTasks((prevTasks) => [...prevTasks, newTask]);   // Update the tasks in the context
+      setTasks((prevTasks) => [...prevTasks, response.data.savedTask]);   // Update the tasks in the context
       message.success("Task added");
       setIsModalOpen(false);
       reset();
@@ -42,7 +42,8 @@ const TodoDialogue = ({ mode, type }) => {
 
     } catch (error) {
       console.error("Error sending data:", error);
-      message.error(error);
+      // message.error(error);
+      message.error(error.message || "An error occurred");
     }
   };
 
@@ -79,15 +80,15 @@ const TodoDialogue = ({ mode, type }) => {
         onCancel={handleCancel}
         okText="Submit"
         cancelText="Cancel"
-        // height={"80vh"}
-        width={"40%"}
-        style={{
-          height:"100vh",
-          overflow: "hidden"
-        }}
-
+        // width={"40%"}
+        // style={{
+        //   height:"100vh",
+        //   overflow: "hidden"
+        // }}
+        style={{ top: 20 }} 
+        bodyStyle={{ maxHeight: '70vh', overflowY: 'auto' }}
         >
-        <div className="p-4 ">
+        <div className="p-4  ">
           <form
             className="flex flex-col space-y-4"
             onSubmit={handleSubmit(handleOk)}>

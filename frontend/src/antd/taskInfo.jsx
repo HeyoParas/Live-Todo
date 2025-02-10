@@ -51,14 +51,14 @@ const info = (id, tasks) => {
         <td className="p-2 font-bold bg-gray-100 w-3/10">Assigned Date</td>
         <td className="p-2 w-7/10">{formatDate(target.assignDate) || "N/A"}</td>
       </tr>
-      <tr className="border-b">
+      {/* <tr className="border-b">
         <td className="p-2 font-bold bg-gray-100 w-3/10">Created At</td>
         <td className="p-2 w-7/10">{formatDate(target.createdAt) || "N/A"}</td>
       </tr>
       <tr>
         <td className="p-2 font-bold bg-gray-100 w-3/10">Updated At</td>
         <td className="p-2 w-7/10">{formatDate(target.updatedAt) || "N/A"}</td>
-      </tr>
+      </tr> */}
     </tbody>
   </table>
 </div>
