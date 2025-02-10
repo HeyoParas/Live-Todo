@@ -1,17 +1,14 @@
 import React, { useState } from "react";
-import edit from "../assets/edit.svg";
 import more from "../assets/More.svg";
 import hamburger from "../assets/hamburger.svg";
-import comment from "../assets/comment.svg";
-import users from '../assets/users.svg'
-import link from "../assets/link.svg";
 import { Popconfirm, message } from "antd";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
 import EditDialogue from "../antd/editDialogue";
 import TaskInfo from "../antd/taskInfo";
-import UserInfo from "../antd/userInfo";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { Tooltip } from 'antd';
+import UserList from '../antd/userList';
+import AxiosInstance from '../api/axiosInstance';
 
 const TaskBox = ({ task, mode, type, index }) => {
   // console.log("from taskbox:",task)
@@ -29,13 +26,7 @@ const TaskBox = ({ task, mode, type, index }) => {
   const deleteTask = async (taskId) => {
     try {
       // console.log("in deleteTask, taskID:", taskId);
-      const response = await axios.post(
-        `http://localhost:7000/deleteTask`,
-        { taskId },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await AxiosInstance.post('/deleteTask',{ taskId });
   
       if (response.data.success) {
         message.loading("Deleting task...", 1.5); // Show loading message for 2.5 sec
@@ -83,7 +74,9 @@ const TaskBox = ({ task, mode, type, index }) => {
         <div className="flex justify-between w-[20%] gap-x-2">
           {/* Edit Button */}
           <div className="mt-1">
+            <Tooltip title="Edit Task">
             <EditDialogue id={task?._id} task={task} />
+            </Tooltip>
           </div>
 
           {/* Delete Button */}
@@ -176,11 +169,10 @@ const TaskBox = ({ task, mode, type, index }) => {
           {task?.createdAt}
         </div>
 
-        {/* users List */}
         <div className="flex items-center gap-x-4">
-
+        {/* users List */}
           <div className="flex items-center">
-            <UserInfo mode={mode} id={task?._id} />
+            <UserList mode={mode} id={task?._id}/>
           </div>
 
           {/* info */}

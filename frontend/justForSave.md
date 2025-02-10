@@ -1,3 +1,20 @@
+const handleClick = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get("http://localhost:7000/getUserList", {
+        withCredentials: true,
+      });
+      console.log("userList", response.data);
+      setUserList(response.data.users); // Save the user list
+      setIsModalOpen(true); // Open the modal
+    } catch (error) {
+      console.error("Error fetching user list:", error);
+    } finally {
+      setLoading(false);
+    }
+  };  
+  
+  
   code from App.js
   
   // const [isAuthenticated, setIsAuthenticated] = useState(null); 
@@ -463,34 +480,16 @@ export default ProfileComponent;
 
 
 
-//lol
-import React from 'react' ;   
-import { Line } from '@ant-design/charts' ;     
-
-const Page : React . FC = ( ) => {      
-  const data = [ 
-    { year : '1991' , value : 3 } ,   
-    { year : '1992' , value : 4 } ,   
-    { year : '1993' , value : 3.5 } ,   
-    { year : '1994' , value : 5 } ,   
-    { year : '1995' , value : 4.9 } ,   
-    { year : '1996' , value : 6 } ,   
-    { year : '1997' , value : 7 } ,   
-    { year : '1998' , value : 9 } ,   
-    { year : '1999' , value : 13 } ,   
-  ] ;
-
-  const config = { 
-    data ,
-    height : 400 , 
-    xField : 'year' , 
-    yField : 'value' , 
-  } ;
-  return < Line { ... config } /> ;   
-} ;
-export default Page ;  
 
 
+<!-- import React from 'react';
+import { Tooltip } from 'antd';
+const App = () => (
+  <Tooltip title="prompt text">
+    <span>Tooltip will show on mouse enter.</span>
+  </Tooltip>
+);
+export default App; -->
 
 
 
@@ -500,10 +499,25 @@ export default Page ;
 
 
 import React from 'react';
-import { Tooltip } from 'antd';
+import { Button, message, Popconfirm } from 'antd';
+const confirm = (e) => {
+  console.log(e);
+  message.success('Click on Yes');
+};
+const cancel = (e) => {
+  console.log(e);
+  message.error('Click on No');
+};
 const App = () => (
-  <Tooltip title="prompt text">
-    <span>Tooltip will show on mouse enter.</span>
-  </Tooltip>
+  <Popconfirm
+    title="Delete the task"
+    description="Are you sure to delete this task?"
+    onConfirm={confirm}
+    onCancel={cancel}
+    okText="Yes"
+    cancelText="No"
+  >
+    <Button danger>Delete</Button>
+  </Popconfirm>
 );
 export default App;

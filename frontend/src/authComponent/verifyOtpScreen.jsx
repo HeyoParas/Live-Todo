@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from "react-router-dom";
 import SignupScreen from './signupScreen';
-import axios from 'axios';
+import AxiosInstance from '../api/axiosInstance';
 import { message } from 'antd';
 
 const OtpScreen = () => {
@@ -29,7 +29,7 @@ const OtpScreen = () => {
       const otpNumber = parseInt(Object.values(data).join(""), 10);
       const combinedData = { ...signupData, otpNumber };
 
-      const response = await axios.post('http://localhost:7000/signup', combinedData);
+      const response = await AxiosInstance.post('/signup', combinedData);
       if (response.data.success) {
         message.success(response.data.message);
         Navigate("/login");
@@ -53,7 +53,7 @@ const OtpScreen = () => {
       }
       
 
-      const response = await axios.post('http://localhost:7000/verifyEmail', signupData);
+      const response = await AxiosInstance.post('/verifyEmail', signupData);
       console.log(response.data)
       if (response.data.success) {
         message.success(response.data.message);

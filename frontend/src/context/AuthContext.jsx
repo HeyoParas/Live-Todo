@@ -1,6 +1,6 @@
 import React from 'react'
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import AxiosInstance from '../api/axiosInstance'
 
 //create context
 export const AuthContext = createContext();
@@ -15,9 +15,7 @@ export const AuthProvider = ({children}) => {
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/auth/checkToken", {
-          withCredentials: true,
-        });
+        const response = await AxiosInstance.get("/auth/checkToken");
         setIsAuthenticated(response.data.success);
       } catch (error) {
         console.error("Error checking authentication:", error);

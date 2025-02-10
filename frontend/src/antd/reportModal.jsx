@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Profile from "./profile";
-import axios from "axios"
+import AxiosInstance from '../api/axiosInstance';
 
 import ReportChart from './reportChart'
 import { Button, Modal } from "antd";
@@ -11,9 +11,7 @@ const App = ({ mode }) => {
 
   const showModal = async () => {
     setIsModalOpen(true);
-     const response = await axios.get("http://localhost:7000/report", {
-      withCredentials: true,
-    });
+     const response = await AxiosInstance.get("/report");
     setReportData(response.data);
   };
   const handleOk = () => {

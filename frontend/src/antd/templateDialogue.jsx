@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import AxiosInstance from "../api/axiosInstance";
 import {useAuth} from '../context/AuthContext'
 
 const templateDialogue = ({ mode}) => {
@@ -23,7 +23,7 @@ const templateDialogue = ({ mode}) => {
     console.log(data);
     try {
         console.log("data =",data);
-        const response = await axios.post("http://localhost:7000/addSection", data,{
+        const response = await AxiosInstance.post("/addSection", data,{
             withCredentials:true,
         });
         console.log(response.data)

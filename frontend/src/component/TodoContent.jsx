@@ -5,7 +5,7 @@ import comment from '../assets/comment.svg';
 import link from '../assets/link.svg';
 import DeletePopUp from '../antd/deletePopUp';
 // import { AuthContext } from '../AuthContext/authcontext';
-import axios from 'axios';
+import AxiosInstance from 'axios';
 import EditDialogue from '../antd/editDialogue';
 
 import '../index.css';

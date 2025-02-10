@@ -117,7 +117,6 @@ const dropdown = ({mode}) => {
   mode="inline" 
   items={items}
 />
-
   );
 };
 

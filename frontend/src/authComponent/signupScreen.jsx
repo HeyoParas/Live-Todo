@@ -2,7 +2,7 @@ import React,{ useState } from "react";
 import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import AxiosInstance from "../api/axiosInstance";
 import { message } from "antd";
 
 const SignupScreen = () => {
@@ -17,7 +17,7 @@ const SignupScreen = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:7000/verifyEmail", data);
+      const response = await AxiosInstance.post("/verifyEmail", data);
 
       if (response.data.success) {
         message.success("Verification otp sent! Please check you mail");
