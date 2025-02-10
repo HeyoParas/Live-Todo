@@ -15,6 +15,9 @@ const Dashboard = () => {
 
   const [w, setWidth] = useState("20%");
   const [mode, setMode] = useState(false);
+  const [isMyTaskOpen,setIsMyTaskOpen] = useState(true);
+  const [isAssignedTaskOpen,setIsAssignedTaskOpen] = useState(false);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -52,6 +55,14 @@ const Dashboard = () => {
 
   if (isLoading) {
     return <Shimmer />;
+  }
+
+  const handleMyTaskOpen = () => {
+    console.log("am in handeMyTask");
+  }
+
+  const handleAssingedTaskOpen = () => {
+    console.log("am in handleAssingedTask");
   }
 
   const onDragEnd = async (result) => {
@@ -126,14 +137,14 @@ const Dashboard = () => {
           }}>
           <Header mode={mode} name={userData.username} />
           {/* <Navbar mode={mode} /> */}
-          <Navbar mode={mode} />
+          <Navbar mode={mode} handleMyTaskOpen={handleMyTaskOpen} handleAssingedTaskOpen={handleAssingedTaskOpen} />
           {/* <hr className=""/> */}
           <hr
             className={`${
               mode ? "border-gray-300 border-2" : "border-[#3f4044] border-2"
             }`}
           />
-
+          
           <div
             className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
             style={{
