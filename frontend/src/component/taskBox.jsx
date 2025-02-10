@@ -3,6 +3,7 @@ import edit from "../assets/edit.svg";
 import more from "../assets/More.svg";
 import hamburger from "../assets/hamburger.svg";
 import comment from "../assets/comment.svg";
+import users from '../assets/users.svg'
 import link from "../assets/link.svg";
 import { Popconfirm, message } from "antd";
 import { useAuth } from "../context/AuthContext";
@@ -174,19 +175,21 @@ const TaskBox = ({ task, mode, type, index }) => {
           {task?.createdAt}
         </div>
 
-        {/* Comments & Links */}
+        {/* users List */}
         <div className="flex items-center gap-x-4">
-          {/* Comments */}
+          {/* <TaskInfo mode={mode} id={task?._id} /> */}
+          
           <div className="flex items-center">
-            <button className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
+            <button className="rounded-full hover: cursor-pointer ">
               <img
-                src={comment}
+                src={users}
                 alt="comment"
                 className="w-5 h-5"
                 style={{ filter: mode ? "none" : "invert(1)" }}
               />
             </button>
-            <span className="ml-1">{task?.comments?.length || 0}</span>
+            {/* <span className="ml-1">{task?.comments?.length || 0}</span> */}
+
           </div>
 
           {/* info */}

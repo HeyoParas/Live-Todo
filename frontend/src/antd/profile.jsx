@@ -123,14 +123,7 @@ const ProfileComponent = ({ closeModal }) => {
   // };
 
   // handle Report
-  const handleReport = async () => {
-    // const response = await axios.get("http://localhost:7000/report", {
-    //   withCredentials: true,
-    // });
-    // console.log("report response:", response.data);
-    setShowReport(true);
-    closeModal();
-  };
+
 
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">

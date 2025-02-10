@@ -1,22 +1,35 @@
 import React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
 
-const BasicPie = () => {
+const BasicPie = ({ data }) => {
+  console.log(data)
+  if (!data || !data.categoryCount) {
+    return <h1>Bhai data ni hai dikhane ko</h1>;
+  }
+
+  // Convert categoryCount object into an array for PieChart
+  const pieData = Object.entries(data.categoryCount)
+    .map(([label, value], index) => ({
+      id: index,
+      value,
+      label,
+    }))
+    .filter(item => item.value > 0);
+
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+    <div className="justify-center items-center h-full">
       <PieChart
         series={[
           {
-            data: [
-              { id: 0, value: 10, label: 'Series A' },
-              { id: 1, value: 15, label: 'Series B' },
-              { id: 2, value: 20, label: 'Series C' },
-            ],
+            data: pieData,
           },
         ]}
         width={400}
-        height={300} // Adjusted height for better visibility
+        height={300}
       />
+      <div >
+      hi
+      </div>
     </div>
   );
 };

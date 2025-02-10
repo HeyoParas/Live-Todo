@@ -1,14 +1,20 @@
 import React, { useState } from "react";
 import Profile from "./profile";
+import axios from "axios"
 
 import ReportChart from './reportChart'
 import { Button, Modal } from "antd";
 
 const App = ({ mode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reportData , setReportData] = useState(null);
 
-  const showModal = () => {
+  const showModal = async () => {
     setIsModalOpen(true);
+     const response = await axios.get("http://localhost:7000/report", {
+      withCredentials: true,
+    });
+    setReportData(response.data);
   };
 
   return (
@@ -29,7 +35,7 @@ const App = ({ mode }) => {
         style={{ top: 20 }}
         bodyStyle={{ maxHeight: "70vh", overflowY: "auto" }} 
       >
-           <ReportChart/>
+           <ReportChart data={reportData}/>
       </Modal>
     </>
   );
