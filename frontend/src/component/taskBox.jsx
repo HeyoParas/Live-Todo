@@ -50,7 +50,6 @@ const TaskBox = ({ task, mode, type, index }) => {
       message.error("Error deleting task. Try again!");
     }
   };
-  
 
   return (
     <Draggable draggableId={task._id} index={index}>

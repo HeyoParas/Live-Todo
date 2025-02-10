@@ -25,7 +25,7 @@ const Dashboard = () => {
         const response = await axios.get("http://localhost:7000/getUserData", {
           withCredentials: true,
         });
-        // console.log("response from backend:",response.data);
+        console.log("response from backend:",response.data);
         if(response.data.success){
           setUserData(response.data.userdata);
           setTasks(response.data.userdata.mytasks);
@@ -58,11 +58,13 @@ const Dashboard = () => {
   }
 
   const handleMyTaskOpen = () => {
-    console.log("am in handeMyTask");
+    setIsMyTaskOpen(true);
+    setIsAssignedTaskOpen(false);
   }
 
   const handleAssingedTaskOpen = () => {
-    console.log("am in handleAssingedTask");
+    setIsAssignedTaskOpen(true);
+    setIsMyTaskOpen(false);
   }
 
   const onDragEnd = async (result) => {
@@ -145,20 +147,24 @@ const Dashboard = () => {
             }`}
           />
           
+          {isMyTaskOpen && 
           <div
-            className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
-            style={{
-              background: mode ? "#ffffff" : "#2a2b2f",
-            }}>
-            {userData.sections.map((elem, index) => (
-              <TaskSection
-                key={index}
-                sectionName={elem}
-                mode={mode}
-              />
-            ))}
-          </div>
+          className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
+          style={{
+            background: mode ? "#ffffff" : "#2a2b2f",
+          }}>
+          {userData.sections.map((elem, index) => (
+            <TaskSection
+              key={index}
+              sectionName={elem}
+              mode={mode}
+            />
+          ))}
+          </div>}
 
+          {isAssignedTaskOpen && 
+            <p>Assigned Task</p>
+          }
         </div>
       </div>
     </DragDropContext>

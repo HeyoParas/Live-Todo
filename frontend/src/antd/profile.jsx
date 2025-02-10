@@ -2,14 +2,13 @@ import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import camera from "../assets/camera.svg";
-import ReportChart from './reportChart'
 import { useAuth } from "../context/AuthContext";
+import ReportModal from "./reportModal"
 
 const ProfileComponent = ({ closeModal }) => {
   const { userData } = useAuth();
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [showReport ,setShowReport] = useState(false)
   const videoRef = useRef(null);
 
   // React Hook Form setup
@@ -197,15 +196,12 @@ const ProfileComponent = ({ closeModal }) => {
       </form>
 
       {/* My Reports Button */}
-      <button
+      {/* <button
         className="block w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-500"
         onClick={handleReport}>
        Report 
-      </button>
-
-     { showReport? <ReportChart/> : ""}
-
-
+      </button> */}
+      <ReportModal/>
       {/* Camera Modal */}
       {showCamera && (
         <div className="text-center">
