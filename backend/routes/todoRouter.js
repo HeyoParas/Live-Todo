@@ -24,5 +24,5 @@ router.post("/assignTask",assignedController.assignTask);
 router.get("/report",authMiddleware.verifyUser,reportController.generateReport);
 router.patch("/updateSection",authMiddleware.verifyUser,taskController.updateSection);
 router.get("/assignedtask",authMiddleware.verifyUser,assignedController.getAssigned);
-router.get("/getUserList",authMiddleware.verifyUser,assignedController.getUserList);
+// router.get("/getUserList",authMiddleware.verifyUser,assignedController.getUserList);
 module.exports =router  

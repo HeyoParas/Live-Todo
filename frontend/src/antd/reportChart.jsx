@@ -1,10 +1,13 @@
 import React from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
+import { Empty } from 'antd';
+import { Divider} from "antd"
+
 
 const BasicPie = ({ data }) => {
   console.log(data)
   if (!data) {
-    return <h1 className="text-center text-gray-500">No data available</h1>;
+    return <Empty/>;
   }
 
   const pieData = Object.entries(data)
@@ -27,7 +30,7 @@ const BasicPie = ({ data }) => {
     height={300}
   />
   </div>
-  <hr />
+  <Divider/>
   <div className='flex justify-center'>
   <details className="hover:cursor-pointer bg-white shadow-md p-4 rounded-lg border border-gray-200">
       <summary className="text-lg font-semibold text-gray-700">📊 Report Summary</summary>

@@ -57,7 +57,6 @@ const TodoDialogue = ({ mode, type }) => {
   return (
     <>
       <Button
-      
         onClick={showModal}
         style={{
           color: mode ? "#000000" : "#ffffff",
