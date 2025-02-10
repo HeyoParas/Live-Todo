@@ -57,7 +57,7 @@ const getAssigned = async (req, res) => {
 };
 
 // get users you can assign task and also the tasks that can be assigned
-const getDataforAssignTasks = async (req, res) => {
+const getUserList = async (req, res) => {
   const user = await getUser(req.cookies.mycookie);
   try {
     const otherUsers = await userModel.find({ _id: { $ne: user.id } });
@@ -135,4 +135,4 @@ const assignTask = async (req, res) => {
   }
 };
 
-module.exports = { getAssigned, getDataforAssignTasks, assignTask };
+module.exports = { getAssigned, getUserList, assignTask };
