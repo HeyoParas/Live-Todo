@@ -10,6 +10,7 @@ import { useAuth } from "../context/AuthContext";
 import axios from "axios";
 import EditDialogue from "../antd/editDialogue";
 import TaskInfo from "../antd/taskInfo";
+import UserInfo from "../antd/userInfo";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const TaskBox = ({ task, mode, type, index }) => {
@@ -177,19 +178,9 @@ const TaskBox = ({ task, mode, type, index }) => {
 
         {/* users List */}
         <div className="flex items-center gap-x-4">
-          {/* <TaskInfo mode={mode} id={task?._id} /> */}
-          
-          <div className="flex items-center">
-            <button className="rounded-full hover: cursor-pointer ">
-              <img
-                src={users}
-                alt="comment"
-                className="w-5 h-5"
-                style={{ filter: mode ? "none" : "invert(1)" }}
-              />
-            </button>
-            {/* <span className="ml-1">{task?.comments?.length || 0}</span> */}
 
+          <div className="flex items-center">
+            <UserInfo mode={mode} id={task?._id} />
           </div>
 
           {/* info */}

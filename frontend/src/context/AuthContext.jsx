@@ -10,7 +10,7 @@ export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [userData, setUserData] = useState(null);
     const [tasks, setTasks] = useState([]);
-    // const [reportData, setReportData] = useState([]);
+    const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -28,7 +28,7 @@ export const AuthProvider = ({children}) => {
   }, []);
   
   return(
-        <AuthContext.Provider value={{  isAuthenticated, setIsAuthenticated, userData, setUserData, tasks, setTasks }}>
+        <AuthContext.Provider value={{  isAuthenticated, setIsAuthenticated, userData, setUserData, tasks, setTasks, userList, setUserList }}>
             {children}
         </AuthContext.Provider>
     );

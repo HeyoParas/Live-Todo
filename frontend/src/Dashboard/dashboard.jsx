@@ -36,7 +36,7 @@ const Dashboard = () => {
       } catch (err) {
         // console.error("Error fetching data:", err);
         message.error(error.message || "An error occurred");
-        setError("Failed to load tasks! Please try again.");
+        // setError("Failed to load tasks! Please try again.");
       } finally {
         setIsLoading(false);
       }

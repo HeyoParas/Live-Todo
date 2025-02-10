@@ -16,6 +16,9 @@ const App = ({ mode }) => {
     });
     setReportData(response.data);
   };
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
 
   return (
     <>
@@ -27,16 +30,23 @@ const App = ({ mode }) => {
       </button>
 
       <Modal
-        title="Profile Report"
-        open={isModalOpen}
-        footer={null} 
-        closable={true}
-        onCancel={() => setIsModalOpen(false)} 
-        style={{ top: 20 }}
-        bodyStyle={{ maxHeight: "70vh", overflowY: "auto" }} 
-      >
-           <ReportChart data={reportData}/>
-      </Modal>
+  title="Profile Report"
+  open={isModalOpen}
+  closable={true}
+  width={700}
+  onOk={handleOk}
+  onCancel={() => setIsModalOpen(false)}
+  style={{ top: 20 }}
+  bodyStyle={{ maxHeight: "70vh", overflowY: "auto" }}
+  footer={[
+    <Button key="ok" type="primary" onClick={handleOk}>
+      OK
+    </Button>,
+  ]}
+>
+  <ReportChart data={reportData} />
+</Modal>
+
     </>
   );
 };
