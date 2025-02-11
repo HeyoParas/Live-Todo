@@ -13,7 +13,7 @@ const updateProfile = async (req, res) => {
 
     // Find the user and update the image path
     const userData = await userModel.findByIdAndUpdate(
-      user.id, // Assuming you get user ID from authentication
+      user.id, 
       { profileImage: imagePath },
       username,
       { new: true }
