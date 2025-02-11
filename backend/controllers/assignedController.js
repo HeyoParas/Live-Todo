@@ -15,11 +15,15 @@ const verifydate = (aDate, dDate) => {
 const getAssigned = async (req, res) => {
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
+    let assignedTo = await userModel.findOne({extractedEmail}).username;
     const assignedTasks = await assignModel
       .find({ assignTo: extractedEmail })
       .populate({
         path: "tasks.taskId",
         select: "taskTitle taskDescription _id",
+      },{
+        path:"assignerId",
+        select:"username"
       });
     if (assignedTasks.length === 0) {
       return res.json({
@@ -30,8 +34,8 @@ const getAssigned = async (req, res) => {
 
     let assignedTaskscurrent = assignedTasks.map((assignment) => {
       return {
-        assignerId: assignment.assignerId,
-        assignTo: assignment.assignTo,
+        assignedBy: assignment.assignerId.username,
+        assignTo: assignedTo,
         tasks: assignment.tasks.map((task) => {
           return {
             taskId: task.taskId._id,  // Getting the _id from populated taskId
