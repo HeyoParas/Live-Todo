@@ -5,7 +5,7 @@ import AxiosInstance from '../api/axiosInstance';
 import ReportChart from './reportChart'
 import { Button, Modal } from "antd";
 
-const App = ({ mode }) => {
+const reportModal = ({ mode }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [reportData , setReportData] = useState(null);
 
@@ -50,4 +50,4 @@ const App = ({ mode }) => {
   );
 };
 
-export default App;
+export default reportModal;

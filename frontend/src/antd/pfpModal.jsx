@@ -5,7 +5,7 @@ import image from '../assets/image.jpg'
 
 import {useAuth} from '../context/AuthContext'
 
-const App = ({ mode }) => {
+const pfpModal = ({ mode }) => {
   const {userData} = useAuth();
   // console.log("inside header",userData)
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -39,4 +39,4 @@ const App = ({ mode }) => {
     </>
   );
 };
-export default App;
+export default pfpModal;

@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 
 const socket = io("http://localhost:7000"); // Connect to backend
 
-const NotificationPopup = ({ userId }) => {
+const Notification = ({ userId }) => {
   useEffect(() => {
     if (userId) {
       socket.emit("LogginUser", userId); // Register user with server
@@ -34,4 +34,4 @@ const NotificationPopup = ({ userId }) => {
   return null; // No UI element, just handling notifications
 };
 
-export default NotificationPopup;
+export default Notification;

@@ -1,6 +1,6 @@
 import React from "react";
 import Info from "../assets/info.svg";
-import {  Modal, Space } from "antd";
+import { Button, Modal, Space } from "antd";
 import { useAuth } from "../context/AuthContext";
 
 const formatDate = (dateString) => {
@@ -51,6 +51,14 @@ const info = (id, tasks) => {
         <td className="p-2 font-bold bg-gray-100 w-3/10">Assigned Date</td>
         <td className="p-2 w-7/10">{formatDate(target.assignDate) || "N/A"}</td>
       </tr>
+      {/* <tr className="border-b">
+        <td className="p-2 font-bold bg-gray-100 w-3/10">Created At</td>
+        <td className="p-2 w-7/10">{formatDate(target.createdAt) || "N/A"}</td>
+      </tr>
+      <tr>
+        <td className="p-2 font-bold bg-gray-100 w-3/10">Updated At</td>
+        <td className="p-2 w-7/10">{formatDate(target.updatedAt) || "N/A"}</td>
+      </tr> */}
     </tbody>
   </table>
 </div>
@@ -61,7 +69,7 @@ const info = (id, tasks) => {
   });
 };
 
-const taskInfo = ({ mode, id }) => {
+const assignTaskInfo = ({ mode, id }) => {
   const { tasks } = useAuth();
 
   return (
@@ -81,4 +89,4 @@ const taskInfo = ({ mode, id }) => {
   );
 };
 
-export default taskInfo;
+export default assignTaskInfo;
