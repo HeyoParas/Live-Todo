@@ -40,7 +40,7 @@ const getAssigned = async (req, res) => {
         tasks: assignment.tasks.map((task) => {
           return {
             taskId: task.taskId._id,  // Getting the _id from populated taskId
-            taskTitle: task.taskId.taskTitle, // Task title from populated data
+            tasktitle: task.taskId.tasktitle, // Task title from populated data
             taskDescription: task.taskId.taskDescription, // Task description from populated data
             assignDate: task.assignDate,
             dueDate: task.dueDate,
