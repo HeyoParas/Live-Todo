@@ -20,42 +20,39 @@ const getAssigned = async (req, res) => {
     // console.log(assignedTo);
     const assignedTasks = await assignModel
       .find({ assignTo: extractedEmail })
-      .populate([
-        {
-          path: "tasks.taskId",
-          select: "taskTitle taskDescription _id",
-        },
-        {
-          path: "assignerId",
-          select: "username",
-        },
-      ]);
-    console.log("Assign Tasks: ",assignedTasks);
+      .populate([{
+        path: "tasks.taskId",
+        select: "taskTitle taskDescription _id",
+      },{
+        path:"assignerId",
+        select:"username"
+      }]);
     if (assignedTasks.length === 0) {
       return res.json({
         message: "No assigned tasks found for this user.",
         success: true,
       });
     }
-    console.log("Assign Tasks: ",assignedTasks);
-    // let assignedTaskscurrent = assignedTasks.map((assignment) => {
-    //   return {
-    //     assignedBy: assignment.assignerId.username,
-    //     assignTo: assignedTo.username,
-    //     tasks: assignment.tasks.map((task) => ({
-    //         taskId: task.taskId._id, // Getting the _id from populated taskId
-    //         taskTitle: task.taskId.taskTitle, // Task title from populated data
-    //         taskDescription: task.taskId.taskDescription, // Task description from populated data
-    //         assignDate: task.assignDate,
-    //         dueDate: task.dueDate,
-    //         currProgress: task.currProgress,
-    //         status: task.status,
-    //     })),
-    //   };
-    // });
-
-    // console.log("AssignTaskscurr: ", assignedTaskscurrent);
-    // res.json({ assignedTaskscurrent, success: true });
+    let assignedTaskscurrent = assignedTasks.map((assignment) => {
+      return {
+        assignedBy: assignment.assignerId.username,
+        assignTo: assignedTo.username,
+        tasks: assignment.tasks.map((task) => {
+          return {
+            taskId: task.taskId._id,  // Getting the _id from populated taskId
+            taskTitle: task.taskId.taskTitle, // Task title from populated data
+            taskDescription: task.taskId.taskDescription, // Task description from populated data
+            assignDate: task.assignDate,
+            dueDate: task.dueDate,
+            currProgress: task.currProgress,
+            status: task.status,
+          };
+        }),
+      };
+    });
+    
+    console.log("AssignTaskscurr: ",assignedTaskscurrent);
+    res.json({ assignedTaskscurrent, success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({
@@ -85,8 +82,8 @@ const getUserList = async (req, res) => {
 // assignTask to user
 const assignTask = async (req, res) => {
   const { email, taskId, assignDate, dueDate } = req.body;
-  const { currProgress } = req.body || 0;
-  const { io } = req.io;
+  const {currProgress} = req.body||0;
+  const {io} =req.body;
   console.log(req.body);
 
   if (!verifydate(assignDate, dueDate)) {
@@ -115,24 +112,17 @@ const assignTask = async (req, res) => {
             });
           } else {
             // If the taskId doesn't exist, add the new task to the tasks array
-            const updateData = await assignModel
-              .findByIdAndUpdate(
-                { _id: dataExists._id },
-                {
-                  $push: {
-                    tasks: { taskId, assignDate, dueDate, currProgress },
-                  },
+            const updateData = await assignModel.findByIdAndUpdate(
+              { _id: dataExists._id },
+              {
+                $push: {
+                  tasks: { taskId, assignDate, dueDate, currProgress },
                 },
-                { new: true } // Ensure that the updated document is returned
-              )
-              .populate("tasks.taskId");
-            const data = await userModel.findOne({ email: email });
-            const assignedToSocketId = req.users[data._id];
-            if (assignedToSocketId)
-              io.to(assignedToSocketId).emit("taskAssigned", {
-                taskTitle: taskId.taskTitle,
-                assignerEmail: user.email,
-              });
+              },
+              { new: true } // Ensure that the updated document is returned
+            ).populate("taskId");
+            const assignedToSocketId = req.users[email];
+            io.to(assignedToSocketId).emit("taskAssigned",{ taskTitle:taskId.taskTitle,assignerEmail:user.email})
             res.json({ message: "Task Assigned Successfully!", success: true });
           }
         } else {
