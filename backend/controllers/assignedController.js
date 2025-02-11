@@ -75,7 +75,8 @@ const getUserList = async (req, res) => {
 
 // assignTask to user
 const assignTask = async (req, res) => {
-  const { email, taskId, assignDate, dueDate, currProgress } = req.body;
+  const { email, taskId, assignDate, dueDate } = req.body;
+  const {currProgress} = req.body||0;
   console.log(req.body);
 
   if (!verifydate(assignDate, dueDate)) {
