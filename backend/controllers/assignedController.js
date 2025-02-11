@@ -16,7 +16,7 @@ const getAssigned = async (req, res) => {
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
     let assignedTo = await userModel.findOne({extractedEmail});
-    assignedTo = assignedTo.username;
+    assignedTo=assignedTo.username;
     const assignedTasks = await assignModel
       .find({ assignTo: extractedEmail })
       .populate({

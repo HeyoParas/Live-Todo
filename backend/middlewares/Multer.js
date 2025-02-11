@@ -1,4 +1,5 @@
 const multer = require("multer");
+const path = require("path");
 //multer used for profile image
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
