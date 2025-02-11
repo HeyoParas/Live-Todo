@@ -35,7 +35,8 @@ const App = ({ mode }) => {
   onOk={handleOk}
   onCancel={() => setIsModalOpen(false)}
   style={{ top: 20 }}
-  bodyStyle={{ maxHeight: "70vh", overflowY: "auto" }}
+   className="custom-modal"
+
   footer={[
     <Button key="ok" type="primary" onClick={handleOk}>
       OK

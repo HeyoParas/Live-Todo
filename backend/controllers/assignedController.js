@@ -15,7 +15,8 @@ const verifydate = (aDate, dDate) => {
 const getAssigned = async (req, res) => {
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
-    let assignedTo = await userModel.findOne({extractedEmail}).username;
+    let assignedTo = await userModel.findOne({extractedEmail});
+    assignedTo=assignedTo.username;
     const assignedTasks = await assignModel
       .find({ assignTo: extractedEmail })
       .populate({

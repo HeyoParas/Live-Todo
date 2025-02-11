@@ -211,6 +211,9 @@ module.exports = {
   signupUser,
   verifyEmail,
   getUserData,
+<<<<<<< HEAD
+=======
   forgetPassword,
   verifyExistingEmail,
+>>>>>>> 8b673d77306c6438a353faa011fe540987a38bc2
 };

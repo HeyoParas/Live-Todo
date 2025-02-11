@@ -1,17 +1,17 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import AxiosInstance from '../api/axiosInstance';
+import AxiosInstance from "../api/axiosInstance";
 import camera from "../assets/camera.svg";
 import { useAuth } from "../context/AuthContext";
-import ReportModal from "./reportModal"
+import ReportModal from "./reportModal";
 
 const ProfileComponent = ({ closeModal }) => {
   const { userData } = useAuth();
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
   const videoRef = useRef(null);
 
-  // React Hook Form setup
   const {
     register,
     handleSubmit,
@@ -19,7 +19,7 @@ const ProfileComponent = ({ closeModal }) => {
     formState: { errors },
   } = useForm();
 
-  // Open Camera
+  //  Open Camera
   const openCamera = async () => {
     setShowCamera(true);
     try {
@@ -31,99 +31,76 @@ const ProfileComponent = ({ closeModal }) => {
       alert("Unable to access the camera.");
     }
   };
+  //close camera
 
-  // Capture Image from Camera
+const closeCamera = () => {
+  const stream = videoRef.current?.srcObject;
+  if (stream) {
+    const tracks = stream.getTracks();
+    tracks.forEach((track) => track.stop()); // Stop the camera stream
+  }
+  setShowCamera(false);
+};
+
+
+  //  Capture Image and Crop to Square
   const captureImage = () => {
     const canvas = document.createElement("canvas");
     const video = videoRef.current;
     const ctx = canvas.getContext("2d");
 
-    // Set a fixed width & height for image
-    const fixedWidth = 500;
-    const fixedHeight = 500;
+    const videoWidth = video.videoWidth;
+    const videoHeight = video.videoHeight;
 
-    canvas.width = fixedWidth;
-    canvas.height = fixedHeight;
+    // Determine the smallest side (to crop a square)
+    const size = Math.min(videoWidth, videoHeight);
+    const xOffset = (videoWidth - size) / 2;
+    const yOffset = (videoHeight - size) / 2;
 
-    // Draw image with fixed dimensions
-    ctx.drawImage(video, 0, 0, fixedWidth, fixedHeight);
-    const imageData = canvas.toDataURL("image/jpeg");
+    canvas.width = 500; // Fixed size for consistent profile pic
+    canvas.height = 500;
 
-    setCapturedImage(imageData);
-    setValue("image", imageData);
+    // Crop and resize the image properly
+    ctx.drawImage(video, xOffset, yOffset, size, size, 0, 0, 500, 500);
+
+    canvas.toBlob((blob) => {
+      const file = new File([blob], "profile-picture.jpg", { type: "image/jpeg" });
+      setCapturedImage(URL.createObjectURL(blob)); //  Properly cropped image
+      setSelectedFile(file);
+      setValue("image", file);
+    }, "image/jpeg");
+
     closeCamera();
   };
 
-  // Close Camera
-  const closeCamera = () => {
-    const stream = videoRef.current?.srcObject;
-    if (stream) {
-      const tracks = stream.getTracks();
-      tracks.forEach((track) => track.stop());
-    }
-    setShowCamera(false);
-  };
-
-  // Handle Image Upload from File
+  //  Handle Image Upload
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        resizeImage(reader.result, 150, 150, (resizedImage) => {
-          setCapturedImage(resizedImage);
-          setValue("image", resizedImage);
-        });
-      };
-      reader.readAsDataURL(file);
+      setCapturedImage(URL.createObjectURL(file));
+      setSelectedFile(file);
+      setValue("image", file);
     }
   };
 
-  // Resize Image Function
-  const resizeImage = (imageSrc, width, height, callback) => {
-    const img = new Image();
-    img.src = imageSrc;
-    img.onload = () => {
-      const canvas = document.createElement("canvas");
-      const ctx = canvas.getContext("2d");
-
-      canvas.width = width;
-      canvas.height = height;
-      ctx.drawImage(img, 0, 0, width, height);
-
-      const resizedImage = canvas.toDataURL("image/jpeg");
-      callback(resizedImage);
-    };
-  };
-
-  // Form Submission
+  //  Form Submission
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       const formData = new FormData();
       formData.append("username", data.username);
-      formData.append("image", data.image[0]); // Image file is sent here
+      formData.append("image", selectedFile); //  Send actual image file
   
-      // const response = await AxiosInstance.post("/api/update-username", formData, {
-      //   headers: { "Content-Type": "multipart/form-data" },
-      // });
-      console.log(data)
-      console.log(formData);
-  
-      // alert("Profile updated successfully!");
-      // console.log("Response:", response.data);
+      const response = await AxiosInstance.post("/", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      alert("Profile updated successfully!");
+      console.log("Response:", response.data);
     } catch (error) {
       console.error("Error updating profile:", error);
     }
   };
-  
-
-  // // Close Dialog
-  // const closeDialog = () => {
-  //   setShowDialog(false);
-  // };
-
-  // handle Report
-
 
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
@@ -139,6 +116,7 @@ const ProfileComponent = ({ closeModal }) => {
             src={capturedImage || "/default-avatar.png"}
             alt={userData.username}
             className="w-[150px] h-[150px] rounded-full mx-auto object-cover shadow-lg"
+            style={{ objectFit: "cover" }} //  Ensures proper fit
           />
           <button
             className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full"
@@ -167,7 +145,7 @@ const ProfileComponent = ({ closeModal }) => {
           <label className="block text-gray-700">Username:</label>
           <input
             type="text"
-            defaultValue={userData.username} // ✅ Use defaultValue instead of value
+            defaultValue={userData.username} //  Use defaultValue instead of value
             {...register("username", {
               required: "Username is required",
               minLength: { value: 3, message: "At least 3 characters" },
@@ -183,39 +161,34 @@ const ProfileComponent = ({ closeModal }) => {
         {/* Submit Button */}
         <button
           type="submit"
-          className="mt-4 block w-full  bg-slate-600 text-white py-2 rounded hover:bg-slate-500">
+          className="mt-4 block w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-500">
           Save Profile
         </button>
       </form>
 
-      {/* My Reports Button */}
-      {/* <button
-        className="block w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-500"
-        onClick={handleReport}>
-       Report 
-      </button> */}
-      <ReportModal/>
-      {/* Camera Modal */}
-      {showCamera && (
-        <div className="text-center">
-          <video
-            ref={videoRef}
-            className="mx-auto border border-gray-300 rounded w-[300px] h-[200px] object-cover"
-          />
-          <div className="space-x-4 mt-2">
-            <button
-              onClick={captureImage}
-              className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
-              Capture
-            </button>
-            <button
-              onClick={closeCamera}
-              className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-500">
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+      <ReportModal />
+{/* Camera Modal */}
+{showCamera && (
+  <div className="text-center">
+    <video
+      ref={videoRef}
+      className="mx-auto border border-gray-300 rounded w-[300px] h-[300px] object-cover"
+    />
+    <div className="space-x-4 mt-2">
+      <button
+        onClick={captureImage}
+        className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Capture
+      </button>
+      <button
+        onClick={closeCamera}  // Fixed function call
+        className="bg-gray-300 px-4 py-2 rounded hover:bg-gray-500">
+        Cancel
+      </button>
+    </div>
+  </div>
+)}
+
     </div>
   );
 };
