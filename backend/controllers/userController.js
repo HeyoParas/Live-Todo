@@ -21,11 +21,11 @@ const updateProfile = async (req, res) => {
 
     res
       .status(200)
-      .json({ message: "Image uploaded successfully", userData, sucess: true });
+      .json({ message: "Profile Updated successfully", userData, sucess: true });
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Server error", error: error.message, sucess: false });
+      .json({ message: "Server error updating profile", error: error.message, sucess: false });
   }
 };
 module.exports = { updateProfile };
