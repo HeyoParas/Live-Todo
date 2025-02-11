@@ -121,6 +121,9 @@ const LoginScreen = () => {
                   <p className="text-red-500 text-sm mt-2">
                     {errors.password.message}
                   </p>
+                  // <div>
+
+                  // </div>
                 )}
               </div>
 

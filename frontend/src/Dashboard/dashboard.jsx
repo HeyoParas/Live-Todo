@@ -24,8 +24,8 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await AxiosInstance.get("/getUserData");
-        const assignedTaskResponse = await AxiosInstance.get("/assignedtask");
-        console.log("assignedTaskResponse: ",assignedTaskResponse.data);
+        // const assignedTaskResponse = await AxiosInstance.get("/assignedtask");
+        // console.log("assignedTaskResponse: ",assignedTaskResponse.data);
         console.log("response from backend:", response.data);
         if (response.data.success) {
           setUserData(response.data.userdata);
@@ -33,7 +33,7 @@ const Dashboard = () => {
         } else {
           message.error(response.data.message);
         }
-      } catch (err) {
+      } catch (error) {
         // console.error("Error fetching data:", err);
         message.error(error.message || "An error occurred");
         // setError("Failed to load tasks! Please try again.");
