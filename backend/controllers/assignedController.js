@@ -136,7 +136,6 @@ const assignTask = async (req, res) => {
           await newAssignTask.save();
           res.json({ message: "Task Assigned Successfully!", success: true });
         }
-        
       } catch (error) {
         console.log("Error Assigning Tasks", error);
         res.json({ message: "Error Assigning Tasks", success: false });
