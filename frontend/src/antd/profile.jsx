@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import AxiosInstance from '../api/axiosInstance';
 import camera from "../assets/camera.svg";
 import { useAuth } from "../context/AuthContext";
 import ReportModal from "./reportModal"
@@ -103,7 +103,7 @@ const ProfileComponent = ({ closeModal }) => {
       formData.append("username", data.username);
       formData.append("image", data.image[0]); // Image file is sent here
   
-      // const response = await axios.post("http://localhost:7000/api/update-username", formData, {
+      // const response = await AxiosInstance.post("/api/update-username", formData, {
       //   headers: { "Content-Type": "multipart/form-data" },
       // });
       console.log(data)
@@ -123,14 +123,7 @@ const ProfileComponent = ({ closeModal }) => {
   // };
 
   // handle Report
-  const handleReport = async () => {
-    // const response = await axios.get("http://localhost:7000/report", {
-    //   withCredentials: true,
-    // });
-    // console.log("report response:", response.data);
-    setShowReport(true);
-    closeModal();
-  };
+
 
   return (
     <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">

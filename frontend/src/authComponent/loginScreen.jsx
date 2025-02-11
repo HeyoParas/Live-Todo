@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import AxiosInstance from "../api/axiosInstance";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import useAuth
@@ -19,7 +19,7 @@ const LoginScreen = () => {
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.post("http://localhost:7000/login", data,{withCredentials:true});
+      const response = await AxiosInstance.post("/login", data);
       
       console.log("Response from backend:", response.data);
 

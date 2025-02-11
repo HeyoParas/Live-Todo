@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import AxiosInstance from "../api/axiosInstance";
 import Header from "../component/header";
 import Navbar from "../component/Navbar";
 import TaskSection from "../component/taskSection";
 import Drawer from "../component/Drawer";
 import Shimmer from "../shimmer/shimmer";
 import { useAuth } from "../context/AuthContext";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { DragDropContext} from "@hello-pangea/dnd";
 import { message } from "antd";
 
 const Dashboard = () => {
@@ -15,28 +15,24 @@ const Dashboard = () => {
 
   const [w, setWidth] = useState("20%");
   const [mode, setMode] = useState(false);
-  const [isMyTaskOpen,setIsMyTaskOpen] = useState(true);
-  const [isAssignedTaskOpen,setIsAssignedTaskOpen] = useState(false);
-
+  const [isMyTaskOpen, setIsMyTaskOpen] = useState(true);
+  const [isAssignedTaskOpen, setIsAssignedTaskOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/getUserData", {
-          withCredentials: true,
-        });
-        console.log("response from backend:",response.data);
-        if(response.data.success){
+        const response = await AxiosInstance.get("/getUserData");
+        console.log("response from backend:", response.data);
+        if (response.data.success) {
           setUserData(response.data.userdata);
           setTasks(response.data.userdata.mytasks);
-        }
-        else{
+        } else {
           message.error(response.data.message);
         }
       } catch (err) {
         // console.error("Error fetching data:", err);
         message.error(error.message || "An error occurred");
-        setError("Failed to load tasks! Please try again.");
+        // setError("Failed to load tasks! Please try again.");
       } finally {
         setIsLoading(false);
       }
@@ -60,12 +56,12 @@ const Dashboard = () => {
   const handleMyTaskOpen = () => {
     setIsMyTaskOpen(true);
     setIsAssignedTaskOpen(false);
-  }
+  };
 
   const handleAssingedTaskOpen = () => {
     setIsAssignedTaskOpen(true);
     setIsMyTaskOpen(false);
-  }
+  };
 
   const onDragEnd = async (result) => {
     //"If it is not dropped anywhere, do nothing."
@@ -87,35 +83,28 @@ const Dashboard = () => {
         section: destination.droppableId,
       };
 
-      if(destination.droppableId == currentTask[0].section){
+      if (destination.droppableId == currentTask[0].section) {
         return message.warning("Cannot update in same section");
       }
 
-      if(currentTask[0].section == 'completed'){
+      if (currentTask[0].section == "completed") {
         return message.warning("Cannot change section of completed task");
       }
 
-        const response = await axios.patch(
-          "http://localhost:7000/updateSection",
-          obj,
-          {
-            withCredentials: true,
-          }
+      const response = await AxiosInstance.patch("/updateSection", obj);
+      console.log("drag response", response.data);
+      if (response.data.success) {
+        message.success("Task " + response?.data?.message);
+        setTasks((prevTasks) =>
+          prevTasks.map((task) =>
+            task._id === draggableId
+              ? { ...task, ...response.data.updatedTask } // Update all fields
+              : task
+          )
         );
-        console.log("drag response",response.data);
-        if (response.data.success) {
-          message.success("Task " + response?.data?.message);
-          setTasks((prevTasks) =>
-            prevTasks.map((task) =>
-                task._id === draggableId
-                    ? { ...task, ...response.data.updatedTask } // Update all fields
-                    : task
-            )
-          );
-        }else{
-          message.warning(response.data.message);
-        }
-      
+      } else {
+        message.warning(response.data.message);
+      }
     } catch (error) {
       console.error("Error updating task section:", error);
       message.error(error.message || "An error occurred");
@@ -139,32 +128,31 @@ const Dashboard = () => {
           }}>
           <Header mode={mode} name={userData.username} />
           {/* <Navbar mode={mode} /> */}
-          <Navbar mode={mode} handleMyTaskOpen={handleMyTaskOpen} handleAssingedTaskOpen={handleAssingedTaskOpen} />
+          <Navbar
+            mode={mode}
+            handleMyTaskOpen={handleMyTaskOpen}
+            handleAssingedTaskOpen={handleAssingedTaskOpen}
+          />
           {/* <hr className=""/> */}
           <hr
             className={`${
               mode ? "border-gray-300 border-2" : "border-[#3f4044] border-2"
             }`}
           />
-          
-          {isMyTaskOpen && 
-          <div
-          className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
-          style={{
-            background: mode ? "#ffffff" : "#2a2b2f",
-          }}>
-          {userData.sections.map((elem, index) => (
-            <TaskSection
-              key={index}
-              sectionName={elem}
-              mode={mode}
-            />
-          ))}
-          </div>}
 
-          {isAssignedTaskOpen && 
-            <p>Assigned Task</p>
-          }
+          {isMyTaskOpen && (
+            <div
+              className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
+              style={{
+                background: mode ? "#ffffff" : "#2a2b2f",
+              }}>
+              {userData.sections.map((elem, index) => (
+                <TaskSection key={index} sectionName={elem} mode={mode} />
+              ))}
+            </div>
+          )}
+
+          {isAssignedTaskOpen && <p>Assigned Task</p>}
         </div>
       </div>
     </DragDropContext>

@@ -6,6 +6,7 @@ import Dashboard from "./Dashboard/dashboard";
 import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
 import "./App.css";
 import { useAuth, AuthProvider } from "./context/AuthContext";
+import Error404 from "./antd/error404";
 
 function AppContent() {
   const { isAuthenticated } = useAuth();
@@ -37,7 +38,7 @@ function AppContent() {
     },
     {
       path: "*",
-      element: <h1>Page Not Found</h1>,
+      element: <Error404 />,
     },
   ]);
 

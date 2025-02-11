@@ -1,15 +1,14 @@
 import React, { useState } from "react";
-import edit from "../assets/edit.svg";
 import more from "../assets/More.svg";
 import hamburger from "../assets/hamburger.svg";
-import comment from "../assets/comment.svg";
-import link from "../assets/link.svg";
 import { Popconfirm, message } from "antd";
 import { useAuth } from "../context/AuthContext";
-import axios from "axios";
 import EditDialogue from "../antd/editDialogue";
 import TaskInfo from "../antd/taskInfo";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import { Tooltip } from 'antd';
+import UserList from '../antd/userList';
+import AxiosInstance from '../api/axiosInstance';
 
 const TaskBox = ({ task, mode, type, index }) => {
   // console.log("from taskbox:",task)
@@ -27,13 +26,7 @@ const TaskBox = ({ task, mode, type, index }) => {
   const deleteTask = async (taskId) => {
     try {
       // console.log("in deleteTask, taskID:", taskId);
-      const response = await axios.post(
-        `http://localhost:7000/deleteTask`,
-        { taskId },
-        {
-          withCredentials: true,
-        }
-      );
+      const response = await AxiosInstance.post('/deleteTask',{ taskId });
   
       if (response.data.success) {
         message.loading("Deleting task...", 1.5); // Show loading message for 2.5 sec
@@ -81,7 +74,9 @@ const TaskBox = ({ task, mode, type, index }) => {
         <div className="flex justify-between w-[20%] gap-x-2">
           {/* Edit Button */}
           <div className="mt-1">
+            <Tooltip title="Edit Task">
             <EditDialogue id={task?._id} task={task} />
+            </Tooltip>
           </div>
 
           {/* Delete Button */}
@@ -174,19 +169,10 @@ const TaskBox = ({ task, mode, type, index }) => {
           {task?.createdAt}
         </div>
 
-        {/* Comments & Links */}
         <div className="flex items-center gap-x-4">
-          {/* Comments */}
+        {/* users List */}
           <div className="flex items-center">
-            <button className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
-              <img
-                src={comment}
-                alt="comment"
-                className="w-5 h-5"
-                style={{ filter: mode ? "none" : "invert(1)" }}
-              />
-            </button>
-            <span className="ml-1">{task?.comments?.length || 0}</span>
+            <UserList mode={mode} id={task?._id}/>
           </div>
 
           {/* info */}

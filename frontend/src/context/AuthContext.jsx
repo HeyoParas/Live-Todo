@@ -1,6 +1,6 @@
 import React from 'react'
 import { createContext, useContext, useEffect, useState } from "react";
-import axios from "axios";
+import AxiosInstance from '../api/axiosInstance'
 
 //create context
 export const AuthContext = createContext();
@@ -10,14 +10,12 @@ export const AuthProvider = ({children}) => {
     const [isAuthenticated, setIsAuthenticated] = useState(null);
     const [userData, setUserData] = useState(null);
     const [tasks, setTasks] = useState([]);
-    // const [reportData, setReportData] = useState([]);
+    const [userList, setUserList] = useState([]);
 
   useEffect(() => {
     const verifyAuth = async () => {
       try {
-        const response = await axios.get("http://localhost:7000/auth/checkToken", {
-          withCredentials: true,
-        });
+        const response = await AxiosInstance.get("/auth/checkToken");
         setIsAuthenticated(response.data.success);
       } catch (error) {
         console.error("Error checking authentication:", error);
@@ -28,7 +26,7 @@ export const AuthProvider = ({children}) => {
   }, []);
   
   return(
-        <AuthContext.Provider value={{  isAuthenticated, setIsAuthenticated, userData, setUserData, tasks, setTasks }}>
+        <AuthContext.Provider value={{  isAuthenticated, setIsAuthenticated, userData, setUserData, tasks, setTasks, userList, setUserList }}>
             {children}
         </AuthContext.Provider>
     );

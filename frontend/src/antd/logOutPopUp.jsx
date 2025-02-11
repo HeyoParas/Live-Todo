@@ -5,7 +5,7 @@ import { QuestionCircleOutlined } from '@ant-design/icons';
 import { Button, Popconfirm, message } from 'antd';
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import axios from 'axios';
+import AxiosInstance from '../api/axiosInstance';
 
 const logOut = () => {
     const { setIsAuthenticated } = useAuth();
@@ -14,9 +14,7 @@ const logOut = () => {
     const handleConfirm = async () => {
 
       try {
-          const response = await axios.post("http://localhost:7000/logout", {}, {
-              withCredentials: true,
-          });
+          const response = await AxiosInstance.post("/logout", {});
           
           if (response.data.success) {
               message.success(response.data.message);

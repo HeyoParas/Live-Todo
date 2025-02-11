@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Button, Modal, message } from 'antd';
 import { useForm } from 'react-hook-form';
-import axios from 'axios';
 import edit from '../assets/edit.svg';
 import {useAuth } from '../context/AuthContext';
+import AxiosInstance from '../api/axiosInstance';
 
 const EditDialogue = ({ mode, id, task }) => {
   const { setTasks } = useAuth();
@@ -34,9 +34,8 @@ const EditDialogue = ({ mode, id, task }) => {
   const handleOk = async () => {
     try {
       console.log("formData: ",formData)
-      const response = await axios.post("http://localhost:7000/updateTask",formData,{ withCredentials: true }
-      );
-      console.log("from backend response",response.data)
+      const response = await AxiosInstance.post("/updateTask",formData);
+      // console.log("from backend response",response.data)
       if (response.data.success) {
         message.success(response.data.message);
         setTasks(prevTasks =>

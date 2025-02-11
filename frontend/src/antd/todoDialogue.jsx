@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { Button, Modal, message } from "antd";
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import AxiosInstance from "../api/axiosInstance";
 import { useAuth } from "../context/AuthContext";
 
 import add_todo from '../assets/add_view.svg';
@@ -25,9 +25,7 @@ const TodoDialogue = ({ mode, type }) => {
     console.log("Sending data to backend:", data);
 
     try {
-      const response = await axios.post("http://localhost:7000/addTask", data, {
-        withCredentials: true,
-      });
+      const response = await AxiosInstance.post("/addTask", data);
       console.log("Response from backend:", response.data);
 
       if(response.data.success) {
@@ -57,7 +55,6 @@ const TodoDialogue = ({ mode, type }) => {
   return (
     <>
       <Button
-      
         onClick={showModal}
         style={{
           color: mode ? "#000000" : "#ffffff",
