@@ -22,7 +22,7 @@ const getAssigned = async (req, res) => {
       .find({ assignTo: extractedEmail })
       .populate([{
         path: "tasks.taskId",
-        select: "taskTitle taskDescription _id",
+        select: "tasktitle taskDescription _id",
       },{
         path:"assignerId",
         select:"username"
@@ -40,7 +40,7 @@ const getAssigned = async (req, res) => {
         tasks: assignment.tasks.map((task) => {
           return {
             taskId: task.taskId._id,  // Getting the _id from populated taskId
-            taskTitle: task.taskId.taskTitle, // Task title from populated data
+            tasktitle: task.taskId.tasktitle, // Task title from populated data
             taskDescription: task.taskId.taskDescription, // Task description from populated data
             assignDate: task.assignDate,
             dueDate: task.dueDate,
@@ -83,7 +83,7 @@ const getUserList = async (req, res) => {
 const assignTask = async (req, res) => {
   const { email, taskId, assignDate, dueDate } = req.body;
   const {currProgress} = req.body||0;
-  const {io} =req.body;
+  const {io} =req.io;
   console.log(req.body);
 
   if (!verifydate(assignDate, dueDate)) {
@@ -121,7 +121,8 @@ const assignTask = async (req, res) => {
               },
               { new: true } // Ensure that the updated document is returned
             ).populate("tasks.taskId");
-            const assignedToSocketId = req.users[email];
+            const data = await userModel.findOne({email:email});
+            const assignedToSocketId = req.users[data._id];
             io.to(assignedToSocketId).emit("taskAssigned",{ taskTitle:taskId.taskTitle,assignerEmail:user.email})
             res.json({ message: "Task Assigned Successfully!", success: true });
           }
@@ -135,7 +136,6 @@ const assignTask = async (req, res) => {
           await newAssignTask.save();
           res.json({ message: "Task Assigned Successfully!", success: true });
         }
-        
       } catch (error) {
         console.log("Error Assigning Tasks", error);
         res.json({ message: "Error Assigning Tasks", success: false });
