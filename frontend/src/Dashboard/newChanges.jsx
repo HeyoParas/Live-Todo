@@ -8,9 +8,9 @@ import Shimmer from "../shimmer/shimmer";
 import { useAuth } from "../context/AuthContext";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { message } from "antd";
-import io from 'socket.io-client';
-const socket = io('http://localhost:7000');
-
+// import io from 'socket.io-client';
+// const socket = io('http://localhost:7000');
+import Notification from '../component/Notification';
 const Dashboard = () => {
   const { userData, setUserData, tasks, setTasks } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
@@ -55,15 +55,18 @@ const Dashboard = () => {
     return () => clearTimeout(timer);
   }, []);
 
-  useEffect(()=>{
-    socket.on('TaskAssigned',(data)=>{
-      console.log("on TaskAssigned ",data);
-      message.success(data);
-    })
-    return ()=>{
-      socket.off('TaskAssigned');
-    }
-  },[]);
+  // useEffect(()=>{
+  //   if(userData._id){
+  //     socket.emit('LogginUser',userData._id);
+  //   }
+  //   socket.on('TaskAssigned',(data)=>{
+  //     console.log("on TaskAssigned ",data);
+  //     message.success(data.message);
+  //   })
+  //   return ()=>{
+  //     socket.off('TaskAssigned');
+  //   }
+  // },[]);
   if (isLoading) {
     return <Shimmer />;
   }
@@ -135,6 +138,7 @@ const Dashboard = () => {
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
+      <Notification userId={userData._id}/>
       <div className="flex h-screen w-full">
         <div>
           <Drawer setWidth={setWidth} mode={mode} setMode={setMode} />

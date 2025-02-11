@@ -136,6 +136,7 @@ const getUserData = async (req,res) => {
       const userdata = await userModel.findById(user.id).populate([
         { path: "mytasks", match: { isDisable: false } }
       ]);
+      
       // const AllTasks = await taskModel.find();
       // console.log("Tasks from DB ", tasks);
       if(userdata)
