@@ -13,30 +13,30 @@ const verifydate = (aDate, dDate) => {
 
 // Fetches all the tasks that are assigned to the current loggedin users.
 const getAssigned = async (req, res) => {
+  console.log("getAssigned!!");
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
-    let assignedTo = await userModel.findOne({extractedEmail});
-    assignedTo=assignedTo.username;
+    let assignedTo = await userModel.findOne({email:extractedEmail});
+    console.log(assignedTo);
     const assignedTasks = await assignModel
       .find({ assignTo: extractedEmail })
-      .populate({
+      .populate([{
         path: "tasks.taskId",
         select: "taskTitle taskDescription _id",
       },{
         path:"assignerId",
         select:"username"
-      });
+      }]);
     if (assignedTasks.length === 0) {
       return res.json({
         message: "No assigned tasks found for this user.",
         success: true,
       });
     }
-
     let assignedTaskscurrent = assignedTasks.map((assignment) => {
       return {
         assignedBy: assignment.assignerId.username,
-        assignTo: assignedTo,
+        assignTo: assignedTo.username,
         tasks: assignment.tasks.map((task) => {
           return {
             taskId: task.taskId._id,  // Getting the _id from populated taskId
@@ -50,8 +50,9 @@ const getAssigned = async (req, res) => {
         }),
       };
     });
-
-    res.json({ assignedTaskscurrent, success: false });
+    
+    console.log("AssignTaskscurr: ",assignedTaskscurrent);
+    res.json({ assignedTaskscurrent, success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({
