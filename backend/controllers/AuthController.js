@@ -62,6 +62,10 @@ const loginUser = async (req, res) => {
             secure: true, // Set to true in production (HTTPS required)
             sameSite: "None", // Required for cross-origin cookies
           }); //store in cookie
+          const usersSocket = req.users.get(user._id); // Ensure req.users is a Map
+          if (usersSocket) {
+            req.io.to(usersSocket).emit("LogginUser", { userId: user._id });
+          }
           res.status(200).json({
             message: "Login successful",
             userDetails: user,

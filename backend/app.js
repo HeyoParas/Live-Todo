@@ -10,26 +10,29 @@ const {Server} = require("socket.io");
 const http = require("http");
 const server = http.createServer(app); //creating a http server 
 
-const io = new Server(server,cors({
-    origin:"http://localhost:5173",
-    credentials:true
-}))
+const io = new Server(server, {
+  cors: {
+      origin: "http://localhost:5173",
+      credentials: true
+  }
+});
 
-const users = {}; // { userId: socketId }
+
+const users = new Map(); // { userId: socketId }
 
 // Track user connections
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
   socket.on("LogginUser", (userId) => {
-    users[userId] = socket.id; // Store userId with socketId
+    users.set(userId,socket.id); // Store userId with socketId
     console.log(`User ${userId} registered with socket ${socket.id}`);
   });
 
   socket.on("disconnect", () => {
     const userId = Object.keys(users).find((key) => users[key] === socket.id);
     if (userId) {
-      delete users[userId]; // Remove user on disconnect
+      users.delete(userId); // Remove user on disconnect
       console.log(`User ${userId} disconnected`);
     }
   });
@@ -52,7 +55,7 @@ app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
-app.use("/assignTask",(req,res,next)=>{
+app.use((req,res,next)=>{
     req.io = io;
     req.users = users;
     next();
