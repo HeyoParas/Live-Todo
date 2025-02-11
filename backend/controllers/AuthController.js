@@ -2,11 +2,11 @@ const { comparePassword, bcryptPassword } = require("./bcrypt");
 const { makeToken,getUser } = require("./token");
 const userModel = require("../models/userSchema");
 const otpModel = require("../models/otpSchema");
-const assignedTasks = require("../models/assignedTaskSchema");
+// const assignedTasks = require("../models/assignedTaskSchema");
 const { sendEmail } = require("./MailAuth");
 const validator = require("validator");
-const mongoose = require("mongoose");
-const taskModel = require("../models/taskSchema");
+// const mongoose = require("mongoose");
+// const taskModel = require("../models/taskSchema");
 
 const verifyEmail = async (req, res) => {
   console.log("/verify",req.body);
@@ -57,7 +57,6 @@ const loginUser = async (req, res) => {
             id: user._id,
           };
           const token = makeToken(obj); //create token
-          console.log("token",token);
           res.cookie("mycookie", token, {
             httpOnly: true,  // Secure from JavaScript access
             secure: true,   // Set to true in production (HTTPS required)
