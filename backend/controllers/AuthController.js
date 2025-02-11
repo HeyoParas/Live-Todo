@@ -111,9 +111,9 @@ const signupUser = async (req, res) => {
       });
       await newUser.save();
       console.log("user",newUser);
-      var obj = { email: newUser.email, id: newUser._id };
-      const token = makeToken(obj);
-      res.cookie("mycookie", token);
+      // var obj = { email: newUser.email, id: newUser._id };
+      // const token = makeToken(obj);
+      // res.cookie("mycookie", token);
       res
         .status(201)
         .json({ message: "User created successfully", success: true });
