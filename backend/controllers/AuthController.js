@@ -1,20 +1,20 @@
 const { comparePassword, bcryptPassword } = require("./bcrypt");
-const { makeToken,getUser } = require("./token");
+const { makeToken, getUser } = require("./token");
 const userModel = require("../models/userSchema");
 const otpModel = require("../models/otpSchema");
-const assignedTasks = require("../models/assignedTaskSchema");
+// const assignedTasks = require("../models/assignedTaskSchema");
 const { sendEmail } = require("./MailAuth");
 const validator = require("validator");
-const mongoose = require("mongoose");
-const taskModel = require("../models/taskSchema");
+// const mongoose = require("mongoose");
+// const taskModel = require("../models/taskSchema");
 
 const verifyEmail = async (req, res) => {
-  console.log("/verify",req.body);
+  console.log("/verify", req.body);
   const { email } = req.body;
   const existingUser = await userModel.findOne({ email: email });
   if (existingUser) {
     console.log("User already exists!");
-    return res.json({ message: "User already exists" ,success:false});
+    return res.json({ message: "User already exists", success: false });
   }
   const otp = await sendEmail(email);
   console.log(otp);
@@ -57,10 +57,9 @@ const loginUser = async (req, res) => {
             id: user._id,
           };
           const token = makeToken(obj); //create token
-          console.log("token",token);
           res.cookie("mycookie", token, {
-            httpOnly: true,  // Secure from JavaScript access
-            secure: true,   // Set to true in production (HTTPS required)
+            httpOnly: true, // Secure from JavaScript access
+            secure: true, // Set to true in production (HTTPS required)
             sameSite: "None", // Required for cross-origin cookies
           }); //store in cookie
           res.status(200).json({
@@ -80,12 +79,11 @@ const loginUser = async (req, res) => {
   } else {
     res.json({ message: "User not found", success: false });
   }
-  
 };
 
 const logoutUser = (req, res) => {
   res.clearCookie("mycookie");
-  res.status(200).json({ message: "Logged out successfully",success:true});
+  res.status(200).json({ message: "Logged out successfully", success: true });
 };
 
 const signupUser = async (req, res) => {
@@ -93,13 +91,11 @@ const signupUser = async (req, res) => {
   console.log(req.body);
   const { otpNumber, username, email } = req.body;
   //  Sorts documents by createdAt in descending order (latest first).
-  const otpData = await otpModel
-    .findOne({ email })
-    .sort({ createdAt: -1 });
-  console.log("OtpData",otpData);
-    if (!otpData) {
-      return res.json({ success: false, message: "OTP expired!!" });
-    }    
+  const otpData = await otpModel.findOne({ email }).sort({ createdAt: -1 });
+  console.log("OtpData", otpData);
+  if (!otpData) {
+    return res.json({ success: false, message: "OTP expired!!" });
+  }
 
   if (otpData.email == email && otpData.otp == otpNumber) {
     try {
@@ -110,55 +106,114 @@ const signupUser = async (req, res) => {
         password,
       });
       await newUser.save();
-      console.log("user",newUser);
-      var obj = { email: newUser.email, id: newUser._id };
-      const token = makeToken(obj);
-      res.cookie("mycookie", token);
+      console.log("user", newUser);
+      // var obj = { email: newUser.email, id: newUser._id };
+      // const token = makeToken(obj);
+      // res.cookie("mycookie", token);
       res
         .status(201)
         .json({ message: "User created successfully", success: true });
     } catch (err) {
       console.log(err);
-      res.json({ message: "Error creating user",success:false });
+      res.json({ message: "Error creating user", success: false });
     }
-  }
-  else{
-    res.json({success:false,message:"Otp didnt match!!!"});
+  } else {
+    res.json({ success: false, message: "Otp didnt match!!!" });
   }
 };
 
-const getUserData = async (req,res) => {
+const getUserData = async (req, res) => {
   console.log("----inside getUserData function");
-    const user = await getUser(req.cookies.mycookie);
-    console.log(user);
-    if(user){
+  const user = await getUser(req.cookies.mycookie);
+  console.log(user);
+  if (user) {
     try {
-      const userdata = await userModel.findById(user.id).populate([
-        { path: "mytasks", match: { isDisable: false } }
-      ]);
+      const userdata = await userModel
+        .findById(user.id)
+        .populate([{ path: "mytasks", match: { isDisable: false } }]);
+
       // const AllTasks = await taskModel.find();
       // console.log("Tasks from DB ", tasks);
-      if(userdata)
-      res.status(200).json({userdata,success:true});
-      else{
-        res.json({message:"User not found in DB",success:false})
+      if (userdata) res.status(200).json({ userdata, success: true });
+      else {
+        res.json({ message: "User not found in DB", success: false });
       }
     } catch (err) {
       console.error("Error fetching tasks:", err);
-      res
-        .status(500)
-        .json({ error: "Internal server error. Please try again later." ,success:false});
+      res.status(500).json({
+        error: "Internal server error. Please try again later.",
+        success: false,
+      });
     }
+  } else {
+    res.json({
+      message: "Please login First to access this route!!",
+      success: false,
+    });
   }
-  else{
-    res.json({message:"Please login First to access this route!!",success:false});
-  }
-}
+};
 
+// verify email of user for forget password
+const verifyExistingEmail = async (req, res) => {
+  const { email } = req.body;
+  try {
+    if (!email) {
+      return res.json({ message: "Send a valid Email!!", success: false });
+    }
+    const findUser = await userModel.findOne({ email });
+    if (findUser) {
+      const otp = await sendEmail(email);
+      console.log("Otp for Forget Password", otp);
+      const otpStored = new otpModel({
+        email: email,
+        otp: otp,
+      });
+      await otpStored.save();
+      // console.log("Otp for Forget Password",otpStored);
+      res.json({ message: "Otp Sent", success: true });
+    } else {
+      res.json({ message: "User doesn't Exist!!", success: false });
+    }
+  } catch (err) {
+    console.log("Error Checking Existing User : ", err);
+    res.json({ message: "Error Checking Existing User", success: false });
+  }
+};
+
+// update old pasword with new
+const forgetPassword = async (req, res) => {
+  const { otpNumber, email } = req.body;
+  //  Sorts documents by createdAt in descending order (latest first).
+  const otpData = await otpModel.findOne({ email }).sort({ createdAt: -1 });
+  console.log("OtpData", otpData);
+  if (!otpData) {
+    return res.json({ success: false, message: "OTP expired!!" });
+  }
+
+  if (otpData.email == email && otpData.otp == otpNumber) {
+    try {
+      const password = await bcryptPassword(req.body.password);
+      const updatedUser = await userModel.findOneAndUpdate({email},{password},{new:true});
+      if(updatedUser.password == password){
+        res.json({message:"Password Updated Successfully !!",success:true,updatedUser})
+      }
+    } catch (err) {
+      console.log("Error Updating Password!!", err);
+      res.json({ message: "Error Updating Password !!", success: false });
+    }
+  }else {
+    res.json({ success: false, message: "Otp didnt match!!!" });
+  }
+};
 module.exports = {
   loginUser,
   logoutUser,
   signupUser,
   verifyEmail,
   getUserData,
+<<<<<<< HEAD
+=======
+  forgetPassword,
+  verifyExistingEmail,
+>>>>>>> 8b673d77306c6438a353faa011fe540987a38bc2
 };

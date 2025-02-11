@@ -23,6 +23,10 @@ const User = new mongoose.Schema({
     type: String,
     required: true,
   },
+  profileImage: {
+    type: String,
+    default: "/images/profile.jpg",
+  },
   googleId: {
     type: String,
   },
@@ -32,11 +36,10 @@ const User = new mongoose.Schema({
       ref: "tasks",
     },
   ],
-  sections:
-    {
-      type: [String],
-      default: ["todo", "inProgress", "completed"],
-    },
+  sections: {
+    type: [String],
+    default: ["todo", "inProgress", "completed"],
+  },
 });
 
 // Commonly used for validations , checking documents before saving
