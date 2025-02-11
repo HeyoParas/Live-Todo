@@ -83,7 +83,8 @@ const TodoDialogue = ({ mode, type }) => {
         //   overflow: "hidden"
         // }}
         style={{ top: 20 }} 
-        bodyStyle={{ maxHeight: '70vh', overflowY: 'auto' }}
+        className="custom-modal"
+
         >
         <div className="p-4  ">
           <form

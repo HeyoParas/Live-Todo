@@ -160,5 +160,5 @@ module.exports = {
   logoutUser,
   signupUser,
   verifyEmail,
-  getUserData
+  getUserData,
 };

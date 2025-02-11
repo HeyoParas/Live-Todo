@@ -32,7 +32,7 @@ const App = ({ mode }) => {
         closable={true}
         onCancel={() => setIsModalOpen(false)}
         style={{ top: 20 }}
-        bodyStyle={{ maxHeight: "70vh", overflowY: "auto" }}>
+        className="custom-modal">
         <Profile closeModal={() => setIsModalOpen(false)}/>
       </Modal>
     </>
