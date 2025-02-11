@@ -87,8 +87,15 @@ const closeCamera = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
+      const formData = new FormData();
+      formData.append("username", data.username);
+      formData.append("image", selectedFile); //  Send actual image file
       
-      const response = await AxiosInstance.post("/updateProfile", data, {
+      // for (let pair of formData.entries()) {
+      //   console.log(pair[0] + ", " + pair[1]); // Debugging FormData
+      // }
+
+      const response = await AxiosInstance.post("/updateProfile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

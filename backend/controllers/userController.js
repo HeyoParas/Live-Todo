@@ -1,6 +1,7 @@
 const userModel = require("../models/userSchema");
 const { getUser } = require("../controllers/token");
 const updateProfile = async (req, res) => {
+  console.log("req.body:",req.body);
   const { username } = req.body;
 
   try {
