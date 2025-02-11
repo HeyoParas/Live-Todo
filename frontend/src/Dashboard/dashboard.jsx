@@ -77,9 +77,7 @@ const Dashboard = () => {
         return task;
       }
     });
-    // console.log("currentTask: ", currentTask);
-    // console.log("draggableId: ", draggableId);
-    // console.log("destination.droppableId: ", destination.droppableId);
+    
 
     try {
       const obj = {

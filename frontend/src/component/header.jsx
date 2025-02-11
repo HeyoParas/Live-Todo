@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import search from '../assets/search.svg';
 import notifications from '../assets/notifications.svg';
 import icons from '../assets/icon.svg';
-import image from '../assets/image.png';
 import Profile from '../antd/profile.jsx';
 import PfpModal from '../antd/pfpModal.jsx';
 
