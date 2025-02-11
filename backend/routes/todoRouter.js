@@ -28,5 +28,8 @@ router.patch("/updateSection",authMiddleware.verifyUser,taskController.updateSec
 router.get("/assignedtask",authMiddleware.verifyUser,assignedController.getAssigned);
 router.get("/getUserList",authMiddleware.verifyUser,assignedController.getUserList);
 
-router.post("/updateProfile",authMiddleware.verifyUser,upload.single("image"),updateProfile)
+router.post("/updateProfile",authMiddleware.verifyUser,upload.single("image"),updateProfile);
+// forgetPassword
+router.post("/verifyExistingEmail",authController.verifyExistingEmail)
+router.patch ("/forgetPassword",authController.forgetPassword);
 module.exports =router  
