@@ -7,6 +7,8 @@ const taskController = require("../controllers/taskController");
 const authMiddleware = require("../middlewares/Authenticate");
 const reportController = require("../controllers/reportController");
 const assignedController = require("../controllers/assignedController");
+const upload = require("../middlewares/Multer");
+const {updateProfile} = require("../controllers/userController");
 
 router.get('/getUserData',authController.getUserData)
 router.get('/auth/checkToken',authMiddleware.checkLoginStatus);
@@ -25,4 +27,6 @@ router.get("/report",authMiddleware.verifyUser,reportController.generateReport);
 router.patch("/updateSection",authMiddleware.verifyUser,taskController.updateSection);
 router.get("/assignedtask",authMiddleware.verifyUser,assignedController.getAssigned);
 router.get("/getUserList",authMiddleware.verifyUser,assignedController.getUserList);
+
+router.post("/updateProfile",authMiddleware.verifyUser,upload.single("image"),updateProfile)
 module.exports =router  
