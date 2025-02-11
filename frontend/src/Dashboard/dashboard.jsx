@@ -24,8 +24,8 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await AxiosInstance.get("/getUserData");
-        // const assignedTaskResponse = await AxiosInstance.get("/assignedtask");
-        // console.log("assignedTaskResponse: ",assignedTaskResponse.data);
+        const assignedTaskResponse = await AxiosInstance.get("/assignedtask");
+        console.log("assignedTaskResponse: ",assignedTaskResponse.data);
         console.log("response from backend:", response.data);
         if (response.data.success) {
           setUserData(response.data.userdata);
