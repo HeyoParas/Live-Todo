@@ -1,22 +1,18 @@
 import React, { useState } from "react";
-import image from "../assets/image.png";
 import Profile from "./profile";
 import { Button, Modal } from "antd";
+import image from '../assets/image.jpg'
+
 import {useAuth} from '../context/AuthContext'
 
 const App = ({ mode }) => {
   const {userData} = useAuth();
-  console.log("inside header",userData)
+  // console.log("inside header",userData)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
-  //   const handleOk = () => {
-  //     setIsModalOpen(false);
-  //   };
-  //   const handleCancel = () => {
-  //     setIsModalOpen(false);
-  //   };
+
   return (
     <>
       <button
@@ -24,9 +20,10 @@ const App = ({ mode }) => {
         onClick={showModal}
         //   onClick={handlePfp}
         style={{
-          filter: mode ? "none" : "invert(1) brightness(0.8)",
-        }}>
-        <img src={`http://localhost:7000${userData.profileImage}`} alt="user" className="rounded-full" />
+          filter: mode ? "none" : "invert(1) brightness(1)",
+        }}
+        >
+        <img src={`http://localhost:7000${userData.profileImage}`|| image} alt={userData.username} className="rounded-full w-[30px] h-[30px]" />
       </button>
 
       <Modal

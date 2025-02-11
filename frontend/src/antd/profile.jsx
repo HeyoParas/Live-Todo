@@ -2,11 +2,12 @@ import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import AxiosInstance from "../api/axiosInstance";
 import camera from "../assets/camera.svg";
+import image from '../assets/image.jpg'
 import { useAuth } from "../context/AuthContext";
 import ReportModal from "./reportModal";
-
+import {message } from "antd"
 const ProfileComponent = ({ closeModal }) => {
-  const { userData } = useAuth();
+  const { userData,setUserData } = useAuth();
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -100,7 +101,16 @@ const closeCamera = () => {
       });
 
       console.log("Response:", response.data);
-      alert("Profile updated successfully!");
+      if(response.data.success){
+        message.success(response.data.message);
+        setUserData((prevUserData) => ({
+          ...prevUserData, // Keep existing user data
+          profileImage: response.data.userData.profileImage, // Update profile image
+        }));
+      }
+      else{
+        message.warning(response.data.message);
+      }
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -117,7 +127,7 @@ const closeCamera = () => {
       <div className="text-center">
         <div className="relative inline-block">
           <img
-            src={capturedImage || "/default-avatar.png"}
+            src={capturedImage ||`http://localhost:7000${userData.profileImage}` || image}
             alt={userData.username}
             className="w-[150px] h-[150px] rounded-full mx-auto object-cover shadow-lg"
             style={{ objectFit: "cover" }} //  Ensures proper fit

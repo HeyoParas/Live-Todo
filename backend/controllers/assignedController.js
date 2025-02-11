@@ -17,7 +17,7 @@ const getAssigned = async (req, res) => {
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
     let assignedTo = await userModel.findOne({ email: extractedEmail });
-    console.log(assignedTo);
+    // console.log(assignedTo);
     const assignedTasks = await assignModel
       .find({ assignTo: extractedEmail })
       .populate([
@@ -30,30 +30,32 @@ const getAssigned = async (req, res) => {
           select: "username",
         },
       ]);
+    console.log("Assign Tasks: ",assignedTasks);
     if (assignedTasks.length === 0) {
       return res.json({
         message: "No assigned tasks found for this user.",
         success: true,
       });
     }
-    let assignedTaskscurrent = assignedTasks.map((assignment) => {
-      return {
-        assignedBy: assignment.assignerId.username,
-        assignTo: assignedTo.username,
-        tasks: assignment.tasks.map((task) => ({
-            taskId: task.taskId._id, // Getting the _id from populated taskId
-            taskTitle: task.taskId.taskTitle, // Task title from populated data
-            taskDescription: task.taskId.taskDescription, // Task description from populated data
-            assignDate: task.assignDate,
-            dueDate: task.dueDate,
-            currProgress: task.currProgress,
-            status: task.status,
-        })),
-      };
-    });
+    console.log("Assign Tasks: ",assignedTasks);
+    // let assignedTaskscurrent = assignedTasks.map((assignment) => {
+    //   return {
+    //     assignedBy: assignment.assignerId.username,
+    //     assignTo: assignedTo.username,
+    //     tasks: assignment.tasks.map((task) => ({
+    //         taskId: task.taskId._id, // Getting the _id from populated taskId
+    //         taskTitle: task.taskId.taskTitle, // Task title from populated data
+    //         taskDescription: task.taskId.taskDescription, // Task description from populated data
+    //         assignDate: task.assignDate,
+    //         dueDate: task.dueDate,
+    //         currProgress: task.currProgress,
+    //         status: task.status,
+    //     })),
+    //   };
+    // });
 
-    console.log("AssignTaskscurr: ", assignedTaskscurrent);
-    res.json({ assignedTaskscurrent, success: true });
+    // console.log("AssignTaskscurr: ", assignedTaskscurrent);
+    // res.json({ assignedTaskscurrent, success: true });
   } catch (error) {
     console.error(error);
     res.status(500).json({
