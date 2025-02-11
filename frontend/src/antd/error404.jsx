@@ -2,7 +2,7 @@ import React from 'react';
 import { Button, Result } from 'antd';
 import {useNavigate} from "react-router-dom"
 
-const App = () => {
+const error404 = () => {
   const Navigate =useNavigate()
 
   function handleClick()
@@ -17,4 +17,4 @@ return (
     extra={<Button type="primary" onClick={handleClick}>Back Home</Button>}
   />
 )}
-export default App;
+export default error404;

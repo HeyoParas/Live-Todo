@@ -1,15 +1,19 @@
+//React and Hooks
 import React, { useState, useEffect } from "react";
 import AxiosInstance from "../api/axiosInstance";
+
+//compopnents
 import Header from "../component/header";
 import Navbar from "../component/Navbar";
-import TaskSection from "../component/taskSection";
 import Drawer from "../component/Drawer";
 import Shimmer from "../shimmer/shimmer";
 import { useAuth } from "../context/AuthContext";
-import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { message } from "antd";
 import MyTasks from './myTasks';
 import AssignedTasks from './assignTasks';
+
+//for drag and drop
+import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 
 const Dashboard = () => {
   const { userData, setUserData, tasks, setTasks, setAssignTask } = useAuth();
@@ -20,6 +24,7 @@ const Dashboard = () => {
   const [isMyTaskOpen, setIsMyTaskOpen] = useState(true);
   const [isAssignedTaskOpen, setIsAssignedTaskOpen] = useState(false);
 
+  //send request to get data
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -53,6 +58,7 @@ const Dashboard = () => {
     fetchData();
   }, []);
 
+  //useEffect for shimmer
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsLoading(false);
@@ -75,6 +81,7 @@ const Dashboard = () => {
     setIsMyTaskOpen(false);
   };
 
+  //function for handle dragEnd
   const onDragEnd = async (result) => {
     //"If it is not dropped anywhere, do nothing."
     if (!result.destination) return;
@@ -136,34 +143,28 @@ const Dashboard = () => {
             background: "#2a2b2f",
             color: "#ffffff",
           }}>
+          
+          {/* Header */}
           <Header mode={mode} name={userData?.username} />
-          {/* <Navbar mode={mode} /> */}
+
+          {/* Navbar */}
           <Navbar
             mode={mode}
             handleMyTaskOpen={handleMyTaskOpen}
             handleAssingedTaskOpen={handleAssingedTaskOpen}
           />
-          {/* <hr className=""/> */}
           <hr
             className={`${
               mode ? "border-gray-300 border-2" : "border-[#3f4044] border-2"
             }`}
           />
 
-          {isMyTaskOpen &&  <MyTasks mode={mode} data={userData?.sections} />
-                  //     <div
-                  //     className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
-                  //     style={{
-                  //       background: mode ? "#ffffff" : "#2a2b2f",
-                  //     }}>
-                  //     {userData.sections.map((elem, index) => (
-                  //       <TaskSection key={index} sectionName={elem} mode={mode} />
-                  //     ))}
-                  //   </div>
-                  // )
-          }
+          {/* component for myTasks */}
+          {isMyTaskOpen &&  <MyTasks mode={mode} data={userData?.sections} />}
 
+          {/* component for assigned task */}
           {isAssignedTaskOpen && <AssignedTasks mode={mode} />}
+          
         </div>
       </div>
     </DragDropContext>

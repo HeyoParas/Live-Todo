@@ -1,8 +1,10 @@
+//React
 import React from 'react'
+
+//components
 import TaskSection from "../component/taskSection";
 
 const myTasks = ({mode,data}) => {
-    // console.log(data)
   return (
     <div
     className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"

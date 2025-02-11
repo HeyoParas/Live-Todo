@@ -120,7 +120,7 @@ const assignTask = async (req, res) => {
                 },
               },
               { new: true } // Ensure that the updated document is returned
-            ).populate("taskId");
+            ).populate("tasks.taskId");
             const assignedToSocketId = req.users[email];
             io.to(assignedToSocketId).emit("taskAssigned",{ taskTitle:taskId.taskTitle,assignerEmail:user.email})
             res.json({ message: "Task Assigned Successfully!", success: true });
