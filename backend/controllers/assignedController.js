@@ -77,6 +77,7 @@ const getUserList = async (req, res) => {
 const assignTask = async (req, res) => {
   const { email, taskId, assignDate, dueDate } = req.body;
   const {currProgress} = req.body||0;
+  const {io} =req.body;
   console.log(req.body);
 
   if (!verifydate(assignDate, dueDate)) {
@@ -113,8 +114,9 @@ const assignTask = async (req, res) => {
                 },
               },
               { new: true } // Ensure that the updated document is returned
-            );
-            
+            ).populate("taskId");
+            const assignedToSocketId = req.users[email];
+            io.to(assignedToSocketId).emit("taskAssigned",{ taskTitle:taskId.taskTitle,assignerEmail:user.email})
             res.json({ message: "Task Assigned Successfully!", success: true });
           }
         } else {

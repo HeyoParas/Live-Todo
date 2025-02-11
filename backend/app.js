@@ -54,6 +54,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.urlencoded({ extended: true }));
 app.use("/assignTask",(req,res,next)=>{
     req.io = io;
+    req.users = users;
     next();
 })
 app.use(todoRouter);

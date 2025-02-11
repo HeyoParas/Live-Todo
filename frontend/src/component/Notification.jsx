@@ -24,7 +24,7 @@ const NotificationPopup = ({ userId }) => {
     toast.info(
       <div>
         <strong>New Task Assigned</strong>
-        <p><b>Task:</b> {data.task.title}</p>
+        <p><b>Task:</b> {data.taskTitle}</p>
         <p><b>Assigned By:</b> {data.assignerEmail}</p>
       </div>,
       { position: "top-right", autoClose: 5000 }
