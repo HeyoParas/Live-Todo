@@ -12,7 +12,7 @@ import MyTasks from './myTasks';
 import AssignedTasks from './assignTasks';
 
 const Dashboard = () => {
-  const { userData, setUserData, tasks, setTasks } = useAuth();
+  const { userData, setUserData, tasks, setTasks, setAssignTask } = useAuth();
   const [isLoading, setIsLoading] = useState(true);
 
   const [w, setWidth] = useState("20%");
@@ -25,14 +25,22 @@ const Dashboard = () => {
       try {
         const response = await AxiosInstance.get("/getUserData");
         const assignedTaskResponse = await AxiosInstance.get("/assignedtask");
-        console.log("assignedTaskResponse: ",assignedTaskResponse.data);
         console.log("response from backend:", response.data);
+        console.log("assignedTaskResponse: ",assignedTaskResponse.data);
         if (response.data.success) {
           setUserData(response.data.userdata);
           setTasks(response.data.userdata.mytasks);
+          
+          if(assignedTaskResponse.data.success){
+            setAssignTask(assignedTaskResponse.data);
+          }else{
+            message.error(response.data.message);
+          }
+          
         } else {
           message.error(response.data.message);
         }
+        
       } catch (error) {
         // console.error("Error fetching data:", err);
         message.error(error.message || "An error occurred");
@@ -73,7 +81,7 @@ const Dashboard = () => {
 
     const { source, destination, draggableId } = result;
     const currentTask = tasks.filter((task) => {
-      if (task._id == draggableId) {
+      if (task?._id == draggableId) {
         return task;
       }
     });
@@ -94,18 +102,18 @@ const Dashboard = () => {
       }
 
       const response = await AxiosInstance.patch("/updateSection", obj);
-      console.log("drag response", response.data);
+      console.log("drag response", response?.data);
       if (response.data.success) {
         message.success("Task " + response?.data?.message);
         setTasks((prevTasks) =>
           prevTasks.map((task) =>
             task._id === draggableId
-              ? { ...task, ...response.data.updatedTask } // Update all fields
+              ? { ...task, ...response?.data?.updatedTask } // Update all fields
               : task
           )
         );
       } else {
-        message.warning(response.data.message);
+        message.warning(response?.data?.message);
       }
     } catch (error) {
       console.error("Error updating task section:", error);
@@ -128,7 +136,7 @@ const Dashboard = () => {
             background: "#2a2b2f",
             color: "#ffffff",
           }}>
-          <Header mode={mode} name={userData.username} />
+          <Header mode={mode} name={userData?.username} />
           {/* <Navbar mode={mode} /> */}
           <Navbar
             mode={mode}
@@ -142,7 +150,7 @@ const Dashboard = () => {
             }`}
           />
 
-          {isMyTaskOpen &&  <MyTasks mode={mode} data={userData.sections} />
+          {isMyTaskOpen &&  <MyTasks mode={mode} data={userData?.sections} />
                   //     <div
                   //     className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
                   //     style={{

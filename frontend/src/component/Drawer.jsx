@@ -68,11 +68,10 @@ function Drawer({ setWidth, mode, setMode  }) {
         </div>
         </div>
         <div className="flex flex-col items-center mb-4 ">
-        <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
-            {/* <img src={exit} /> */}
-            <LogOut />
+        <div className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
+  <LogOut />
+</div>
 
-          </button>
         </div>
       </div>
 
@@ -88,12 +87,12 @@ function Drawer({ setWidth, mode, setMode  }) {
           <div className="flex justify-between p-4">
             <h1 className="text-2xl font-bold p-2">Project</h1>
             <div className="mt-4 w-8">
-              <button className="w-10 h-5">
+              <div className="w-10 h-5">
                 <img src={add_view} alt="Add"         
                 style={{
           filter: mode ? "none" : "invert(1) brightness(0.8)",
         }} />
-              </button>
+              </div>
             </div>
           </div>
           <div className="h-[calc(95vh-80px)] overflow-y-auto">

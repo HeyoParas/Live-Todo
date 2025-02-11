@@ -7,7 +7,6 @@ import EditDialogue from "../antd/editDialogue";
 import TaskInfo from "../antd/taskInfo";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Tooltip } from 'antd';
-import UserList from '../antd/userList';
 import AxiosInstance from '../api/axiosInstance';
 
 const TaskBox = ({ task, mode, type, index }) => {
@@ -18,9 +17,9 @@ const TaskBox = ({ task, mode, type, index }) => {
   formatAssignDate(task);
 
   function formatAssignDate(task) {
-    const date = new Date(task.createdAt); 
-    const options = { month: "short", day: "2-digit", year: "numeric" };
-    task.createdAt = date.toLocaleDateString("en-US", options).replace(",", "");
+    const date = new Date(task.createdAt); // Convert to Date object
+    const options = { month: "short", day: "2-digit", year: "numeric" }; // Formatting options
+    task.createdAt = date.toLocaleDateString("en-US", options).replace(",", ""); // Format and remove the comma
     return task;
   }
   const deleteTask = async (taskId) => {
@@ -45,16 +44,11 @@ const TaskBox = ({ task, mode, type, index }) => {
   };
 
   return (
-    <Draggable draggableId={task._id} index={index}>
-      {(provided, snapshot) => (
+
         <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition ${
-            snapshot.isDragging ? "bg-blue-300" : mode ? "bg-white text-black border-solid border-2 border-slate-200" : "bg-[#292b31] text-white"
-          }`}
-        >
+          className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition  ${
+            mode? "bg-white text-black border-solid border-2 border-slate-200" : "bg-[#292b31] text-white"
+          } `}>
       {/* Task Header */}
       <div className="flex items-center justify-between ">
         <div className="w-[90%]">
@@ -77,26 +71,6 @@ const TaskBox = ({ task, mode, type, index }) => {
             <Tooltip title="Edit Task">
             <EditDialogue id={task?._id} task={task} />
             </Tooltip>
-          </div>
-
-          {/* Delete Button */}
-          <div className="flex items-center">
-            <Popconfirm
-              title="Are you sure you want to delete this task?"
-              open={deleteVisible}
-              onConfirm={() => deleteTask(task?._id)}
-              onCancel={() => setDeleteVisible(false)}
-              okText="Yes"
-              cancelText="No"
-              onOpenChange={(visible) => setDeleteVisible(visible)}>
-              <button className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
-                <img
-                  src={more}
-                  alt="more"
-                  style={{ filter: mode ? "none" : "invert(1)" }}
-                />
-              </button>
-            </Popconfirm>
           </div>
         </div>
       </div>
@@ -170,10 +144,6 @@ const TaskBox = ({ task, mode, type, index }) => {
         </div>
 
         <div className="flex items-center gap-x-4">
-        {/* users List */}
-          <div className="flex items-center">
-            <UserList mode={mode} id={task?._id}/>
-          </div>
 
           {/* info */}
           <div className="flex items-center ">
@@ -183,8 +153,5 @@ const TaskBox = ({ task, mode, type, index }) => {
       </div>
       </div>
       )}
-    </Draggable>
-  );
-};
 
 export default TaskBox;

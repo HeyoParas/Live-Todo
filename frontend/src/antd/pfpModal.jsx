@@ -7,7 +7,7 @@ import {useAuth} from '../context/AuthContext'
 
 const App = ({ mode }) => {
   const {userData} = useAuth();
-  console.log("inside header",userData)
+  // console.log("inside header",userData)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
