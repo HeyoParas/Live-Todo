@@ -7,6 +7,7 @@ import Profile from '../antd/profile.jsx';
 import PfpModal from '../antd/pfpModal.jsx';
 
 const Header = ({ mode, name }) => {
+
   // const [showProfile, setShowProfile] = useState(false);
 
   // function handlePfp() {

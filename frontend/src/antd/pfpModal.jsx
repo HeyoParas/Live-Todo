@@ -2,7 +2,11 @@ import React, { useState } from "react";
 import image from "../assets/image.png";
 import Profile from "./profile";
 import { Button, Modal } from "antd";
+import {useAuth} from '../context/AuthContext'
+
 const App = ({ mode }) => {
+  const {userData} = useAuth();
+  console.log("inside header",userData)
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -22,7 +26,7 @@ const App = ({ mode }) => {
         style={{
           filter: mode ? "none" : "invert(1) brightness(0.8)",
         }}>
-        <img src={image} alt="user" className="rounded-full" />
+        <img src={`http://localhost:7000${userData.profileImage}`} alt="user" className="rounded-full" />
       </button>
 
       <Modal
