@@ -32,7 +32,7 @@ const UserList = ({ mode, id }) => {
     setLoading(true);
     try {
       const response = await AxiosInstance.get("/getUserList");
-      console.log("hiii:",response.data);
+      // console.log("hiii:",response.data);
       if (response.data.success) {
         setUserList(response.data.users || []);
         setOpen((prev) => !prev);

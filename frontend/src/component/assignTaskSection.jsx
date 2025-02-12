@@ -14,6 +14,7 @@ console.log(sectionName.tasks)
               ? "bg-[white] text-black border-3 border-dashed border-slate-300"
               : "bg-[#24262c] text-white"
           }`}
+          style
         >
 
       <div className="flex flex-col sm:flex-row justify-around items-center text-sm  rounded-lg m-2 [@media(max-width:1300px)]:flex-col">
