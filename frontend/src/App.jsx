@@ -7,6 +7,7 @@ import "./App.css";
 import LoginScreen from "./authComponent/loginScreen";
 import SignupScreen from "./authComponent/signupScreen";
 import Dashboard from "./Dashboard/dashboard";
+import NewChanges from './Dashboard/newChanges';
 import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
 import { useAuth, AuthProvider } from "./context/AuthContext";
 import Error404 from "./antd/error404";
@@ -35,9 +36,13 @@ function AppContent() {
       path: "/signup",
       element: isAuthenticated ? <Navigate to="/dashboard" /> : <SignupScreen />,
     },
+    // {
+    //   path: "/dashboard",
+    //   element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
+    // },
     {
       path: "/dashboard",
-      element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
+      element: isAuthenticated ? <NewChanges/> : <Navigate to="/login" />,
     },
     {
       path: "*",

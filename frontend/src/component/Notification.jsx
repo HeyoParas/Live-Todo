@@ -16,7 +16,7 @@ const Notification = ({ userId }) => {
 
     // Log socket connection
     socket.on("connect", () => {
-      console.log("✅ Socket connected:", socket.id);
+      console.log("Socket connected:", socket.id);
       socket.emit("LogginUser", userId); // Register user
     });
 
