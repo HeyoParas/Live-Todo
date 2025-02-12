@@ -1,7 +1,7 @@
 const assignModel = require("../models/assignedTaskSchema");
 const userModel = require("../models/userSchema");
 const { getUser } = require("./token");
-
+const mongoose = require("mongoose");
 const verifydate = (aDate, dDate) => {
   const assignDate = new Date(aDate);
   const dueDate = new Date(dDate);
@@ -33,7 +33,7 @@ const getAssigned = async (req, res) => {
     if (assignedTasks.length === 0) {
       return res.json({
         message: "No assigned tasks found for this user.",
-        success: false,
+        success: true,
       });
     }
     let assignedTaskscurrent = assignedTasks.map((assignment) => {
@@ -128,10 +128,10 @@ const assignTask = async (req, res) => {
               .populate("tasks.taskId");
             const data = await userModel.findOne({ email: email });
             const assignedToSocketId = req.users[data._id];
-            // io.to(assignedToSocketId).emit("taskAssigned", {
-            //   taskTitle: taskId.taskTitle,
-            //   assignerEmail: user.email,
-            // });
+            io.to(assignedToSocketId).emit("taskAssigned", {
+              taskTitle: taskId.taskTitle,
+              assignerEmail: user.email,
+            });
             res.json({ message: "Task Assigned Successfully!", success: true });
           }
         } else {
