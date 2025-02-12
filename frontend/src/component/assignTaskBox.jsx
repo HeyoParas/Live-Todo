@@ -6,14 +6,14 @@ import { Popconfirm, message } from "antd";
 import edit from "../assets/edit.svg";
 import { useAuth } from "../context/AuthContext";
 import EditDialogue from "../antd/editDialogue";
-import AssignTaskInfo from "../antd/taskInfo";
+import AssignTaskInfo from "../antd/assignTaskInfo";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import { Tooltip } from "antd";
 import AxiosInstance from "../api/axiosInstance";
 import { useForm } from "react-hook-form";
 
 const assignTaskBox = ({ task, mode, type, index }) => {
-  const { assignTask,setAssignTask } = useAuth();
+  const { assignTask, setAssignTask } = useAuth();
 
   const [deleteVisible, setDeleteVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,35 +35,42 @@ const assignTaskBox = ({ task, mode, type, index }) => {
   };
   const onSubmit = async (data) => {
     try {
-      const extractedData = assignTask.assignedTaskscurrent.map(task => ({
-        assignedBy: task.assignedBy,
-        assignTo: task.assignTo
-      }));
+      let target = null;
+      let assignedBy = null;
+      let assignTo = null;
+
+      assignTask.forEach((item) => {
+        const foundTask = item.tasks.find((t) => t.taskId === task.taskId);
+        if (foundTask) {
+          target = foundTask;
+          assignedBy = item.assignedBy;
+          assignTo = item.assignTo;
+        }
+      });
 
       const obj = {
-        currProgress: data.progress,  // from form data
-        assignTo: extractedData[0].assignTo,  // from extractedData
-        assignedBy: extractedData[0].assignedBy,  // from extractedData
-        taskId: task.taskId  // taskId from task object
+        currProgress: data.progress, // from form data
+        assignTo: assignTo, // from extractedData
+        assignedBy: assignedBy, // from extractedData
+        taskId: task.taskId, // taskId from task object
       };
 
-      console.log("Obj: ",obj);
-      const response = await AxiosInstance.patch('/updateProgress',obj);
-      console.log("response:",response.data);
-      if(response.data.success){
+      console.log("obj: ", obj);
+
+      const response = await AxiosInstance.patch("/updateProgress", obj);
+      if (response.data.success) {
         message.success(response.data.message);
-        
-        setAssignTask((prev) => ({
-          ...prev,
-          assignedTaskscurrent: prev.assignedTaskscurrent.map((taskItem) => ({
-            ...taskItem,
-            tasks: taskItem.tasks.map((t) =>
-              t.taskId === obj.taskId ? { ...t, currProgress: obj.currProgress } : t
+
+        setAssignTask((prevTasks) =>
+          prevTasks.map((item) => ({
+            ...item,
+            tasks: item.tasks.map((t) =>
+              t.taskId === task.taskId ? { ...t, currProgress: data.progress } : t
             ),
-          })),
-        }));
-      }
-      else{
+          }))
+        );
+        
+      } else {
         message.warning(response.data.message);
       }
       setIsModalOpen(false);
@@ -227,7 +234,7 @@ const assignTaskBox = ({ task, mode, type, index }) => {
         <div className="flex items-center gap-x-4">
           {/* info */}
           <div className="flex items-center ">
-            <AssignTaskInfo mode={mode} id={task?._id} />
+            <AssignTaskInfo mode={mode} id={task?.taskId} />
           </div>
         </div>
       </div>

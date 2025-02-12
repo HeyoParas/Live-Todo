@@ -33,7 +33,7 @@ const getAssigned = async (req, res) => {
     if (assignedTasks.length === 0) {
       return res.json({
         message: "No assigned tasks found for this user.",
-        success: true,
+        success: false,
       });
     }
     let assignedTaskscurrent = assignedTasks.map((assignment) => {
