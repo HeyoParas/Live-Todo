@@ -7,6 +7,8 @@ import "./App.css";
 import LoginScreen from "./authComponent/loginScreen";
 import SignupScreen from "./authComponent/signupScreen";
 import Dashboard from "./Dashboard/dashboard";
+import NewChanges from './Dashboard/newChanges';
+import { ToastContainer } from "react-toastify";
 import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
 import { useAuth, AuthProvider } from "./context/AuthContext";
 import Error404 from "./antd/error404";
@@ -39,6 +41,10 @@ function AppContent() {
       path: "/dashboard",
       element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
     },
+    // {
+    //   path: "/dashboard",
+    //   element: isAuthenticated ? <NewChanges /> : <Navigate to="/login" />,
+    // },
     {
       path: "*",
       element: <Error404 />,
@@ -51,6 +57,8 @@ function AppContent() {
 function App() {
   return (
     <AuthProvider>
+    {/* <ToastContainer position="top-right" autoClose={5000} /> */}
+
       <AppContent />
     </AuthProvider>
   );
