@@ -13,9 +13,8 @@ import AxiosInstance from "../api/axiosInstance";
 import { useForm } from "react-hook-form";
 
 const assignTaskBox = ({ task, mode, type, index }) => {
-  // console.log("from assign taskbox:", task);
-  const { assignTask } = useAuth();
-  // console.log("assignTask:",assignTask);
+  const { assignTask,setAssignTask } = useAuth();
+
   const [deleteVisible, setDeleteVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
@@ -51,6 +50,22 @@ const assignTaskBox = ({ task, mode, type, index }) => {
       console.log("Obj: ",obj);
       const response = await AxiosInstance.patch('/updateProgress',obj);
       console.log("response:",response.data);
+      if(response.data.success){
+        message.success(response.data.message);
+        
+        setAssignTask((prev) => ({
+          ...prev,
+          assignedTaskscurrent: prev.assignedTaskscurrent.map((taskItem) => ({
+            ...taskItem,
+            tasks: taskItem.tasks.map((t) =>
+              t.taskId === obj.taskId ? { ...t, currProgress: obj.currProgress } : t
+            ),
+          })),
+        }));
+      }
+      else{
+        message.warning(response.data.message);
+      }
       setIsModalOpen(false);
       reset();
     } catch (error) {
