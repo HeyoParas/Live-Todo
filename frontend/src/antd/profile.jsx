@@ -87,7 +87,7 @@ const closeCamera = () => {
 
   //  Form Submission
   const onSubmit = async (data) => {
-    console.log(data);
+    // console.log(data);
     try {
       const formData = new FormData();
       formData.append("username", data.username);
@@ -101,12 +101,13 @@ const closeCamera = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
-      console.log("Response:", response.data);
+      // console.log("Response profile:", response.data);
       if(response.data.success){
         message.success(response.data.message);
         setUserData((prevUserData) => ({
           ...prevUserData, // Keep existing user data
           profileImage: response.data.userData.profileImage, // Update profile image
+          username: response.data.userData.username,        //update username
         }));
       }
       else{

@@ -5,23 +5,19 @@ import "react-toastify/dist/ReactToastify.css";
 
 // Establish WebSocket Connection
 const socket = io("http://localhost:7000", {
-  withCredentials: true, // Ensures authentication if needed
-  reconnectionAttempts: 5, // Tries to reconnect 5 times
-  transports: ["websocket"], // Ensures WebSocket transport is used
+  withCredentials: true,
+  reconnectionAttempts: 5,
+  transports: ["websocket"],
 });
 
 const Notification = ({ userId }) => {
   useEffect(() => {
     if (!userId) return;
 
-    // Log socket connection
-    socket.on("connection", () => {
-      console.log("Socket connected:", socket.id);
-      socket.emit("LogginUser", userId); // Register user
-    });
+    socket.emit("LogginUser", userId); // Register user with backend
 
-    // Listen for taskAssigned event
     socket.on("taskAssigned", (data) => {
+      console.log("New Task Assigned:", data);
       showNotification(data);
     });
 
@@ -47,7 +43,7 @@ const Notification = ({ userId }) => {
     );
   };
 
-  return null; // No UI element, just handling notifications
+  return null; // No UI, just handling notifications
 };
 
 export default Notification;

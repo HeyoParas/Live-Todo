@@ -30,16 +30,14 @@ const Dashboard = () => {
       try {
         const response = await AxiosInstance.get("/getUserData");
         const assignedTaskResponse = await AxiosInstance.get("/assignedtask");
-        console.log("response from backend:", response.data);
-        console.log("assignedTaskResponse: ",assignedTaskResponse.data);
+        // console.log("response from backend:", response.data);
+        // console.log("assignedTaskResponse: ",assignedTaskResponse.data);
         if (response.data.success) {
           setUserData(response.data.userdata);
           setTasks(response.data.userdata.mytasks);
           
           if(assignedTaskResponse.data.success){
-            setAssignTask(assignedTaskResponse.data);
-          }else{
-            message.error(response.data.message);
+            setAssignTask(assignedTaskResponse.data.assignedTaskscurrent);
           }
           
         } else {

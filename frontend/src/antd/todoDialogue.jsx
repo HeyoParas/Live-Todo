@@ -22,11 +22,11 @@ const TodoDialogue = ({ mode, type }) => {
   };
 
   const handleOk = async (data) => {
-    console.log("Sending data to backend:", data);
+    // console.log("Sending data to backend:", data);
 
     try {
       const response = await AxiosInstance.post("/addTask", data);
-      console.log("Response from backend:", response.data);
+      // console.log("Response from backend:", response.data);
 
       if(response.data.success) {
       setTasks((prevTasks) => [...prevTasks, response.data.savedTask]);   // Update the tasks in the context
