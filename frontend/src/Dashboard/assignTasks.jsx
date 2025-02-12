@@ -1,5 +1,7 @@
 //React
 import React from 'react'
+import { Empty } from 'antd';
+
 
 //components
 import {useAuth} from '../context/AuthContext';
@@ -7,6 +9,10 @@ import AssignTaskSection from "../component/assignTaskSection"
 
 const assignTasks = ({mode}) => {
   const {assignTask:data} = useAuth();
+
+    if (!data) {
+      return <Empty/>;
+    }
 
   return (
     <div

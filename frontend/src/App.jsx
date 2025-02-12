@@ -1,10 +1,13 @@
+//React
 import React from "react";
 import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+
+//styles and components
+import "./App.css";
 import LoginScreen from "./authComponent/loginScreen";
 import SignupScreen from "./authComponent/signupScreen";
 import Dashboard from "./Dashboard/dashboard";
 import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
-import "./App.css";
 import { useAuth, AuthProvider } from "./context/AuthContext";
 import Error404 from "./antd/error404";
 
