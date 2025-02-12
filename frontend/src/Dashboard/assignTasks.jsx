@@ -8,10 +8,14 @@ import {useAuth} from '../context/AuthContext';
 import AssignTaskSection from "../component/assignTaskSection"
 
 const assignTasks = ({mode}) => {
-  const {assignTask:data} = useAuth();
-
-    if (!data) {
-      return <Empty/>;
+  const {assignTask} = useAuth();
+  console.log(assignTask)
+    if (assignTask.length == 0) {
+      return (
+        <div className='mt-[30%]'>
+          <Empty/>
+        </div>
+      );
     }
 
   return (
@@ -20,7 +24,7 @@ const assignTasks = ({mode}) => {
     style={{
       background: mode ? "#ffffff" : "#2a2b2f",
     }}>
-    {data?.assignedTaskscurrent.map((elem, index) => (
+    {assignTask?.assignedTaskscurrent.map((elem, index) => (
       <AssignTaskSection key={index} sectionName={elem} mode={mode} />
     ))}
   </div>

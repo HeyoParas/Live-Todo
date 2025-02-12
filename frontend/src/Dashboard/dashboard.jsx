@@ -38,8 +38,6 @@ const Dashboard = () => {
           
           if(assignedTaskResponse.data.success){
             setAssignTask(assignedTaskResponse.data);
-          }else{
-            message.error(response.data.message);
           }
           
         } else {
