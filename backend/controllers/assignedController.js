@@ -128,10 +128,10 @@ const assignTask = async (req, res) => {
               .populate("tasks.taskId");
             const data = await userModel.findOne({ email: email });
             const assignedToSocketId = req.users[data._id];
-            io.to(assignedToSocketId).emit("taskAssigned", {
-              taskTitle: taskId.taskTitle,
-              assignerEmail: user.email,
-            });
+            // io.to(assignedToSocketId).emit("taskAssigned", {
+            //   taskTitle: taskId.taskTitle,
+            //   assignerEmail: user.email,
+            // });
             res.json({ message: "Task Assigned Successfully!", success: true });
           }
         } else {
