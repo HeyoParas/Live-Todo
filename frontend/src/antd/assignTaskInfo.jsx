@@ -9,9 +9,21 @@ const formatDate = (dateString) => {
   return date.toLocaleDateString("en-US", options).replace(",", "");
 };
 
-const info = (id, tasks) => {
-  const target = tasks.find((elem) => elem._id === id);
-  // console.log(target);
+const info = (id, data) => {
+  let target = null;
+  let assignedBy = null;
+  let assignTo = null;
+
+  // Iterate over the data array to find the matching taskId
+  data.forEach((item) => {
+    const foundTask = item.tasks.find((task) => task.taskId === id);
+    if (foundTask) {
+      target = foundTask;
+      assignedBy = item.assignedBy;
+      assignTo = item.assignTo;
+    }
+  });
+
   if (!target) {
     Modal.error({
       title: "Error",
@@ -24,59 +36,54 @@ const info = (id, tasks) => {
     title: "Task Details",
     width: 800,
     content: (
-<div className="overflow-x-auto mr-8">
-  <table className="w-full border-collapse border border-gray-300">
-    <tbody>
-      <tr className="border-b">
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Task Title</td>
-        <td className="p-2 w-7/10">{target.tasktitle || "N/A"}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Description</td>
-        <td className="p-2 w-7/10">{target.taskDescription || "N/A"}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Progress</td>
-        <td className="p-2 w-7/10">{`${target.progress?.currProgress || 0}/10`}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Priority</td>
-        <td className="p-2 w-7/10">{target.priority || "N/A"}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Due Date</td>
-        <td className="p-2 w-7/10">{formatDate(target.dueDate) || "N/A"}</td>
-      </tr>
-      <tr className="border-b">
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Assigned Date</td>
-        <td className="p-2 w-7/10">{formatDate(target.assignDate) || "N/A"}</td>
-      </tr>
-      {/* <tr className="border-b">
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Created At</td>
-        <td className="p-2 w-7/10">{formatDate(target.createdAt) || "N/A"}</td>
-      </tr>
-      <tr>
-        <td className="p-2 font-bold bg-gray-100 w-3/10">Updated At</td>
-        <td className="p-2 w-7/10">{formatDate(target.updatedAt) || "N/A"}</td>
-      </tr> */}
-    </tbody>
-  </table>
-</div>
-
-
+      <div className="overflow-x-auto mr-8">
+        <table className="w-full border-collapse border border-gray-300">
+          <tbody>
+            <tr className="border-b">
+              <td className="p-2 font-bold bg-gray-100 w-3/10">Task Title</td>
+              <td className="p-2 w-7/10">{target.tasktitle || "N/A"}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-2 font-bold bg-gray-100 w-3/10">Description</td>
+              <td className="p-2 w-7/10">{target.taskDescription || "N/A"}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-2 font-bold bg-gray-100 w-3/10">Progress</td>
+              <td className="p-2 w-7/10">{`${target.currProgress || 0}/10`}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-2 font-bold bg-gray-100 w-3/10">Assigned By</td>
+              <td className="p-2 w-7/10">{assignedBy || "N/A"}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-2 font-bold bg-gray-100 w-3/10">Assigned To</td>
+              <td className="p-2 w-7/10">{assignTo || "N/A"}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-2 font-bold bg-gray-100 w-3/10">Due Date</td>
+              <td className="p-2 w-7/10">{formatDate(target.dueDate) || "N/A"}</td>
+            </tr>
+            <tr className="border-b">
+              <td className="p-2 font-bold bg-gray-100 w-3/10">Assigned Date</td>
+              <td className="p-2 w-7/10">{formatDate(target.assignDate) || "N/A"}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     ),
     onOk() {},
   });
 };
 
+
 const assignTaskInfo = ({ mode, id }) => {
-  const { tasks } = useAuth();
+  const { assignTask:data } = useAuth();
 
   return (
     <Space wrap>
       <button
         className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600 p-1"
-        onClick={() => info(id, tasks)}
+        onClick={() => info(id, data)}
       >
         <img
           src={Info}

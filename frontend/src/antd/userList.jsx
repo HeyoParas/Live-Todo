@@ -32,7 +32,7 @@ const UserList = ({ mode, id }) => {
     setLoading(true);
     try {
       const response = await AxiosInstance.get("/getUserList");
-      console.log("hiii:",response.data);
+      // console.log("hiii:",response.data);
       if (response.data.success) {
         setUserList(response.data.users || []);
         setOpen((prev) => !prev);
@@ -67,10 +67,10 @@ const UserList = ({ mode, id }) => {
       currProgress: progress,
     };
 
-    console.log("obj: ",obj);
+    // console.log("obj: ",obj);
 
     const response = await AxiosInstance.post("/assignTask", obj);
-    console.log("assign Response: ",response.data);
+    // console.log("assign Response: ",response.data);
 
     if(response.data.success){
       message.success(`Task assigned to ${user.username}`);

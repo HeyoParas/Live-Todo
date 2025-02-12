@@ -20,13 +20,13 @@ const templateDialogue = ({ mode}) => {
   };
 
   const handleOk = async (data) => {
-    console.log(data);
+    // console.log(data);
     try {
-        console.log("data =",data);
+        // console.log("data =",data);
         const response = await AxiosInstance.post("/addSection", data,{
             withCredentials:true,
         });
-        console.log(response.data)
+        // console.log(response.data)
         if(response.data.success){
           message.success(response.data.message);
           setUserData((prevUserData) => ({

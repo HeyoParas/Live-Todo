@@ -21,7 +21,7 @@ const LoginScreen = () => {
     try {
       const response = await AxiosInstance.post("/login", data);
       
-      console.log("Response from backend:", response.data);
+      // console.log("Response from backend:", response.data);
 
       if (response.data.success) {
         // console.log(response.data)

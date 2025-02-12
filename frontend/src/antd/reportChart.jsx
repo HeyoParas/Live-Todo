@@ -5,7 +5,7 @@ import { Divider} from "antd"
 
 
 const reportChart = ({ data }) => {
-  console.log(data)
+  // console.log(data)
   if (!data) {
     return <Empty/>;
   }
