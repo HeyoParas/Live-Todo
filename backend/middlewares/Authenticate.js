@@ -14,7 +14,7 @@ const checkLoginStatus = async (req,res)=>{
     let userExists;
     userlogin?  userExists = await userModel.findById({_id:userlogin.id}):userExists=null;
     if(userExists){
-        console.log("true");
+        console.log("---- user exists in the database");
         res.json({success:true})
     }
     else{

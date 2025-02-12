@@ -129,7 +129,7 @@ const signupUser = async (req, res) => {
 const getUserData = async (req, res) => {
   console.log("----inside getUserData function");
   const user = await getUser(req.cookies.mycookie);
-  console.log(user);
+  // console.log(user);
   if (user) {
     try {
       const userdata = await userModel

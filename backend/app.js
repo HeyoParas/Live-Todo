@@ -5,37 +5,39 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const todoRouter = require("./routes/todoRouter");
 require('dotenv').config();
+
 const cors = require("cors");
 const {Server} = require("socket.io");
+const socketIo = require("socket.io");
 const http = require("http");
 const server = http.createServer(app); //creating a http server 
 
-const io = new Server(server, {
+const io = socketIo(server, {
   cors: {
-      origin: "http://localhost:5173",
-      credentials: true
-  }
+    origin: "*",
+    methods: ["GET", "POST"],
+    credentials : true ,
+  },
 });
 
-
-const users = new Map(); // { userId: socketId }
+const users = new Map();
 
 // Track user connections
 io.on("connection", (socket) => {
   console.log("User connected:", socket.id);
 
-  socket.on("LogginUser", (userId) => {
-    users.set(userId,socket.id); // Store userId with socketId
-    console.log(`User ${userId} registered with socket ${socket.id}`);
-  });
+  // socket.on("LogginUser", (userId) => {
+  //   users.set(userId,socket.id); // Store userId with socketId
+  //   console.log(`User ${userId} registered with socket ${socket.id}`);
+  // });
 
-  socket.on("disconnect", () => {
-    const userId = Object.keys(users).find((key) => users[key] === socket.id);
-    if (userId) {
-      users.delete(userId); // Remove user on disconnect
-      console.log(`User ${userId} disconnected`);
-    }
-  });
+  // socket.on("disconnect", () => {
+  //   const userId = Object.keys(users).find((key) => users[key] === socket.id);
+  //   if (userId) {
+  //     users.delete(userId); // Remove user on disconnect
+  //     console.log(`User ${userId} disconnected`);
+  //   }
+  // });
 });
 
 
