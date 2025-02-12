@@ -33,7 +33,7 @@ const EditDialogue = ({ mode, id, task }) => {
 
   const handleOk = async () => {
     try {
-      console.log("formData: ",formData)
+      // console.log("formData: ",formData)
       const response = await AxiosInstance.post("/updateTask",formData);
       // console.log("from backend response",response.data)
       if (response.data.success) {

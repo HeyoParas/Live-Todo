@@ -5,8 +5,8 @@ import TaskBox from "./taskBox";
 import AssignTaskBox from "./assignTaskBox";
 
 const assignTaskSection = ({ mode ,sectionName}) => {
-console.log(sectionName)
-console.log(sectionName.tasks)
+// console.log(sectionName)
+// console.log(sectionName.tasks)
   return (
   
         <div className={`flex flex-col h-full w-1/3 min-w-[31.5%] mx-2 rounded-2xl overflow-hidden scrollbar-hide ${

@@ -21,7 +21,7 @@ const TodoContent = ({ mode, data }) => {
   
 
   const deleteTask = async (id) => {
-    console.log("am in delete Task");
+    // console.log("am in delete Task");
     // console.log(id)
     // try {
     //   const response = await axios.delete(`http://localhost:5000/api/tasks/${id}`);

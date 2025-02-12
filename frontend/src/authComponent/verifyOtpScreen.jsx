@@ -54,16 +54,14 @@ const verifyOtpScreen = () => {
       
 
       const response = await AxiosInstance.post('/verifyEmail', signupData);
-      console.log(response.data)
+      // console.log(response.data)
       if (response.data.success) {
         message.success(response.data.message);
       } else {
-        console.log("hii")
         message.error(response.data.message);
       }
 
     } catch (error) {
-      console.log("hu")
       // message.error(error);
       message.error(error.message || "An error occurred");
     }

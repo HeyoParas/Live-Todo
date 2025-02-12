@@ -13,9 +13,9 @@ import AxiosInstance from "../api/axiosInstance";
 import { useForm } from "react-hook-form";
 
 const assignTaskBox = ({ task, mode, type, index }) => {
-  console.log("from assign taskbox:", task);
+  // console.log("from assign taskbox:", task);
   const { assignTask } = useAuth();
-  console.log("assignTask:",assignTask);
+  // console.log("assignTask:",assignTask);
   const [deleteVisible, setDeleteVisible] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const {
@@ -36,21 +36,21 @@ const assignTaskBox = ({ task, mode, type, index }) => {
   };
   const onSubmit = async (data) => {
     try {
-      console.log("Updated progress:", data.progress);
-      console.log("task:",task.taskId);
-      // const extractedData = assignTask.assignedTaskscurrent.map(task => ({
-      //   assignedBy: task.assignedBy,
-      //   assignTo: task.assignTo
-      // }));
+      const extractedData = assignTask.assignedTaskscurrent.map(task => ({
+        assignedBy: task.assignedBy,
+        assignTo: task.assignTo
+      }));
 
-      // const obj = {
-      //   progress: data.progress,  // from form data
-      //   assignedTo: extractedData[0].assignTo,  // from extractedData
-      //   assignedBy: extractedData[0].assignedBy,  // from extractedData
-      //   taskId: task.taskId  // taskId from task object
-      // };
+      const obj = {
+        currProgress: data.progress,  // from form data
+        assignTo: extractedData[0].assignTo,  // from extractedData
+        assignedBy: extractedData[0].assignedBy,  // from extractedData
+        taskId: task.taskId  // taskId from task object
+      };
 
-      // const response = await AxiosInstance.patch('/updateProgress',obj);
+      console.log("Obj: ",obj);
+      const response = await AxiosInstance.patch('/updateProgress',obj);
+      console.log("response:",response.data);
       setIsModalOpen(false);
       reset();
     } catch (error) {

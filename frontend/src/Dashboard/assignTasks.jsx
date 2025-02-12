@@ -9,7 +9,7 @@ import AssignTaskSection from "../component/assignTaskSection"
 
 const assignTasks = ({mode}) => {
   const {assignTask} = useAuth();
-  console.log(assignTask)
+  // console.log(assignTask)
     if (assignTask.length == 0) {
       return (
         <div className='p-50 h-[100%]'
