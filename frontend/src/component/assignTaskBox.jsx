@@ -1,54 +1,82 @@
 import React, { useState } from "react";
 import more from "../assets/More.svg";
 import hamburger from "../assets/hamburger.svg";
+import { Button, Modal } from "antd";
 import { Popconfirm, message } from "antd";
+import edit from "../assets/edit.svg";
 import { useAuth } from "../context/AuthContext";
 import EditDialogue from "../antd/editDialogue";
-import TaskInfo from "../antd/taskInfo";
+import AssignTaskInfo from "../antd/taskInfo";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
-import { Tooltip } from 'antd';
-import AxiosInstance from '../api/axiosInstance';
+import { Tooltip } from "antd";
+import AxiosInstance from "../api/axiosInstance";
+import { useForm } from "react-hook-form";
 
-const TaskBox = ({ task, mode, type, index }) => {
-  // console.log("from taskbox:",task)
-  const { setTasks } = useAuth();
+const assignTaskBox = ({ task, mode, type, index }) => {
+  console.log("from assign taskbox:", task);
+  const { assignTask } = useAuth();
+  console.log("assignTask:",assignTask);
   const [deleteVisible, setDeleteVisible] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm();
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+  //   const handleOk = () => {
+  //     setIsModalOpen(false);
+  //   };
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    reset();
+  };
+  const onSubmit = async (data) => {
+    try {
+      console.log("Updated progress:", data.progress);
+      console.log("task:",task.taskId);
+      // const extractedData = assignTask.assignedTaskscurrent.map(task => ({
+      //   assignedBy: task.assignedBy,
+      //   assignTo: task.assignTo
+      // }));
+
+      // const obj = {
+      //   progress: data.progress,  // from form data
+      //   assignedTo: extractedData[0].assignTo,  // from extractedData
+      //   assignedBy: extractedData[0].assignedBy,  // from extractedData
+      //   taskId: task.taskId  // taskId from task object
+      // };
+
+      // const response = await AxiosInstance.patch('/updateProgress',obj);
+      setIsModalOpen(false);
+      reset();
+    } catch (error) {
+      console.error("Error updating task section:", error);
+      message.error(error.message || "An error occurred");
+    }
+  };
 
   formatAssignDate(task);
 
   function formatAssignDate(task) {
-    const date = new Date(task.createdAt); // Convert to Date object
+    const date = new Date(task.assignDate); // Convert to Date object
     const options = { month: "short", day: "2-digit", year: "numeric" }; // Formatting options
-    task.createdAt = date.toLocaleDateString("en-US", options).replace(",", ""); // Format and remove the comma
+    task.assignDate = date
+      .toLocaleDateString("en-US", options)
+      .replace(",", ""); // Format and remove the comma
     return task;
   }
-  const deleteTask = async (taskId) => {
-    try {
-      // console.log("in deleteTask, taskID:", taskId);
-      const response = await AxiosInstance.post('/deleteTask',{ taskId });
-  
-      if (response.data.success) {
-        message.loading("Deleting task...", 1.5); // Show loading message for 2.5 sec
-  
-        setTimeout(() => {
-          setTasks((prevTasks) => prevTasks.filter((task) => task._id !== taskId));
-          message.success("Task deleted successfully!");
-        }, 2000); // Delay task deletion by 3 sec
-      } else {
-        message.error("Failed to delete task!");
-      }
-    } catch (error) {
-      //console.error("Delete failed:", error);
-      message.error("Error deleting task. Try again!");
-    }
-  };
 
   return (
-
-        <div
-          className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition  ${
-            mode? "bg-white text-black border-solid border-2 border-slate-200" : "bg-[#292b31] text-white"
-          } `}>
+    <div
+      className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition  ${
+        mode
+          ? "bg-white text-black border-solid border-2 border-slate-200"
+          : "bg-[#292b31] text-white"
+      } `}>
       {/* Task Header */}
       <div className="flex items-center justify-between ">
         <div className="w-[90%]">
@@ -68,9 +96,49 @@ const TaskBox = ({ task, mode, type, index }) => {
         <div className="flex justify-between w-[20%] gap-x-2">
           {/* Edit Button */}
           <div className="mt-1">
-            <Tooltip title="Edit Task">
-            <EditDialogue id={task?._id} task={task} />
-            </Tooltip>
+            {/* <EditDialogue id={task?._id} task={task} /> */}
+            <button
+              className="rounded-full hover:bg-slate-50"
+              style={{
+                filter: mode ? "none" : "invert(1) brightness(0.8)",
+              }}
+              onClick={showModal}>
+              <img src={edit} alt="edit" />
+            </button>
+            <Modal
+              title="Basic Modal"
+              open={isModalOpen}
+              onCancel={handleCancel}
+              footer={null}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <label className="block text-sm font-medium text-gray-700">
+                  Progress (1-10)
+                </label>
+                <input
+                  type="number"
+                  {...register("progress", {
+                    required: "Progress is required",
+                    min: {
+                      value: task?.currProgress,
+                      message: `Minimum value is ${task?.currProgress}`,
+                    },
+                    max: { value: 10, message: "Maximum value is 10" },
+                    valueAsNumber: true,
+                  })}
+                  className="mt-1 p-2 border rounded w-full"
+                />
+                {errors.progress && (
+                  <p className="text-red-500 text-sm">
+                    {errors.progress.message}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="mt-3 w-full bg-blue-500 text-white py-2 rounded">
+                  Submit
+                </button>
+              </form>
+            </Modal>
           </div>
         </div>
       </div>
@@ -92,9 +160,7 @@ const TaskBox = ({ task, mode, type, index }) => {
               Progress
             </span>
           </div>
-          <div className="text-sm font-bold">
-            {task?.progress?.currProgress || 0}/10
-          </div>
+          <div className="text-sm font-bold">{task?.currProgress || 0}/10</div>
         </div>
 
         {/* Progress Bar */}
@@ -112,13 +178,13 @@ const TaskBox = ({ task, mode, type, index }) => {
             <div
               className="progress-bar"
               style={{
-                width: `${task?.progress?.currProgress * 10 || 0}%`,
+                width: `${task?.currProgress * 10 || 0}%`,
                 height: "100%",
                 borderRadius: "10px",
                 backgroundColor:
-                  task?.progress?.currProgress === 10
+                  task?.currProgress === 10
                     ? "#78D700" // Green for 100% progress
-                    : task?.progress?.currProgress <= 3
+                    : task?.currProgress <= 3
                     ? "#ff7979" // Light red for progress <= 3
                     : "#ffa048", // Orange for progress > 3
               }}></div>
@@ -140,18 +206,18 @@ const TaskBox = ({ task, mode, type, index }) => {
               ? "bg-gray-200 text-gray-700"
               : "bg-[#f4f4f7] text-[#888da7]"
           }`}>
-          {task?.createdAt}
+          {task?.assignDate}
         </div>
 
         <div className="flex items-center gap-x-4">
-
           {/* info */}
           <div className="flex items-center ">
-            <TaskInfo mode={mode} id={task?._id} />
+            <AssignTaskInfo mode={mode} id={task?._id} />
           </div>
         </div>
       </div>
-      </div>
-      )}
+    </div>
+  );
+};
 
-export default TaskBox;
+export default assignTaskBox;

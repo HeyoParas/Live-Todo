@@ -45,7 +45,7 @@ const EditDialogue = ({ mode, id, task }) => {
         );
         setIsModalOpen(false);
       } else {
-        message.error(response.data.message);
+        message.warning(response.data.message);
       }
     } catch (error) {
       console.error("Update failed:", error);

@@ -6,6 +6,7 @@ import image from '../assets/image.jpg'
 import { useAuth } from "../context/AuthContext";
 import ReportModal from "./reportModal";
 import {message } from "antd"
+
 const ProfileComponent = ({ closeModal }) => {
   const { userData,setUserData } = useAuth();
   const [showCamera, setShowCamera] = useState(false);

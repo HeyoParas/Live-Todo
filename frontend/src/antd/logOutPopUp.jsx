@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import AxiosInstance from '../api/axiosInstance';
 
-const logOut = () => {
+const logOutPopUp = () => {
     const { setIsAuthenticated } = useAuth();
     const Navigate = useNavigate();
 
@@ -51,4 +51,4 @@ const logOut = () => {
   );
 };
 
-export default logOut;
+export default logOutPopUp;

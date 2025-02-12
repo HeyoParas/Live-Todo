@@ -5,7 +5,7 @@ import SignupScreen from './signupScreen';
 import AxiosInstance from '../api/axiosInstance';
 import { message } from 'antd';
 
-const OtpScreen = () => {
+const verifyOtpScreen = () => {
   const Navigate = useNavigate();
   const location = useLocation();
   const signupData = location.state?.signupData;
@@ -154,4 +154,4 @@ const OtpScreen = () => {
   );
 };
 
-export default OtpScreen;
+export default verifyOtpScreen;

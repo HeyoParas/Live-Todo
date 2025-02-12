@@ -10,7 +10,7 @@ const socket = io("http://localhost:7000", {
   transports: ["websocket"], // Ensures WebSocket transport is used
 });
 
-const NotificationPopup = ({ userId }) => {
+const Notification = ({ userId }) => {
   useEffect(() => {
     if (!userId) return;
 
@@ -50,4 +50,4 @@ const NotificationPopup = ({ userId }) => {
   return null; // No UI element, just handling notifications
 };
 
-export default NotificationPopup;
+export default Notification;

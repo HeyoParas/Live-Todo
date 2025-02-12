@@ -1,11 +1,19 @@
+//React
 import React from 'react'
+import { Empty } from 'antd';
+
+
+//components
 import {useAuth} from '../context/AuthContext';
 import AssignTaskSection from "../component/assignTaskSection"
 
 const assignTasks = ({mode}) => {
   const {assignTask:data} = useAuth();
 
-  console.log("hi:",data);
+    if (!data) {
+      return <Empty/>;
+    }
+
   return (
     <div
     className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"

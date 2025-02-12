@@ -4,7 +4,7 @@ import { Empty } from 'antd';
 import { Divider} from "antd"
 
 
-const BasicPie = ({ data }) => {
+const reportChart = ({ data }) => {
   console.log(data)
   if (!data) {
     return <Empty/>;
@@ -59,4 +59,4 @@ const BasicPie = ({ data }) => {
   );
 };
 
-export default BasicPie;
+export default reportChart;

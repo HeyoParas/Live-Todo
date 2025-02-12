@@ -4,7 +4,7 @@ import "../index.css";
 import TaskBox from "./taskBox";
 import AssignTaskBox from "./assignTaskBox";
 
-const taskSection = ({ mode ,sectionName}) => {
+const assignTaskSection = ({ mode ,sectionName}) => {
 console.log(sectionName)
 console.log(sectionName.tasks)
   return (
@@ -36,4 +36,4 @@ console.log(sectionName.tasks)
     </div>
      )};
 
-export default taskSection;
+export default assignTaskSection;
