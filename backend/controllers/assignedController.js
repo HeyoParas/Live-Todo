@@ -155,11 +155,13 @@ const assignTask = async (req, res) => {
 };
 const updateAssignedTaskProgress = async (req, res) => {
   const { assignedBy, assignTo, currProgress, taskId } = req.body;
+  console.log(req.body);
   try {
     let assignerId = await userModel.findOne({ username: assignedBy });
     assignerId = assignerId._id;
     let assignToId = await userModel.findOne({ username: assignTo });
-    assignToId = assignToId._id;
+    assignToId = assignToId.email;
+    // console.log(assignerId,assignToId);
     const updatedTask = await assignModel.findOneAndUpdate(
       {
         assignerId,
@@ -173,6 +175,7 @@ const updateAssignedTaskProgress = async (req, res) => {
         new: true, // Return the updated document
       }
     );
+    // console.log("UpdatedTask ",updatedTask);
     if(updatedTask){
       res.json({message:"Progress Updated!!",success:true})
     }else{
