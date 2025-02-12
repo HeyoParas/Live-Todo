@@ -12,7 +12,10 @@ const assignTasks = ({mode}) => {
   console.log(assignTask)
     if (assignTask.length == 0) {
       return (
-        <div className='mt-[30%]'>
+        <div className='mt-[20%]'
+        style={{
+          background: mode ? "#ffffff" : "#2a2b2f",
+        }}>
           <Empty/>
         </div>
       );
