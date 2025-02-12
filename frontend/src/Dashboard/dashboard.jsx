@@ -37,7 +37,7 @@ const Dashboard = () => {
           setTasks(response.data.userdata.mytasks);
           
           if(assignedTaskResponse.data.success){
-            setAssignTask(assignedTaskResponse.data);
+            setAssignTask(assignedTaskResponse.data.assignedTaskscurrent);
           }
           
         } else {
