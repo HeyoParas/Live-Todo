@@ -39,10 +39,13 @@ router.patch("/updateSection",authMiddleware.verifyUser,taskController.updateSec
 router.get("/assignedtask",authMiddleware.verifyUser,assignedController.getAssigned);
 // get list of user whom you can assigne task 
 router.get("/getUserList",authMiddleware.verifyUser,assignedController.getUserList);
+// update progress of assigned task 
+router.patch("/updateProgress",authMiddleware.verifyUser,assignedController.updateAssignedTaskProgress);
 // update the profile (image or username)
 router.post("/updateProfile",authMiddleware.verifyUser,upload.single("image"),updateProfile);
 // verify email exists in db for forget password
 router.post("/verifyExistingEmail",authController.verifyExistingEmail);
 // match the otp and change the prev password with new 
 router.patch ("/forgetPassword",authController.forgetPassword);
+
 module.exports =router  
