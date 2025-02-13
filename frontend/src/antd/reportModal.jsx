@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import Profile from "./profile";
+import { Tooltip } from "antd";
 import AxiosInstance from '../api/axiosInstance';
+import analytics from "../assets/analytics.svg";
+
 
 import ReportChart from './reportChart'
 import { Button, Modal } from "antd";
@@ -20,13 +22,12 @@ const reportModal = ({ mode }) => {
 
   return (
     <>
-      <button
-        className="block w-full bg-slate-600 text-white py-2 rounded hover:bg-slate-500"
-        onClick={showModal} 
-      >
-        Report
-      </button>
-
+              <Tooltip title="Report">
+    
+              <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800" onClick={showModal} >
+            <img src={analytics} />
+          </button>
+          </Tooltip>
       <Modal
   title="Profile Report"
   open={isModalOpen}
@@ -39,7 +40,7 @@ const reportModal = ({ mode }) => {
 
   footer={[
     <Button key="ok" type="primary" onClick={handleOk}>
-      OK
+      Close
     </Button>,
   ]}
 >

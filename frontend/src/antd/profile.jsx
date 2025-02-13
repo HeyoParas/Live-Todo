@@ -1,18 +1,30 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef ,useEffect } from "react";
 import { useForm } from "react-hook-form";
 import AxiosInstance from "../api/axiosInstance";
 import camera from "../assets/camera.svg";
 import image from '../assets/image.jpg'
 import { useAuth } from "../context/AuthContext";
-import ReportModal from "./reportModal";
+// import ReportModal from "./reportModal";
 import {message } from "antd"
 
-const ProfileComponent = ({ closeModal }) => {
+const ProfileComponent = ({ closeModal, videoRef }) => {
+  // console.log("hi",closeModal)
+  // console.log("hi")
   const { userData,setUserData } = useAuth();
   const [showCamera, setShowCamera] = useState(false);
   const [capturedImage, setCapturedImage] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
-  const videoRef = useRef(null);
+  const [selectedFile, setSelectedFile] = useState(null)
+  // const videoRef = useRef(null);
+
+  useEffect(() => {
+      setCapturedImage(null); 
+      // closeCamera();
+      setShowCamera(false);
+
+
+    },[closeModal]);
+
+
 
   const {
     register,
@@ -28,6 +40,11 @@ const ProfileComponent = ({ closeModal }) => {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       videoRef.current.srcObject = stream;
       videoRef.current.play();
+
+    // Scroll to camera modal when it opens
+    setTimeout(() => {
+      document.getElementById("camera-modal").scrollIntoView({ behavior: "smooth" });
+    },0);
     } catch (error) {
       console.error("Error accessing the camera:", error);
       alert("Unable to access the camera.");
@@ -46,7 +63,7 @@ const closeCamera = () => {
 
 
   //  Capture Image and Crop to Square
-  const captureImage = () => {
+    const captureImage = () => {
     const canvas = document.createElement("canvas");
     const video = videoRef.current;
     const ctx = canvas.getContext("2d");
@@ -109,6 +126,7 @@ const closeCamera = () => {
           profileImage: response.data.userData.profileImage, // Update profile image
           username: response.data.userData.username,        //update username
         }));
+        closeModal(); 
       }
       else{
         message.warning(response.data.message);
@@ -129,13 +147,13 @@ const closeCamera = () => {
       <div className="text-center">
         <div className="relative inline-block">
           <img
-            src={capturedImage ||`http://localhost:7000${userData.profileImage}` || image}
+            src={capturedImage || `http://localhost:7000${userData.profileImage}` || image}
             alt={userData.username}
             className="w-[150px] h-[150px] rounded-full mx-auto object-cover shadow-lg"
             style={{ objectFit: "cover" }} //  Ensures proper fit
           />
           <button
-            className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full"
+            className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full hover:cursor-pointer"
             onClick={openCamera}>
             <img
               src={camera}
@@ -144,6 +162,7 @@ const closeCamera = () => {
                 filter: "invert(1) brightness(.8)",
               }}
             />
+            
           </button>
         </div>
         {/* Image Upload */}
@@ -182,10 +201,11 @@ const closeCamera = () => {
         </button>
       </form>
 
-      <ReportModal />
+      {/* <ReportModal /> */}
 {/* Camera Modal */}
 {showCamera && (
-  <div className="text-center">
+
+  <div className="text-center"  id="camera-modal">
     <video
       ref={videoRef}
       className="mx-auto border border-gray-300 rounded w-[300px] h-[300px] object-cover"
@@ -204,7 +224,6 @@ const closeCamera = () => {
     </div>
   </div>
 )}
-
     </div>
   );
 };

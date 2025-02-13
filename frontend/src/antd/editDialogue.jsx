@@ -5,7 +5,7 @@ import edit from '../assets/edit.svg';
 import {useAuth } from '../context/AuthContext';
 import AxiosInstance from '../api/axiosInstance';
 
-const EditDialogue = ({ mode, id, task }) => {
+const EditDialogue = ({ mode, id, task,type }) => {
   const { setTasks } = useAuth();
 
   // Initialize form state with task data
@@ -137,27 +137,28 @@ const EditDialogue = ({ mode, id, task }) => {
                 value={formData.section}
                 disabled
                 placeholder="Enter section"
-                className={`border rounded p-2 ${errors.section ? 'border-red-500' : ''}`}
+                className={`border rounded p-2 hover:cursor-not-allowed ${errors.section ? 'border-red-500' : '' }`}
               />
               {errors.section && <span className="text-red-500 text-xs">{errors.section.message}</span>}
             </div>
 
             {/* Current Progress (1-10) */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium">Current Progress (1-10)</label>
+              <label className="text-sm font-medium">Current Progress (0-9)</label>
               <input
                 {...register('currentProgress', {
                   required: 'Progress is required.',
                   valueAsNumber: true,
-                  min: { value: 1, message: 'Progress must be at least 1.' },
-                  max: { value: 10, message: 'Progress must be at most 10.' },
+                  min: { value: 0, message: 'Progress must be at least 1.' },
+                  max: { value: 9, message: 'Progress must be at most 9.' },
                 })}
                 type="number"
                 name="currentProgress"
-                value={formData.currentProgress}
+                value={type=="completed"?10:formData.currentProgress}
+                disabled={type=="completed"}
                 onChange={handleChange}
                 placeholder="Enter progress"
-                className={`border rounded p-2 ${errors.currentProgress ? 'border-red-500' : ''}`}
+                className={`border rounded p-2 ${errors.currentProgress ? 'border-red-500' : ''} ${type=="completed" ? "cursor-not-allowed":""}`}
               />
               {errors.currentProgress && <span className="text-red-500 text-xs">{errors.currentProgress.message}</span>}
             </div>

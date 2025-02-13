@@ -45,10 +45,10 @@ const generateReport = async (req, res) => {
       if (task.progress.currProgress >0 && task.progress.currProgress<10) report.inProgress++;
 
       // Count deadlinesPending and deadlinesMissed
-      if (task.progress.currProgress === 10) {
+      // if (task.progress.currProgress === 10) {
         if (new Date(task.progress.updatedAt) > new Date(task.dueDate)) {
           report.deadlinesMissed++;
-        }
+        // }
       } else if (new Date(task.dueDate) < new Date()) {
         report.deadlinesPending++;
       }

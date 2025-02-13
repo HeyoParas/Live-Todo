@@ -139,7 +139,7 @@ const Dashboard = () => {
           className="h-full overflow-y-none scrollbar-hide"
           style={{
             marginLeft: w,
-            width: `calc(96% - ${w})`,
+            width: `calc(100% - ${w})`,
             background: "#2a2b2f",
             color: "#ffffff",
           }}>
