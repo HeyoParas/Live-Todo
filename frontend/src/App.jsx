@@ -48,6 +48,10 @@ function AppContent() {
       path: "/dashboard",
       element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
     },
+    {
+      path :"forgotPassword",
+      element : isAuthenticated ? <Navigate to="/dashboard" /> : <ForgotPassword />,
+    },
     // {
     //   path: "/dashboard",
     //   element: isAuthenticated ? <NewChanges /> : <Navigate to="/login" />,
