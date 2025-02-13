@@ -4,13 +4,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import SignupScreen from './signupScreen';
 import AxiosInstance from '../api/axiosInstance';
 import { message } from 'antd';
+import {useAuth} from '../context/AuthContext';
+// import ChangePassword from './changePassword';
 
 const verifyOtpScreen = () => {
+  const {setEmailVerified,emailVerified} = useAuth();
+  useEffect(() => {
+    if (emailVerified.bool) {
+      Navigate("/changePassword", { state: { email: previousEmail } });
+    }
+  }, [emailVerified.bool]); // 🔥 Trigger useEffect when emailVerified.bool changes
+  
   const Navigate = useNavigate();
   const location = useLocation();
   const previousPathname = location.state?.from;
   const previousEmail = location.state?.email;
-  console.log("location.pathname",previousPathname);
+  // console.log("location.pathname",previousPathname);
   const signupData = location.state?.signupData;
 
   // const [path, setPath] = useState(null);
@@ -29,8 +38,6 @@ const verifyOtpScreen = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
-
-  //when path is /verifyOtp
   const onSubmitSignUp = async (data) => {
     try {
       const otpNumber = parseInt(Object.values(data).join(""), 10);
@@ -48,18 +55,32 @@ const verifyOtpScreen = () => {
     }
   };
 
-  //when path is /forgotPassword
   const onSubmitForgotPass = async (data) => {
     const otpNumber = parseInt(Object.values(data).join(""), 10);
     
-    console.log(otpNumber)
     let obj ={
       email:previousEmail,
       otpNumber:otpNumber,
     }
     try {
-      const response = await AxiosInstance.patch('/forgetPassword',obj);
+      const response = await AxiosInstance.post('/verifyOtp',obj);
       console.log(response.data);
+
+      if(response.data.success){
+        message.success(response.data.message);
+        setEmailVerified((prevUser) => ({
+          ...prevUser, 
+          email: previousEmail,
+          bool:true
+        }));
+        console.log(emailVerified);
+          Navigate("/changePassword",{state: {email: previousEmail}});
+      }
+      else
+      {
+        message.warning(response.data.message)
+      }
+      console.log(emailVerified);
     } catch (error) {
       message.error("An error occurred. Please try again later.");
     }

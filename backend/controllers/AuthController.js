@@ -118,7 +118,7 @@ const signupUser = async (req, res) => {
       res.json({ message: "Error creating user", success: false });
     }
   } else {
-    res.json({ success: false, message: "Otp didnt match!!!" });
+    res.json({ success: false, message: "Invalid Otp" });
   }
 };
 
@@ -194,7 +194,7 @@ const verifyOtp = async (req, res) => {
   if (otpData.email == email && otpData.otp == otpNumber) {
     res.json({success:true,message:"Otp Matched Successfully!!"});
   } else {
-    res.json({ success: false, message: "Otp didnt match!!!" });
+    res.json({ success: false, message: "Invalid Otp" });
   }
 };
 const forgetPassword = async (req, res) => {

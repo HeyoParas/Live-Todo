@@ -12,6 +12,13 @@ export const AuthProvider = ({children}) => {
     const [tasks, setTasks] = useState([]);
     const [userList, setUserList] = useState([]);
     const [assignTask, setAssignTask] = useState([]);
+    const [emailVerified, setEmailVerified]  = useState({
+      email:"",
+      bool:false
+    });
+    console.log(emailVerified)
+
+    
 
   useEffect(() => {
     const verifyAuth = async () => {
@@ -27,7 +34,7 @@ export const AuthProvider = ({children}) => {
   }, []);
   
   return(
-        <AuthContext.Provider value={{  isAuthenticated, setIsAuthenticated, userData, setUserData, tasks, setTasks, userList, setUserList, assignTask, setAssignTask }}>
+        <AuthContext.Provider value={{  isAuthenticated, setIsAuthenticated, userData, setUserData, tasks, setTasks, userList, setUserList, assignTask, setAssignTask,emailVerified,setEmailVerified }}>
             {children}
         </AuthContext.Provider>
     );

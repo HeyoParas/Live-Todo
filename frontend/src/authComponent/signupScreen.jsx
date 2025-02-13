@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React, { useState } from "react";
 import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
@@ -42,32 +42,48 @@ const SignupScreen = () => {
           </div>
 
           <div className="w-[60%] rounded-lg m-10">
-            <h1 className="text-xl font-semibold text-gray-800 mb-4">Sign up for an account</h1>
+            <h1 className="text-xl font-semibold text-gray-800 mb-4">
+              Sign up for an account
+            </h1>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
               {/* Username */}
               <div className="mb-4">
-                <label className="block text-gray-600 font-medium mb-2" htmlFor="username">
+                <label
+                  className="block text-gray-600 font-medium mb-2"
+                  htmlFor="username">
                   Username
                 </label>
                 <input
                   type="text"
                   id="username"
-                  className={`w-[90%] border ${errors.username ? "border-red-500" : "border-gray-300"} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                  className={`w-[90%] border ${
+                    errors.username ? "border-red-500" : "border-gray-300"
+                  } rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
                   placeholder="Enter your username"
-                  {...register("username", { required: "Username is required" })}
+                  {...register("username", {
+                    required: "Username is required",
+                  })}
                 />
-                {errors.username && <p className="text-red-500 text-sm mt-2">{errors.username.message}</p>}
+                {errors.username && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.username.message}
+                  </p>
+                )}
               </div>
 
               {/* Email */}
               <div className="mb-4">
-                <label className="block text-gray-600 font-medium mb-2" htmlFor="email">
+                <label
+                  className="block text-gray-600 font-medium mb-2"
+                  htmlFor="email">
                   Email Address
                 </label>
                 <input
                   type="email"
                   id="email"
-                  className={`w-[90%] border ${errors.email ? "border-red-500" : "border-gray-300"} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                  className={`w-[90%] border ${
+                    errors.email ? "border-red-500" : "border-gray-300"
+                  } rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
                   placeholder="paras@gmail.com"
                   {...register("email", {
                     required: "Email is required",
@@ -77,22 +93,33 @@ const SignupScreen = () => {
                     },
                   })}
                 />
-                {errors.email && <p className="text-red-500 text-sm mt-2">{errors.email.message}</p>}
+                {errors.email && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.email.message}
+                  </p>
+                )}
               </div>
 
               {/* Password */}
               <div className="mb-4">
-                <label className="block text-gray-600 font-medium mb-2" htmlFor="password">
+                <label
+                  className="block text-gray-600 font-medium mb-2"
+                  htmlFor="password">
                   Password
                 </label>
                 <input
                   type={showPassword ? "text" : "password"}
                   id="password"
-                  className={`w-[90%] border ${errors.password ? "border-red-500" : "border-gray-300"} rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
+                  className={`w-[90%] border ${
+                    errors.password ? "border-red-500" : "border-gray-300"
+                  } rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-purple-500`}
                   placeholder="Enter your password"
                   {...register("password", {
                     required: "Password is required",
-                    minLength: { value: 6, message: "Password must be at least 6 characters long" },
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters long",
+                    },
                   })}
                 />
                 <div className="flex items-center mt-2 mb-4">
@@ -108,38 +135,50 @@ const SignupScreen = () => {
                     Show password
                   </label>
                 </div>
-                {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-2">
+                    {errors.password.message}
+                  </p>
+                )}
               </div>
               {/* Buttons */}
               <div className="flex justify-between">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
+                  className="bg-blue-500 text-white font-medium px-4 py-2 rounded-md shadow hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
                   Sign Up
                 </button>
                 <button
                   type="button"
                   onClick={() => navigate("/login")} // ✅ Navigate to login
-                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300"
-                >
+                  className="text-blue-500 font-medium px-4 py-2 border border-blue-500 rounded-md hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-blue-300">
                   Login
                 </button>
               </div>
-              
             </form>
           </div>
         </div>
 
         {/* Right Section */}
         <div className="w-full flex flex-col bg-slate-100">
-          <div className="flex gap-x-10 justify-center mt-10">
-            {["Home", "About us", "Contact us", "Blog"].map((link, index) => (
-              <div key={index} className="mt-5">
-                <a href="#" className="text-2xl">{link}</a>
-              </div>
-            ))}
+          <div className="w-full flex flex-col items-center bg-slate-100 py-10">
+            <div className="flex gap-10">
+              <a href="#" className="text-2xl">
+                Home
+              </a>
+              <a href="#" className="text-2xl">
+                About us
+              </a>
+              <a href="#" className="text-2xl">
+                Contact us
+              </a>
+              <a href="#" className="text-2xl">
+                Blog
+              </a>
+            </div>
           </div>
+
+          {/* Image */}
           <div className="mt-10 flex justify-center">
             <img src={cycle} alt="cycle" className="s-screen" />
           </div>

@@ -1,6 +1,6 @@
 //React
-import React from "react";
-import { createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
+import React,{useEffect} from "react";
+import {createBrowserRouter, RouterProvider, Navigate } from "react-router-dom";
 
 //styles and components
 import "./App.css";
@@ -11,14 +11,20 @@ import NewChanges from './Dashboard/newChanges';
 import { ToastContainer } from "react-toastify";
 import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
 import ForgotPassword from "./authComponent/forgotPassword";
+import ChangePassword from './authComponent/changePassword';
 import { useAuth, AuthProvider } from "./context/AuthContext";
 import Error404 from "./antd/error404";
 
 function AppContent() {
-  const { isAuthenticated } = useAuth();
 
+
+  const { isAuthenticated, emailVerified } = useAuth();
+
+
+
+  console.log(emailVerified);
   if (isAuthenticated === null) {
-    return <></>;     // Waiting for authentication check
+    return <></>;     
   }
 
   const router = createBrowserRouter([
@@ -49,6 +55,10 @@ function AppContent() {
     {
       path: "/forgotPassword",
       element: <ForgotPassword />
+    },
+    {
+      path: "/changePassword",
+      element: emailVerified.bool ? <ChangePassword /> : <Navigate to="/login" />
     },
     {
       path: "*",

@@ -11,9 +11,9 @@ const ForgotPassword = () => {
   
 
   const onSubmit = async (data) => { 
-    console.log(`Password reset link sent to ${data.email}`);
+    // console.log(`Password reset link sent to ${data.email}`);
     const response = await AxiosInstance.post('/verifyExistingEmail',data)
-    console.log(response.data)
+    // console.log(response.data)
     if(response.data.success)
     {
       message.success(response.data.message);
@@ -21,9 +21,7 @@ const ForgotPassword = () => {
       setTimeout(()=>{
         Navigate("/verifyOtp", { state: { from: window.location.pathname ,email : data.email } });
       },2000)
-
     }
-
   };
 
   return (

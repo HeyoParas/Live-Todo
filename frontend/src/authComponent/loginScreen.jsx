@@ -20,18 +20,17 @@ const LoginScreen = () => {
   const onSubmit = async (data) => {
     try {
       const response = await AxiosInstance.post("/login", data);
-      
+
       // console.log("Response from backend:", response.data);
 
       if (response.data.success) {
         // console.log(response.data)
-        message.success("Welcome , "+response.data.userDetails.username);
+        message.success("Welcome , " + response.data.userDetails.username);
         setIsAuthenticated(true);
-        navigate("/dashboard"); 
+        navigate("/dashboard");
       } else {
         message.error(response.data.message);
       }
-
     } catch (error) {
       console.error("Login error:", error);
       message.error("An error occurred. Please try again.");
@@ -122,7 +121,13 @@ const LoginScreen = () => {
                     {errors.password.message}
                   </p>
                 )}
-                  <Link to="/forgotPassword" className="text-md  text-gray-500 ml-50 cursor-pointer hover:text-purple-500">Forgot Password</Link>
+                <div>
+                  <Link
+                    to="/forgotPassword"
+                    className="text-md  text-gray-500 ml-70 cursor-pointer hover:text-purple-500">
+                    Forgot Password
+                  </Link>
+                </div>
               </div>
 
               {/* Buttons */}
@@ -145,14 +150,21 @@ const LoginScreen = () => {
 
         {/* Right Section */}
         <div className="w-full flex flex-col bg-slate-100">
-          <div className="flex gap-x-10 justify-center mt-10">
-            {["Home", "About us", "Contact us", "Blog"].map((link, index) => (
-              <div key={index} className="mt-5">
-                <a href="#" className="text-2xl">
-                  {link}
-                </a>
-              </div>
-            ))}
+          <div className="w-full flex flex-col items-center bg-slate-100 py-10">
+            <div className="flex gap-10">
+              <a href="#" className="text-2xl">
+                Home
+              </a>
+              <a href="#" className="text-2xl">
+                About us
+              </a>
+              <a href="#" className="text-2xl">
+                Contact us
+              </a>
+              <a href="#" className="text-2xl">
+                Blog
+              </a>
+            </div>
           </div>
 
           {/* Image */}
