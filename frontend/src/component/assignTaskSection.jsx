@@ -5,8 +5,8 @@ import TaskBox from "./taskBox";
 import AssignTaskBox from "./assignTaskBox";
 
 const assignTaskSection = ({ mode ,sectionName}) => {
-console.log(sectionName)
-console.log(sectionName.tasks)
+// console.log(sectionName)
+// console.log(sectionName.tasks)
   return (
   
         <div className={`flex flex-col h-full w-1/3 min-w-[31.5%] mx-2 rounded-2xl overflow-hidden scrollbar-hide ${
@@ -14,7 +14,6 @@ console.log(sectionName.tasks)
               ? "bg-[white] text-black border-3 border-dashed border-slate-300"
               : "bg-[#24262c] text-white"
           }`}
-          style
         >
 
       <div className="flex flex-col sm:flex-row justify-around items-center text-sm  rounded-lg m-2 [@media(max-width:1300px)]:flex-col">

@@ -67,10 +67,10 @@ const UserList = ({ mode, id }) => {
       currProgress: progress,
     };
 
-    console.log("obj: ",obj);
+    // console.log("obj: ",obj);
 
     const response = await AxiosInstance.post("/assignTask", obj);
-    console.log("assign Response: ",response.data);
+    // console.log("assign Response: ",response.data);
 
     if(response.data.success){
       message.success(`Task assigned to ${user.username}`);

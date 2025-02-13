@@ -1,7 +1,7 @@
 const assignModel = require("../models/assignedTaskSchema");
 const userModel = require("../models/userSchema");
 const { getUser } = require("./token");
-
+const mongoose = require("mongoose");
 const verifydate = (aDate, dDate) => {
   const assignDate = new Date(aDate);
   const dueDate = new Date(dDate);
@@ -17,7 +17,7 @@ const getAssigned = async (req, res) => {
   try {
     let extractedEmail = (await getUser(req.cookies.mycookie)).email;
     let assignedTo = await userModel.findOne({ email: extractedEmail });
-    console.log(assignedTo);
+  console.log(assignedTo);
     const assignedTasks = await assignModel
       .find({ assignTo: extractedEmail })
       .populate([
@@ -126,12 +126,21 @@ const assignTask = async (req, res) => {
                 { new: true } // Ensure that the updated document is returned
               )
               .populate("tasks.taskId");
-            const data = await userModel.findOne({ email: email });
-            const assignedToSocketId = req.users[data._id];
-            // io.to(assignedToSocketId).emit("taskAssigned", {
-            //   taskTitle: taskId.taskTitle,
-            //   assignerEmail: user.email,
-            // });
+            // const assignedUser = await userModel.findOne({ email: email });
+            // console.log("data",assignedUser);
+            // const assignedToSocketId = req.users?.[assignedUser._id];
+            // console.log("Socket ID for assigned user:", assignedToSocketId);
+
+            // if (assignedToSocketId && io.sockets.sockets.get(assignedToSocketId)) {
+            //   io.to(assignedToSocketId).emit("taskAssigned", {
+            //     taskTitle: updateData.tasks[updateData.tasks.length - 1].taskId.tasktitle,
+            //     assignerEmail: user.email,
+            //   });
+            //   console.log("Task notification sent to:", assignedUser.email);
+            // } else {
+            //   console.log("User not online, skipping notification.");
+            // }
+
             res.json({ message: "Task Assigned Successfully!", success: true });
           }
         } else {
@@ -155,11 +164,13 @@ const assignTask = async (req, res) => {
 };
 const updateAssignedTaskProgress = async (req, res) => {
   const { assignedBy, assignTo, currProgress, taskId } = req.body;
+  console.log(req.body);
   try {
     let assignerId = await userModel.findOne({ username: assignedBy });
     assignerId = assignerId._id;
     let assignToId = await userModel.findOne({ username: assignTo });
-    assignToId = assignToId._id;
+    assignToId = assignToId.email;
+    // console.log(assignerId,assignToId);
     const updatedTask = await assignModel.findOneAndUpdate(
       {
         assignerId,
@@ -173,6 +184,7 @@ const updateAssignedTaskProgress = async (req, res) => {
         new: true, // Return the updated document
       }
     );
+    // console.log("UpdatedTask ",updatedTask);
     if(updatedTask){
       res.json({message:"Progress Updated!!",success:true})
     }else{
