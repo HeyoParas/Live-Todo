@@ -45,6 +45,8 @@ router.patch("/updateProgress",authMiddleware.verifyUser,assignedController.upda
 router.post("/updateProfile",authMiddleware.verifyUser,upload.single("image"),updateProfile);
 // verify email exists in db for forget password
 router.post("/verifyExistingEmail",authController.verifyExistingEmail);
+// verify otp sent
+router.post("/verifyOtp",authController.verifyOtp);
 // match the otp and change the prev password with new 
 router.patch ("/forgetPassword",authController.forgetPassword);
 
