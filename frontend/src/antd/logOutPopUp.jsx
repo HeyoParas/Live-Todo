@@ -37,12 +37,12 @@ const logOutPopUp = () => {
 
   return (
     <Popconfirm
-      title="LOG OUT"
-      placement="right"
-      description="Are you sure you want to LOG OUT?"
+    title={<span style={{ fontSize: "1rem" }}>Sign Off</span>}
+    placement="top"
+      description="Are you sure you want to log out?"
       onConfirm={handleConfirm}  
       onCancel={handleCancel}    
-      icon={<QuestionCircleOutlined style={{ color: 'red' }} />}
+      icon={<QuestionCircleOutlined style={{ color: 'red', fontSize: "1rem"}} />}
     >
       <Button className="custom-button">
         <img src={exit} alt="Logout" />

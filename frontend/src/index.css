@@ -14,4 +14,13 @@ html, body, #root {
     max-height: 70vh;
     overflow-y: auto;
   }
-  
+  /* Tooltip Background - Grayish Transparent */
+.ant-tooltip-inner {
+  background-color: rgba(50, 50, 50, 0.7) !important; /* Dark Gray Transparent */
+  color: white !important; /* White Text */
+}
+
+/* Tooltip Arrow Background */
+.ant-tooltip-arrow::before {
+  background-color: rgba(50, 50, 50, 0.7) !important;
+}

@@ -4,6 +4,7 @@ import notifications from '../assets/notifications.svg';
 import icons from '../assets/icon.svg';
 import Profile from '../antd/profile.jsx';
 import PfpModal from '../antd/pfpModal.jsx';
+import { Tooltip } from 'antd';
 
 const Header = ({ mode, name }) => {
 
@@ -46,23 +47,13 @@ const Header = ({ mode, name }) => {
               <img src={icons} alt='calendar' />
             </button>
           </div>
-          <div className='w-8'>
-            {/* <button
-              className='hover:bg-slate-600 hover:cursor-pointer rounded-full'
-              onClick={handlePfp}
-              style={{
-                filter: mode ? 'none' : 'invert(1) brightness(0.8)',
-              }}
-            >
-              <img src={image} alt='user' className='rounded-full' />
-            </button> */}
+          <Tooltip title="Profile">
+          <div className='w-8 m-1'>
               <PfpModal mode={mode}/>
           </div>
+          </Tooltip>
         </div>
       </div>
-
-      {/* Profile component renders conditionally
-      {showProfile && <Profile />} */}
     </div>
   );
 };

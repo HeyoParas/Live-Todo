@@ -12,6 +12,7 @@ import AxiosInstance from '../api/axiosInstance';
 
 const TaskBox = ({ task, mode, type, index }) => {
   // console.log("from taskbox:",task)
+  console.log(type)
   const { setTasks } = useAuth();
   const [deleteVisible, setDeleteVisible] = useState(false);
 
@@ -73,13 +74,14 @@ const TaskBox = ({ task, mode, type, index }) => {
 
         <div className="flex justify-between w-[20%] gap-x-2">
           {/* Edit Button */}
-          <div className="mt-1">
             <Tooltip title="Edit Task">
-            <EditDialogue id={task?._id} task={task} />
-            </Tooltip>
+          <div className="mt-1">
+            <EditDialogue id={task?._id} task={task} type={type} />
           </div>
+            </Tooltip>
 
           {/* Delete Button */}
+          <Tooltip title="Delete Task">
           <div className="flex items-center">
             <Popconfirm
               title="Are you sure you want to delete this task?"
@@ -98,14 +100,16 @@ const TaskBox = ({ task, mode, type, index }) => {
               </button>
             </Popconfirm>
           </div>
+          </Tooltip>
         </div>
       </div>
 
       {/* Progress Section */}
       <div>
         <div className="flex items-center justify-between mb-1">
+          <Tooltip title="Progress">
           <div className="flex items-center text-sm font-bold">
-            <button className="rounded-full hover:bg-gray-200 dark:hover:bg-gray-600">
+            <button>
               <img
                 src={hamburger}
                 alt="hamburger"
@@ -118,6 +122,7 @@ const TaskBox = ({ task, mode, type, index }) => {
               Progress
             </span>
           </div>
+          </Tooltip>
           <div className="text-sm font-bold">
             {task?.progress?.currProgress || 0}/10
           </div>
@@ -171,14 +176,17 @@ const TaskBox = ({ task, mode, type, index }) => {
 
         <div className="flex items-center gap-x-4">
         {/* users List */}
+        <Tooltip title="Assigned User">
           <div className="flex items-center">
             <UserList mode={mode} id={task?._id}/>
           </div>
-
+        </Tooltip>
           {/* info */}
+          <Tooltip title="Task info">
           <div className="flex items-center ">
             <TaskInfo mode={mode} id={task?._id} />
           </div>
+          </Tooltip>
         </div>
       </div>
       </div>
