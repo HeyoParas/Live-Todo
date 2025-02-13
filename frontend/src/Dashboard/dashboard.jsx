@@ -38,6 +38,8 @@ const Dashboard = () => {
           
           if(assignedTaskResponse.data.success){
             setAssignTask(assignedTaskResponse.data.assignedTaskscurrent);
+          }else{
+            setAssignTask([]);
           }
           
         } else {

@@ -156,6 +156,7 @@ const getUserData = async (req, res) => {
 // verify email of user for forget password
 const verifyExistingEmail = async (req, res) => {
   const { email } = req.body;
+  console.log(req.body)
   try {
     if (!email) {
       return res.json({ message: "Send a valid Email!!", success: false });
@@ -170,7 +171,7 @@ const verifyExistingEmail = async (req, res) => {
       });
       await otpStored.save();
       // console.log("Otp for Forget Password",otpStored);
-      res.json({ message: "Otp Sent", success: true });
+      res.json({ message: "Otp Sent to your email", success: true });
     } else {
       res.json({ message: "User doesn't Exist!!", success: false });
     }

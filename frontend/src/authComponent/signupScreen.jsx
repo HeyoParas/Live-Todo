@@ -110,7 +110,6 @@ const SignupScreen = () => {
                 </div>
                 {errors.password && <p className="text-red-500 text-sm mt-2">{errors.password.message}</p>}
               </div>
-
               {/* Buttons */}
               <div className="flex justify-between">
                 <button
@@ -127,6 +126,7 @@ const SignupScreen = () => {
                   Login
                 </button>
               </div>
+              
             </form>
           </div>
         </div>

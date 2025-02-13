@@ -3,7 +3,7 @@ import cycle from "../assets/cycle.svg";
 import { useForm } from "react-hook-form";
 import AxiosInstance from "../api/axiosInstance";
 import { message } from "antd";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext"; // Import useAuth
 
 const LoginScreen = () => {
@@ -121,10 +121,8 @@ const LoginScreen = () => {
                   <p className="text-red-500 text-sm mt-2">
                     {errors.password.message}
                   </p>
-                  // <div>
-
-                  // </div>
                 )}
+                  <Link to="/forgotPassword" className="text-md  text-gray-500 ml-50 cursor-pointer hover:text-purple-500">Forgot Password</Link>
               </div>
 
               {/* Buttons */}

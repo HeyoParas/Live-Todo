@@ -8,6 +8,7 @@ import LoginScreen from "./authComponent/loginScreen";
 import SignupScreen from "./authComponent/signupScreen";
 import Dashboard from "./Dashboard/dashboard";
 import VerifyOtpScreen from "./authComponent/verifyOtpScreen";
+import ForgotPassword from "./authComponent/forgotPassword";
 import { useAuth, AuthProvider } from "./context/AuthContext";
 import Error404 from "./antd/error404";
 
@@ -38,6 +39,10 @@ function AppContent() {
     {
       path: "/dashboard",
       element: isAuthenticated ? <Dashboard /> : <Navigate to="/login" />,
+    },
+    {
+      path: "/forgotPassword",
+      element: <ForgotPassword />
     },
     {
       path: "*",

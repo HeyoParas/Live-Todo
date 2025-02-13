@@ -8,7 +8,12 @@ import { message } from 'antd';
 const verifyOtpScreen = () => {
   const Navigate = useNavigate();
   const location = useLocation();
+  const previousPathname = location.state?.from;
+  const previousEmail = location.state?.email;
+  console.log("location.pathname",previousPathname);
   const signupData = location.state?.signupData;
+
+  // const [path, setPath] = useState(null);
 
   const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
@@ -24,7 +29,9 @@ const verifyOtpScreen = () => {
     return () => clearInterval(interval);
   }, [timer]);
 
-  const onSubmit = async (data) => {
+
+  //when path is /verifyOtp
+  const onSubmitSignUp = async (data) => {
     try {
       const otpNumber = parseInt(Object.values(data).join(""), 10);
       const combinedData = { ...signupData, otpNumber };
@@ -40,6 +47,23 @@ const verifyOtpScreen = () => {
       message.error("An error occurred. Please try again later.");
     }
   };
+
+  //when path is /forgotPassword
+  const onSubmitForgotPass = async (data) => {
+    const otpNumber = parseInt(Object.values(data).join(""), 10);
+    
+    console.log(otpNumber)
+    let obj ={
+      email:previousEmail,
+      otpNumber:otpNumber,
+    }
+    try {
+      const response = await AxiosInstance.patch('/forgetPassword',obj);
+      console.log(response.data);
+    } catch (error) {
+      message.error("An error occurred. Please try again later.");
+    }
+  }
 
   const handleResend = async () => {
     try {
@@ -97,7 +121,7 @@ const verifyOtpScreen = () => {
           We have sent a verification code to your email
         </p>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <form onSubmit={previousPathname=="/signup" ? handleSubmit(onSubmitSignUp) : handleSubmit(onSubmitForgotPass)} className="space-y-6">
           <div className="flex justify-between gap-2">
             {[...Array(4)].map((_, index) => (
               <input
