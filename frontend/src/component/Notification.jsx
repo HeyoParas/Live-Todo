@@ -3,15 +3,21 @@ import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import "react-toastify/dist/ReactToastify.css";
 
-const socket = io("http://localhost:7000"); // Connect to backend
+// Establish WebSocket Connection
+const socket = io("http://localhost:7000", {
+  withCredentials: true,
+  reconnectionAttempts: 5,
+  transports: ["websocket"],
+});
 
 const Notification = ({ userId }) => {
   useEffect(() => {
-    if (userId) {
-      socket.emit("LogginUser", userId); // Register user with server
-    }
+    if (!userId) return;
+
+    socket.emit("LogginUser", userId); // Register user with backend
 
     socket.on("taskAssigned", (data) => {
+      console.log("New Task Assigned:", data);
       showNotification(data);
     });
 
@@ -31,7 +37,7 @@ const Notification = ({ userId }) => {
     );
   };
 
-  return null; // No UI element, just handling notifications
+  return null; // No UI, just handling notifications
 };
 
 export default Notification;

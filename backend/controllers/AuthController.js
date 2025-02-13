@@ -182,7 +182,7 @@ const verifyExistingEmail = async (req, res) => {
 };
 
 // update old pasword with new
-const forgetPassword = async (req, res) => {
+const verifyOtp = async (req, res) => {
   const { otpNumber, email } = req.body;
   //  Sorts documents by createdAt in descending order (latest first).
   const otpData = await otpModel.findOne({ email }).sort({ createdAt: -1 });
@@ -192,18 +192,30 @@ const forgetPassword = async (req, res) => {
   }
 
   if (otpData.email == email && otpData.otp == otpNumber) {
-    try {
-      const password = await bcryptPassword(req.body.password);
-      const updatedUser = await userModel.findOneAndUpdate({email},{password},{new:true});
-      if(updatedUser.password == password){
-        res.json({message:"Password Updated Successfully !!",success:true,updatedUser})
-      }
-    } catch (err) {
-      console.log("Error Updating Password!!", err);
-      res.json({ message: "Error Updating Password !!", success: false });
-    }
-  }else {
+    res.json({success:true,message:"Otp Matched Successfully!!"});
+  } else {
     res.json({ success: false, message: "Otp didnt match!!!" });
+  }
+};
+const forgetPassword = async (req, res) => {
+  const {email} = req.body;
+  try {
+    const password = await bcryptPassword(req.body.password);
+    const updatedUser = await userModel.findOneAndUpdate(
+      { email },
+      { password },
+      { new: true }
+    );
+    if (updatedUser.password == password) {
+      res.json({
+        message: "Password Updated Successfully !!",
+        success: true,
+        updatedUser,
+      });
+    }
+  } catch (err) {
+    console.log("Error Updating password!!",err);
+    res.json({success:false,message:"Error Updating Password!!"});
   }
 };
 module.exports = {
@@ -214,4 +226,5 @@ module.exports = {
   getUserData,
   forgetPassword,
   verifyExistingEmail,
+  verifyOtp
 };
