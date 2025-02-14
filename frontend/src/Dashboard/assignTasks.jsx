@@ -15,14 +15,19 @@ const assignTasks = ({mode}) => {
         style={{
           background: mode ? "#ffffff" : "#2a2b2f",
         }}>
-          <Empty/>
+          <Empty 
+           description={
+            <span style={{ color: mode ? "#000000" : "#ffffff" }}>
+              No Tasks Assigned
+            </span>
+          } />
         </div>
       );
     }
 
   return (
     <div
-    className="h-[84%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
+    className="h-[90%] overflow-x-auto flex items-center justify-start gap-3 flex-nowrap w-full scrollbar-hide p-3"
     style={{
       background: mode ? "#ffffff" : "#2a2b2f",
     }}>

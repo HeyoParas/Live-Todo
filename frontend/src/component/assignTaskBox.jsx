@@ -115,7 +115,7 @@ const assignTaskBox = ({ task, mode, type, index }) => {
           </div>
         </div>
 
-        <div className="flex justify-between w-[20%] gap-x-2">
+        <div className="flex justify-between">
           {/* Edit Button */}
           <div className="mt-1">
             {/* <EditDialogue id={task?._id} task={task} /> */}

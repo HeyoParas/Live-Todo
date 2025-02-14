@@ -31,9 +31,7 @@ const logOutPopUp = () => {
       }
   };
 
-  const handleCancel = () => {
-    message.info("Logout canceled");  
-  };
+
 
   return (
     <Popconfirm
@@ -41,7 +39,7 @@ const logOutPopUp = () => {
     placement="top"
       description="Are you sure you want to log out?"
       onConfirm={handleConfirm}  
-      onCancel={handleCancel}    
+      onCancel={()=>{}}    
       icon={<QuestionCircleOutlined style={{ color: 'red', fontSize: "1rem"}} />}
     >
       <Button className="custom-button">

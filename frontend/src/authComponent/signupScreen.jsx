@@ -7,8 +7,7 @@ import { message } from "antd";
 
 const SignupScreen = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate(); // ✅ Corrected function naming
-
+  const navigate = useNavigate(); 
   const {
     register,
     handleSubmit,
@@ -21,9 +20,12 @@ const SignupScreen = () => {
 
       if (response.data.success) {
         message.success("Verification otp sent! Please check you mail");
-        navigate("/verifyOtp", { state: { signupData: data } });
+        navigate("/verifyOtp", { state: { signupData: data ,
+          email: data.email,
+          from: location.pathname 
+        }});
       } else {
-        message.error(response.data.message);
+        message.warning(response.data.message);
       }
     } catch (error) {
       console.error("Signup error:", error);

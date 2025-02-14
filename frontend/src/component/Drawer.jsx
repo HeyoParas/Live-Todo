@@ -13,6 +13,7 @@ import light from "../assets/light.svg";
 import dark from "../assets/dark.svg";
 import exit from "../assets/exit.svg";
 import ReportModal from "../antd/reportModal";
+import CalandarModal from "../antd/calandarModal";
 import LogOut from "../antd/logOutPopUp";
 import { Tooltip } from "antd";
 
@@ -52,9 +53,7 @@ function Drawer({ setWidth, mode, setMode  }) {
           <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
             <img src={person} />
           </button>
-          <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
-            <img src={calender} />
-          </button>
+          <CalandarModal/>
           <ReportModal/>
           <button className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
             <img src={upload} />
@@ -68,7 +67,7 @@ function Drawer({ setWidth, mode, setMode  }) {
         </div>
         </div>
         <div className="flex flex-col items-center mb-4 ">
-          <Tooltip title ="Log Out">
+          <Tooltip title ="Log Out" >
         <div className="w-8 h-8 rounded-full p-1 hover:bg-slate-800">
   <LogOut />
 </div>

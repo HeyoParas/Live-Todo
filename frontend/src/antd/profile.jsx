@@ -140,7 +140,7 @@ const closeCamera = () => {
     <div className="p-6 max-w-md mx-auto bg-white rounded-xl shadow-md space-y-4">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h2 className="text-xl font-bold">Profile</h2>
+        <h1 className="text-xl font-bold">Profile</h1>
       </div>
 
       {/* Profile Picture */}
@@ -149,11 +149,11 @@ const closeCamera = () => {
           <img
             src={capturedImage || `http://localhost:7000${userData.profileImage}` || image}
             alt={userData.username}
-            className="w-[150px] h-[150px] rounded-full mx-auto object-cover shadow-lg"
+            className="w-[180px] h-[180px] rounded-full mx-auto object-cover border-2 shadow-lg"
             style={{ objectFit: "cover" }} //  Ensures proper fit
           />
           <button
-            className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full hover:cursor-pointer"
+            className="absolute bottom-0 right-0 bg-gray-800 text-white p-1 rounded-full hover:cursor-pointer" 
             onClick={openCamera}>
             <img
               src={camera}

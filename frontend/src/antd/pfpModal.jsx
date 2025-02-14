@@ -1,6 +1,6 @@
 import React, { useState, useRef } from "react";
 import Profile from "./profile";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import image from '../assets/image.jpg'
 
 import {useAuth} from '../context/AuthContext'
@@ -20,7 +20,7 @@ const pfpModal = ({ mode }) => {
       tracks.forEach((track) => track.stop()); 
     }
   };
-  
+  // console.log(userData.profileImage)
   return (
     <>
       <button

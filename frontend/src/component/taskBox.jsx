@@ -12,7 +12,7 @@ import AxiosInstance from '../api/axiosInstance';
 
 const TaskBox = ({ task, mode, type, index }) => {
   // console.log("from taskbox:",task)
-  console.log(type)
+  // console.log(type)
   const { setTasks } = useAuth();
   const [deleteVisible, setDeleteVisible] = useState(false);
 
@@ -49,13 +49,17 @@ const TaskBox = ({ task, mode, type, index }) => {
     <Draggable draggableId={task._id} index={index}>
       {(provided, snapshot) => (
         <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-          className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition ${
-            snapshot.isDragging ? "bg-blue-300" : mode ? "bg-white text-black border-solid border-2 border-slate-200" : "bg-[#292b31] text-white"
-          }`}
-        >
+  ref={provided.innerRef}
+  {...provided.draggableProps}
+  {...provided.dragHandleProps}
+  className={`gap-y-4 space-y-4 p-3 rounded-lg mb-3 transition ${
+    snapshot.isDragging 
+      ? "bg-opacity-50"  
+      : mode 
+        ? "bg-white bg-opacity-80 text-black border-solid border-2 border-slate-200" 
+        : "bg-[#292b31] bg-opacity-70 text-white" 
+  }`}
+>
       {/* Task Header */}
       <div className="flex items-center justify-between ">
         <div className="w-[90%]">

@@ -151,19 +151,19 @@ const TodoDialogue = ({ mode, type }) => {
 
             {/* Progress (1-10) */}
             <div className="flex flex-col">
-              <label className="text-sm font-medium">Progress (1-10)</label>
+              <label className="text-sm font-medium">Progress</label>
               <input
                 {...register("currentProgress", {
                   required: "Progress is required.",
                   valueAsNumber: true, 
                   min: { value: 0, message: "Progress must be at least 0." }, 
-                  max: { value: 10, message: "Progress must be at most 10." },
+                  max: { value: currentType=="completed"?10:9, message: currentType=="completed"?"Progress less than 10." : "Progress is not less than 10"},
                 })}
                 type="number"
                 placeholder="Enter progress"
                 className={`border rounded p-2 ${
-                  errors.currentProgress ? "border-red-500" : ""
-                }`}
+                  errors.currentProgress ? "border-red-500" : "" , currentType == "completed" ? "hover:cursor-not-allowed": ""
+                } `}
                 value={currentType === "completed" ? 10 : undefined} // Progress 10 for completed
                 disabled={currentType === "completed"} // Disable input if type is completed
               />

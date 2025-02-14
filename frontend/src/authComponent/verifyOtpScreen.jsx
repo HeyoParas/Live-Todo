@@ -13,7 +13,7 @@ const verifyOtpScreen = () => {
     if (emailVerified.bool) {
       Navigate("/changePassword", { state: { email: previousEmail } });
     }
-  }, [emailVerified.bool]); // 🔥 Trigger useEffect when emailVerified.bool changes
+  }, [emailVerified.bool]); 
   
   const Navigate = useNavigate();
   const location = useLocation();
@@ -24,8 +24,8 @@ const verifyOtpScreen = () => {
 
   // const [path, setPath] = useState(null);
 
-  const [timer, setTimer] = useState(30);
   const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const [timer, setTimer] = useState(30);
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -37,11 +37,13 @@ const verifyOtpScreen = () => {
     }
     return () => clearInterval(interval);
   }, [timer]);
-
+// console.log("hiii")
   const onSubmitSignUp = async (data) => {
+    // console.log(data)
     try {
       const otpNumber = parseInt(Object.values(data).join(""), 10);
       const combinedData = { ...signupData, otpNumber };
+      console.log(combinedData);
 
       const response = await AxiosInstance.post('/signup', combinedData);
       if (response.data.success) {
@@ -62,6 +64,7 @@ const verifyOtpScreen = () => {
       email:previousEmail,
       otpNumber:otpNumber,
     }
+    console.log(obj)
     try {
       const response = await AxiosInstance.post('/verifyOtp',obj);
       console.log(response.data);
@@ -141,7 +144,7 @@ const verifyOtpScreen = () => {
         <p className="text-center text-gray-600 mb-6">
           We have sent a verification code to your email
         </p>
-
+  {  console.log(previousPathname)}
         <form onSubmit={previousPathname=="/signup" ? handleSubmit(onSubmitSignUp) : handleSubmit(onSubmitForgotPass)} className="space-y-6">
           <div className="flex justify-between gap-2">
             {[...Array(4)].map((_, index) => (

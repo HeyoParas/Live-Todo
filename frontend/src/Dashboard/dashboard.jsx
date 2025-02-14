@@ -5,6 +5,7 @@ import AxiosInstance from "../api/axiosInstance";
 
 //compopnents
 import Header from "../component/header";
+import TabBar from "../materialUI/tabBar";
 import Navbar from "../component/Navbar";
 import Drawer from "../component/Drawer";
 import Shimmer from "../shimmer/shimmer";
@@ -150,22 +151,23 @@ console.log("theme color",mode)
           <Header mode={mode} name={userData?.username} />
 
           {/* Navbar */}
-          <Navbar
+          {/* <Navbar
             mode={mode}
             handleMyTaskOpen={handleMyTaskOpen}
             handleAssingedTaskOpen={handleAssingedTaskOpen}
-          />
-          <hr
+          /> */}
+          <TabBar mode={mode} data={userData?.sections}/>
+          {/* <hr
             className={`${
               mode ? "border-gray-300 border-2" : "border-[#3f4044] border-2"
             }`}
-          />
+          /> */}
 
           {/* component for myTasks */}
-          {isMyTaskOpen &&  <MyTasks mode={mode} data={userData?.sections} />}
+          {/* {isMyTaskOpen &&  <MyTasks mode={mode} data={userData?.sections} />} */}
 
           {/* component for assigned task */}
-          {isAssignedTaskOpen && <AssignedTasks mode={mode} />}
+          {/* {isAssignedTaskOpen && <AssignedTasks mode={mode} />} */}
           
         </div>
       </div>
