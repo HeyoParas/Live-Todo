@@ -88,6 +88,7 @@ const UserList = ({ mode, id }) => {
     key: index,
     label: (
       <Popconfirm
+      arrow={false}
         title={`Assign task to ${user.username}?`}
         description={
           <form onSubmit={handleSubmit((data) => handleAssignTask(data, user))}>
@@ -181,7 +182,7 @@ const UserList = ({ mode, id }) => {
             ) : (
               <img
                 src={users}
-                alt="comment"
+                alt="users"
                 className="w-5 h-5"
                 style={{ filter: mode ? "none" : "invert(1)" }}
               />
