@@ -8,7 +8,7 @@ import TemplateDialogue from '../antd/templateDialogue'
 const Navbar = ({mode,handleMyTaskOpen,handleAssingedTaskOpen}) => {
 
   return (
-    <div className='flex justify-between items-center bg-white text-black text-md'
+    <div className='flex justify-between items-center bg-white text-black text-md m-1'
     style={{
       background: mode ? "#ffffff" : "#2a2b2f", 
       color: mode? "#000000" : "#ffffff",  

@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import AxiosInstance from "../api/axiosInstance";
 
+
 //compopnents
 import Header from "../component/header";
 import Navbar from "../component/Navbar";
@@ -23,6 +24,7 @@ const Dashboard = () => {
   const [mode, setMode] = useState(false);
   const [isMyTaskOpen, setIsMyTaskOpen] = useState(true);
   const [isAssignedTaskOpen, setIsAssignedTaskOpen] = useState(false);
+
 
   //send request to get data
   useEffect(() => {
@@ -127,7 +129,7 @@ const Dashboard = () => {
       message.error(error.message || "An error occurred");
     }
   };
-
+console.log("theme color",mode)
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex h-screen w-full">
@@ -140,7 +142,7 @@ const Dashboard = () => {
           style={{
             marginLeft: w,
             width: `calc(100% - ${w})`,
-            background: "#2a2b2f",
+            background: mode? "#ffffff":"#2a2b2f",//2a2b2f
             color: "#ffffff",
           }}>
           

@@ -54,8 +54,6 @@ const info = (id, tasks) => {
     </tbody>
   </table>
 </div>
-
-
     ),
     onOk() {},
   });

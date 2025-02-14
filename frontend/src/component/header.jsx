@@ -17,7 +17,7 @@ const Header = ({ mode, name }) => {
   return (
     <div>
       <div
-        className='flex flex-col lg:flex-row justify-between items-center p-1 bg-white text-black'
+        className='flex flex-col lg:flex-row justify-between items-center bg-white text-black'
         style={{
           background: mode ? '#ffffff' : '#2a2b2f',
           color: mode ? '#000000' : '#ffffff',
