@@ -120,7 +120,7 @@ const assignTaskBox = ({ task, mode, type, index }) => {
           <div className="mt-1">
             {/* <EditDialogue id={task?._id} task={task} /> */}
             <button
-              className="rounded-full hover:bg-slate-50"
+              className="rounded-full hover:bg-slate-50 hover:cursor-pointer"
               style={{
                 filter: mode ? "none" : "invert(1) brightness(0.8)",
               }}

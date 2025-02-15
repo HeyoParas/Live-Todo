@@ -49,8 +49,9 @@ const generateReport = async (req, res) => {
         if (new Date(task.progress.updatedAt) > new Date(task.dueDate)) {
           report.deadlinesMissed++;
         // }
-      } else if (new Date(task.dueDate) < new Date()) {
+      } else if (new Date(task.dueDate) > new Date() && task.progress.currProgress<10) {
         report.deadlinesPending++;
+        console.log(report.deadlinesPending);
       }
 
       // Track category completion
@@ -66,7 +67,7 @@ const generateReport = async (req, res) => {
     assignedTasks.forEach((assignedTask) => {
       report.assignedTotal += assignedTask.tasks.length;
       assignedTask.tasks.forEach((task) => {
-        if (task.taskId?.section === "completed" || task.currProgress === 10) {
+        if (task.currProgress === 10) {
           report.assignedCompleted++;
         }
       });
